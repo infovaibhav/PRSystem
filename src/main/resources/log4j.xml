@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration debug="false" xmlns:log4j="http://jakarta.apache.org/log4j/">
+  	
+  	<appender name="PRS-SPRING" class="org.apache.log4j.RollingFileAppender">
+	    <param name="File" value="${catalina.home}/logs/PRS/PRS-spring.log"/>
+	    <param name="Append" value="true"/>
+	    <param name="Threshold" value="DEBUG"/>
+	    <param name="MaxFileSize" value="100MB"/>
+	    <param name="MaxBackupIndex" value="10" />
+	    <layout class="org.apache.log4j.PatternLayout">
+	      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %p [%t] %C{1}.%M(%L) | %m%n"/>
+	    </layout>
+  	</appender> 
+  	  	
+  	<appender name="PRS-ERRORS" class="org.apache.log4j.RollingFileAppender">
+	    <param name="File" value="${catalina.home}/logs/PRS/PRS-error.log"/>
+	    <param name="Append" value="true"/>
+	    <param name="Threshold" value="ERROR"/>
+	    <param name="MaxFileSize" value="100MB"/>
+	    <param name="MaxBackupIndex" value="10" />
+	    <layout class="org.apache.log4j.PatternLayout">
+	      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %p [%t] %C{1}.%M(%L) | %m%n"/>
+	    </layout>
+  	</appender> 
+  	
+  	<appender name="PRS-DEBUG" class="org.apache.log4j.RollingFileAppender">
+	    <param name="File" value="${catalina.home}/logs/PRS/PRS-debug.log"/>
+	    <param name="Append" value="true"/>
+	    <param name="Threshold" value="DEBUG"/>
+	    <param name="MaxFileSize" value="100MB"/>
+	    <param name="MaxBackupIndex" value="10" />
+	    <layout class="org.apache.log4j.PatternLayout">
+	      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %p [%t] %C{1}.%M(%L) | %m%n"/>
+	    </layout>
+  	</appender> 
+    
+    <appender name="ASYNCDEBUG" class="org.apache.log4j.AsyncAppender">
+            <param name="BufferSize" value="250"/>
+            <param name="LocationInfo" value="true"/>
+            <param name="Blocking" value="false" />
+            <appender-ref ref="PRS-DEBUG" />
+    </appender>
+    
+    <appender name="ASYNCPRS" class="org.apache.log4j.AsyncAppender">
+            <param name="BufferSize" value="500"/>
+            <param name="LocationInfo" value="true"/>
+            <param name="Blocking" value="false" />
+            <appender-ref ref="PRS-DEBUG" />
+         	<appender-ref ref="PRS-ERRORS" />
+    </appender>
+    
+    <appender name="ASYNCSPRING" class="org.apache.log4j.AsyncAppender">
+            <param name="BufferSize" value="128"/>
+            <param name="LocationInfo" value="true"/>
+            <param name="Blocking" value="false" />
+            <appender-ref ref="PRS-SPRING" />
+    </appender>
+        
+    <logger name="org.iry" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="ASYNCPRS" />
+    </logger>
+    
+    <logger name="org.apache" additivity="false">
+        <level value="ERROR" />
+        <appender-ref ref="ASYNCPRS" />
+    </logger>
+    
+    <logger name="org.springframework">
+    	<level value="INFO"/>
+    	<appender-ref ref="ASYNCSPRING"/>
+	</logger>
+	
+	
+	<logger name="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<level value="INFO" />
+    	<appender-ref ref="ASYNCDEBUG"/>
+	</logger>
+	
+	<logger name="org.springframework.security">
+    	<level value="DEBUG"/>
+    	<appender-ref ref="ASYNCSPRING"/>
+	</logger>
+   
+    <root>
+        <level value="DEBUG"/>
+         <appender-ref ref="ASYNCPRS" />
+    </root>
+</log4j:configuration>
