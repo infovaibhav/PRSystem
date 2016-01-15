@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.iry.model.pr.PurchaseRequisition;
+import org.iry.model.pr.PurchaseRequisitionItems;
 import org.iry.model.user.User;
 import org.iry.model.user.UserProfile;
 import org.iry.service.user.UserProfileService;
@@ -91,6 +93,15 @@ public class NavigationController {
 		
 		model.addAttribute("success", "User " + user.getFirstName() + " has been registered successfully");
 		return "registrationsuccess";
+	}
+	
+	@RequestMapping(value = "/newPr", method = RequestMethod.GET)
+	public String newPurchaseOrder(ModelMap model){
+		PurchaseRequisition purchaseRequisition = new PurchaseRequisition();
+		PurchaseRequisitionItems purchaseRequisitionItems = new PurchaseRequisitionItems();
+		model.addAttribute("purchaseRequisition", purchaseRequisition);
+		model.addAttribute("purchaseRequisitionItems", purchaseRequisitionItems);
+		return "newpr";
 	}
 
 }
