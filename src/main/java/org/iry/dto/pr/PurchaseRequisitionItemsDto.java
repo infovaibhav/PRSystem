@@ -17,7 +17,7 @@ public class PurchaseRequisitionItemsDto implements Serializable {
 	
 	private static final long serialVersionUID = 7394238383087126315L;
 	
-	private long id;
+	private Long id;
 	private String description;
 	private int totalQuantityRequired;
 	private int quantityInStock;
@@ -30,17 +30,17 @@ public class PurchaseRequisitionItemsDto implements Serializable {
 	private String requiredByDateStr;
 	private String preferredSupplier;
 	
-	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
 	public PurchaseRequisitionItemsDto() {
 		sdf = new SimpleDateFormat("");
 		sdf.setTimeZone(new SimpleTimeZone(0,""));
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getDescription() {

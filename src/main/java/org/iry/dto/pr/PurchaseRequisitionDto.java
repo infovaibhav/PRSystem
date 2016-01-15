@@ -40,6 +40,7 @@ public class PurchaseRequisitionDto implements Serializable {
 	private Long lastUpdatedBy;
 	private String lastUpdatedByName;
 	private String prNoPrefix;
+	private String action;
 	private List<PurchaseRequisitionItemsDto> purchaseRequisionItems = new ArrayList<PurchaseRequisitionItemsDto>();
 	
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -226,6 +227,12 @@ public class PurchaseRequisitionDto implements Serializable {
 	}
 	public void setPrNoPrefix(String prNoPrefix) {
 		this.prNoPrefix = prNoPrefix;
+	}
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
 	}
 	public void addPurchaseRequisionItems(PurchaseRequisitionItemsDto purchaseRequisitionItemDto) {
 		purchaseRequisionItems.add(purchaseRequisitionItemDto);
