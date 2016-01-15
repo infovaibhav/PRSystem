@@ -86,7 +86,7 @@ public class PurchaseRequisitionDto implements Serializable {
 		return createdDateStr;
 	}
 	public Date getCreatedDate() throws ParseException {
-		if( createdDateStr == null ) {
+		if( createdDateStr == null || createdDateStr.isEmpty() ) {
 			return null;
 		}
 		return sdf.parse(createdDateStr);
@@ -94,7 +94,7 @@ public class PurchaseRequisitionDto implements Serializable {
 	public void setCreatedDateStr(String createdDateStr) {
 		this.createdDateStr = createdDateStr;
 	}
-	public void setCreatedDateStr(Date createdDate) {
+	public void setCreatedDate(Date createdDate) {
 		if( createdDate != null ) {
 			this.createdDateStr = sdf.format(createdDate);
 		}
@@ -115,7 +115,7 @@ public class PurchaseRequisitionDto implements Serializable {
 		return assignedDateStr;
 	}
 	public Date getAssignedDate() throws ParseException {
-		if( assignedDateStr == null ) {
+		if( assignedDateStr == null || assignedDateStr.isEmpty() ) {
 			return null;
 		}
 		return sdf.parse(assignedDateStr);
@@ -123,7 +123,7 @@ public class PurchaseRequisitionDto implements Serializable {
 	public void setAssignedDateStr(String assignedDateStr) {
 		this.assignedDateStr = assignedDateStr;
 	}
-	public void setAssignedDateStr(Date assignedDate) {
+	public void setAssignedDate(Date assignedDate) {
 		if( assignedDate != null ) {
 			this.assignedDateStr = sdf.format(assignedDate);
 		}
@@ -144,7 +144,7 @@ public class PurchaseRequisitionDto implements Serializable {
 		return authorizedDateStr;
 	}
 	public Date getAuthorizedDate() throws ParseException {
-		if( authorizedDateStr == null ) {
+		if( authorizedDateStr == null || authorizedDateStr.isEmpty() ) {
 			return null;
 		}
 		return sdf.parse(authorizedDateStr);
@@ -152,7 +152,7 @@ public class PurchaseRequisitionDto implements Serializable {
 	public void setAuthorizedDateStr(String authorizedDateStr) {
 		this.authorizedDateStr = authorizedDateStr;
 	}
-	public void setAuthorizedDateStr(Date authorizedDate) {
+	public void setAuthorizedDate(Date authorizedDate) {
 		if( authorizedDate != null ) {
 			this.authorizedDateStr = sdf.format(authorizedDate);
 		}
@@ -173,7 +173,7 @@ public class PurchaseRequisitionDto implements Serializable {
 		return approvedDateStr;
 	}
 	public Date getApprovedDate() throws ParseException {
-		if( approvedDateStr == null) {
+		if( approvedDateStr == null || approvedDateStr.isEmpty() ) {
 			return null;
 		}
 		return sdf.parse(approvedDateStr);
@@ -181,7 +181,7 @@ public class PurchaseRequisitionDto implements Serializable {
 	public void setApprovedDateStr(String approvedDateStr) {
 		this.approvedDateStr = approvedDateStr;
 	}
-	public void setApprovedDateStr(Date approvedDate) {
+	public void setApprovedDate(Date approvedDate) {
 		if( approvedDate != null ) {
 			this.approvedDateStr = sdf.format(approvedDate);
 		}
@@ -202,7 +202,7 @@ public class PurchaseRequisitionDto implements Serializable {
 		return lastUpdatedDateStr;
 	}
 	public Date getLastUpdatedDate() throws ParseException {
-		if( lastUpdatedDateStr == null ) {
+		if( lastUpdatedDateStr == null || lastUpdatedDateStr.isEmpty() ) {
 			return null;
 		}
 		return sdf.parse(lastUpdatedDateStr);

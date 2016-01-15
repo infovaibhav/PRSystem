@@ -36,7 +36,7 @@ public class PRRestController {
 	@Autowired
 	PurchaseRequisitionService prService;
 	
-	@RequestMapping(value = "/newpr", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PurchaseRequisitionDto> savePurchaseRequisition(@RequestBody PurchaseRequisitionDto purchaseRequisitionDto) {
 		try {
 			Long userId = SpringContextUtil.getUserId();

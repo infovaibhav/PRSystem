@@ -17,7 +17,7 @@ public class PurchaseRequisitionItemsDto implements Serializable {
 	
 	private static final long serialVersionUID = 7394238383087126315L;
 	
-	private Long id;
+	private Long priId;
 	private String description;
 	private int totalQuantityRequired;
 	private int quantityInStock;
@@ -37,11 +37,11 @@ public class PurchaseRequisitionItemsDto implements Serializable {
 		sdf.setTimeZone(new SimpleTimeZone(0,""));
 	}
 	
-	public Long getId() {
-		return id;
+	public Long getPriId() {
+		return priId;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setPriId(Long priId) {
+		this.priId = priId;
 	}
 	public String getDescription() {
 		return description;
@@ -101,7 +101,7 @@ public class PurchaseRequisitionItemsDto implements Serializable {
 		return requiredByDateStr;
 	}
 	public Date getRequiredByDate() throws ParseException {
-		if( requiredByDateStr == null ) {
+		if( requiredByDateStr == null || requiredByDateStr.isEmpty() ) {
 			return null;
 		}
 		return sdf.parse(requiredByDateStr);
@@ -109,7 +109,7 @@ public class PurchaseRequisitionItemsDto implements Serializable {
 	public void setRequiredByDateStr(String requiredByDateStr) {
 		this.requiredByDateStr = requiredByDateStr;
 	}
-	public void setRequiredByDateStr(Date requiredByDate) {
+	public void setRequiredByDate(Date requiredByDate) {
 		if( requiredByDate != null ) {
 			this.requiredByDateStr = sdf.format(requiredByDate);
 		}
@@ -119,11 +119,5 @@ public class PurchaseRequisitionItemsDto implements Serializable {
 	}
 	public void setPreferredSupplier(String preferredSupplier) {
 		this.preferredSupplier = preferredSupplier;
-	}
-	public SimpleDateFormat getSdf() {
-		return sdf;
-	}
-	public void setSdf(SimpleDateFormat sdf) {
-		this.sdf = sdf;
 	}
 }

@@ -32,7 +32,7 @@ public class PRNoGenerator implements IdentifierGenerator {
         		prefix = "IRY_DEFAULT";
         	}
 	        Connection connection = session.connection();
-            PreparedStatement ps = connection.prepareStatement("SELECT nextval ('seq_stock_code') as nextval");
+            PreparedStatement ps = connection.prepareStatement("SELECT nextval ('PURCHASE_REQUISITION_SEQ') as nextval");
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("nextval");

@@ -98,13 +98,13 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 			throw new InvalidRequestException("Required Quantity is less than or equal to quantity in stock.");
 		}
 		
-		if( dto.getId() == null ) {
+		if( dto.getPriId() == null ) {
 			prItem = new PurchaseRequisitionItems();
 		} else {
 			Set<PurchaseRequisitionItems> existingPrItems = existingPr.getPurchaseRequisionItems();
 			if( existingPrItems != null && !existingPrItems.isEmpty() ) {
 				for (PurchaseRequisitionItems existingPrItem : existingPrItems) {
-					if( dto.getId().longValue() == existingPrItem.getId().longValue() ) {
+					if( dto.getPriId().longValue() == existingPrItem.getId().longValue() ) {
 						prItem = existingPrItem;
 						break;
 					}
@@ -125,7 +125,9 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		prItem.setMake(dto.getMake());
 		prItem.setCatNo(dto.getCatNo());
 		prItem.setPreferredSupplier(dto.getPreferredSupplier());
-		prItem.setRequiredByDate(new Timestamp(dto.getRequiredByDate().getTime()));
+		if( dto.getRequiredByDate() != null ) {
+			prItem.setRequiredByDate(new Timestamp(dto.getRequiredByDate().getTime()));
+		}
 		prItem.setPurchaseRequisition(existingPr);
 		
 		return prItem;
@@ -146,13 +148,13 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setProjectName(pr.getProjectName());
 		dto.setRev(pr.getRev());
 		dto.setStatus(pr.getStatus());
-		dto.setCreatedDateStr(pr.getCreatedDate());
+		dto.setCreatedDate(pr.getCreatedDate());
 		dto.setCreatedBy(pr.getCreatedBy());
 		dto.setCreatedByName(pr.getCreatedBy() == null ? "" : pr.getCreatedBy().toString());
-		dto.setAuthorizedDateStr(pr.getAuthorizedDate());
+		dto.setAuthorizedDate(pr.getAuthorizedDate());
 		dto.setAuthorizedBy(pr.getAuthorizedBy());
 		dto.setAuthorizedByName(pr.getAuthorizedBy() == null ? "" : pr.getAuthorizedBy().toString());
-		dto.setApprovedDateStr(pr.getApprovedDate());
+		dto.setApprovedDate(pr.getApprovedDate());
 		dto.setApprovedBy(pr.getApprovedBy());
 		dto.setApprovedByName(pr.getApprovedBy() == null ? "" : pr.getApprovedBy().toString());
 		if( loadPrItems ) {
@@ -165,7 +167,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	
 	private PurchaseRequisitionItemsDto convertToDto(PurchaseRequisitionItems prItem) {
 		PurchaseRequisitionItemsDto dto = new PurchaseRequisitionItemsDto();
-		dto.setId(prItem.getId());
+		dto.setPriId(prItem.getId());
 		dto.setDescription(prItem.getDescription());
 		dto.setTotalQuantityRequired(prItem.getTotalQuantityRequired());
 		dto.setQuantityInStock(prItem.getQuantityInStock());
@@ -176,7 +178,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setMake(prItem.getMake());
 		dto.setCatNo(prItem.getCatNo());
 		dto.setPreferredSupplier(prItem.getPreferredSupplier());
-		dto.setRequiredByDateStr(prItem.getRequiredByDate());
+		dto.setRequiredByDate(prItem.getRequiredByDate());
 		return dto;
 	}
 	
