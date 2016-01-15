@@ -28,4 +28,23 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
 		return user;
 	}
 	
+	public class AllowedActions {
+		boolean admin = false;
+		boolean createPr = false;
+		boolean authorizePr = false;
+		boolean approvePr = false;
+		boolean acknowledgePr = false;
+		boolean cancelPr = false;
+		boolean updateRequestQuote = false;
+		boolean updateReceiveQuote = false;
+		boolean updateFinalizeQuote = false;
+		boolean createPo = false;
+		boolean approvePo = false;
+		boolean updateReceiveMaterial = false;
+	}
+	
+	private void updateAllowedActions() {
+		
+	}
+	
 }

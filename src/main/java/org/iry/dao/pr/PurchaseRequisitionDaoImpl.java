@@ -39,6 +39,10 @@ public class PurchaseRequisitionDaoImpl extends AbstractDao<String, PurchaseRequ
 		} else if( status.equals(PurchaseRequisitionStatus.APPROVED.getStatus()) ) {
 			pr.setApprovedBy(userId);
 			pr.setApprovedDate(new Timestamp(System.currentTimeMillis()));
+			if( pr.getAuthorizedBy() == null ) {
+				pr.setAuthorizedBy(userId);
+				pr.setAuthorizedDate(new Timestamp(System.currentTimeMillis()));
+			}
 		}
 		pr.setLastUpdatedBy(userId);
 		pr.setLastUpdatedDate(new Timestamp(System.currentTimeMillis()));

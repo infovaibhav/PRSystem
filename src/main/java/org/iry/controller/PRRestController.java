@@ -44,6 +44,7 @@ public class PRRestController {
 				throw new InvalidRequestException("Logged in user information not found.");
 			}
 			purchaseRequisitionDto = prService.save(purchaseRequisitionDto, userId);
+			updateAllowedPrActions(purchaseRequisitionDto);
 			return new ResponseEntity<PurchaseRequisitionDto>(purchaseRequisitionDto, HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in saving Purchase Requisition...", e);
@@ -55,6 +56,7 @@ public class PRRestController {
 	public ResponseEntity<List<PurchaseRequisitionDto>> searchPurchaseRequisitions(@RequestBody PurchaseRequestSearchCriteria searchCriteria) {
 		try {
 			List<PurchaseRequisitionDto> purchaseRequisitionDtos = prService.findPurchaseRequisitions(searchCriteria);
+			updateAllowedPrActions(purchaseRequisitionDtos);
 			return new ResponseEntity<List<PurchaseRequisitionDto>>(purchaseRequisitionDtos, HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in searching Purchase Requisitions...", e);
@@ -66,6 +68,7 @@ public class PRRestController {
 	public ResponseEntity<PurchaseRequisitionDto> getPurchaseRequisition(@PathVariable("prNo") String prNo) {
 		try {
 			PurchaseRequisitionDto purchaseRequisitionDto = prService.findByPrNo(prNo);
+			updateAllowedPrActions(purchaseRequisitionDto);
 			return new ResponseEntity<PurchaseRequisitionDto>(purchaseRequisitionDto, HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in fetching Purchase Requisition...", e);
@@ -117,4 +120,17 @@ public class PRRestController {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	private void updateAllowedPrActions(List<PurchaseRequisitionDto> dtos) {
+		if( dtos != null ) {
+			for (PurchaseRequisitionDto dto : dtos) {
+				updateAllowedPrActions(dto);
+			}
+		}
+	}
+	
+	private void updateAllowedPrActions(PurchaseRequisitionDto dto) {
+		
+	}
+	
 }

@@ -3,8 +3,12 @@
  */
 package org.iry.utils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.iry.model.user.User;
 import org.iry.service.user.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -44,6 +48,14 @@ public class SpringContextUtil {
 			userId = user.getId();
 		}
 		return userId;
+	}
+	
+	public static Set<String> getPrivileges(){
+		Set<String> privileges = new HashSet<String>();
+		for (GrantedAuthority auth : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+			privileges.add(auth.getAuthority());
+        }
+		return privileges;
 	}
 
 }
