@@ -5,45 +5,89 @@
 <head>
 	<title>User Registration</title>
 	<jsp:include page="header.jsp"></jsp:include>
+	<link rel="stylesheet" href="static/css/jash.css"></link>
 	<link rel="stylesheet" href="static/css/bootstrap-datepicker.css"></link>
 	<script src="static/js/bootstrap/bootstrap-datepicker.js"></script>
 	<script type="text/javascript">
 	$(function () {
-		$("#editgrid").jqGrid({
+		initDate = function (elem) {
+            setTimeout(function () {
+                $(elem).datepicker({
+                    format: 'dd-mm-yy',
+                    autoSize: false,
+                    changeYear: true,
+                    changeMonth: true,
+                    showWeek: true,
+                    showButtonPanel: true,
+                    autoclose: true,
+                });
+            }, 100);
+		}
+		$("#addPrItemGrid").jqGrid({
 		    datatype:'local',
-		    colNames:['USER ID', 'USER NAME', 'FIRST NAME', 'LAST NAME', 'EMAIL', 'AUTHORIZED TXN LIMIT', 'REPORTING TO','ROLES','STATUS'],
+		    colNames:['Description', 'Total Qty required', 'Qty In stock', 'Qty to be Purchased', 'UOM', 'Unit Value', 'Approx. Total Value','Make','Cat No.','Required by date','Preferred Supplier'],
 		    colModel:[
-		        {name:'id', width:30, sortable: false, align:'center', resizable: true},
-		        {name:'ssoId', width:40, sortable: false, align:'left', resizable: true},
-		        {name:'firstName', width:40, sortable: false, align:'left', resizable: true},
-		        {name:'lastName', width:40, sortable: false, align:'left', resizable: true},
-		        {name:'email', width:60, sortable: false, align:'left', resizable: true},
-		        {name:'authorizedTransactionLimit', width:40, sortable: true, align:'right', resizable: true},
-		        {name:'reportingTo', width:60, sortable: false, align:'left', resizable: true},
-		        {name:'roles', width:80, sortable: false, align:'left', resizable: true},
-		        {name:'status', width:30, sortable: false, align:'center', resizable: true}
+		        {name:'description', width:80, sortable: false, align:'center', resizable: true},
+		        {name:'totalQuantityRequired', width:40, sortable: false, align:'center', resizable: true},
+		        {name:'quantityInStock', width:40, sortable: false, align:'left', resizable: true},
+		        {name:'quantityTobePurchased', width:40, sortable: false, align:'left', resizable: true},
+		        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
+		        {name:'unitCost', width:40, sortable: true, align:'right', resizable: true},
+		        {name:'approxTotalCost', width:40, sortable: false, align:'left', resizable: true},
+		        {name:'make', width:40, sortable: false, align:'left', resizable: true},
+		        {name:'catNo', width:30, sortable: false, align:'center', resizable: true},
+		        {name:'requiredByDate', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yy'}, datefmt: 'dd-mm-yy',editoptions: { dataInit: initDate }},
+		        {name:'preferredSupplier', width:30, sortable: false, align:'center', resizable: true}
 			],
-		    width: $("#usersHeader").width()-30,
-		    height: "400",
-		    scroll : true,
-		    gridview : true,
-		    loadtext: 'building list...',
+		    width: $("#prheader").width()-30,
+		    cmTemplate: {editable: true}, 
+		    pager: '#addgridPager',
+		    gridview: true,
+		    rownumbers: true,
+		    pgbuttons : false,
+		    pginput : false,
+		    editurl: "clientArray",
 		    jsonReader: {
 		        repeatitems: false,
 		    },
 		    loadError: function(jqXHR, status, error) {
 		    	if( jqXHR.status == 401 ) {
-		        	jQuery("#editgrid").html('<div style="height: 205px">Session Expired</div>');            		
+		        	jQuery("#addPrItemGrid").html('<div style="height: 205px">Session Expired</div>');            		
 		    	} else if ( jqXHR.responseText.length == 0 ) {
-		    		jQuery("#editgrid").html('<div style="height: 205px">Service Unavailable</div>');
+		    		jQuery("#addPrItemGrid").html('<div style="height: 205px">Service Unavailable</div>');
 		    	} else {
-		        	jQuery("#editgrid").html('<div style="height: 205px">' + jqXHR.statusText + '</div>');
+		        	jQuery("#addPrItemGrid").html('<div style="height: 205px">' + jqXHR.statusText + '</div>');
 		    	}
-		    },
-		    rownumbers: true
+		    }
 		});
+		$("#addPrItemGrid").jqGrid('inlineNav', '#addgridPager', {addParams: {position: "last",edit: true, del:false}});
+		$.extend($.jgrid.inlineEdit, {
+            keys: true
+        });
+		$("#addPrItemGrid_ilsave").click(function(){
+			alert("save clicked");
+		});
+		$("#addPrItemGrid").navButtonAdd('#addgridPager',{
+			   buttonicon:"ui-icon-close", 
+			   caption:"", 
+			   onClickButton: function(){ 
+				   var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
+					if( gr != null ) jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
+					else alert("Please Select Row to delete!");
+			   }, 
+			   position:"last"
+			})
 	});
 	</script>
+	<style type="text/css" media="screen">
+	    th.ui-th-column div{
+	        white-space:normal !important;
+	        height:auto !important;
+	        padding:2px;
+	    }
+	    .ui-jqgrid .ui-jqgrid-resize {height:100% !important;}
+    </style>
+	
 </head>
 <body>
     <jsp:include page="menubar.jsp"></jsp:include>
@@ -53,25 +97,13 @@
 		<form:form method="POST" modelAttribute="purchaseRequisition" class="form-horizontal">
 			<div class="row">
 				<div class="form-group col-md-6">
-					<label class="control-lable col-md-3" for="prNo">PR No. <span style="color:red;">*</span></label>
+					<label class="control-lable col-md-3" for="prNo">PR No. Prefix <span style="color:red;">*</span></label>
 					<div class="col-md-5">
 						<form:input type="text" path="prNo" id="prNo" class="form-control input-sm" required="required"/>
 						<div class="has-error">
 							<form:errors path="prNo" class="help-inline"/>
 						</div>
 					</div>
-				</div>
-				<div class="form-group col-md-6">
-					<label class="control-lable col-md-3" for="createdDate">Date <span style="color:red;">*</span></label>
-					<div class='input-group col-md-4 date' style='padding-left:15px;' id= "datepicker">
-	                    <form:input type="text" path="createdDate" id="createdDate" class="form-control input-sm" required="required"/>
-	                    <div class="input-group-addon">
-								<span class="glyphicon glyphicon-calendar"></span>
-						</div>
-	                    <div class="has-error">
-							<form:errors path="createdDate" class="help-inline"/>
-						</div>
-                	</div>
 				</div>
 			</div>
 			<div class="row">
@@ -113,16 +145,51 @@
 			</div>
 		</form:form>
 		<div id="prheader" style="width:100%;position:relative;z-index:3;"> 
-            <table id="editgrid">
-            </table>
+            <table id="addPrItemGrid"></table>
+            <div id="addgridPager"></div>
+            <input type="BUTTON" style="margin-top:5px;margin-right:30px;float:right;" id="submitAllDetails" class="btn btn-primary btn-sm" value="Submit" />
         </div> 
 	</div>
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>
-<script type="text/javascript">
-$('#datepicker').datepicker({
-    format: 'dd/mm/yyyy',
-    autoclose:true
+<script>
+$("#submitAllDetails").click(function(){
+	var allRowsInGrid = $('#addPrItemGrid').jqGrid('getGridParam','data');
+	var data = {
+			prNo:"",
+			projectName:$("#projectName").val(),
+			projectCode:$("#projectCode").val(),
+			rev:$("#rev").val(),
+			status:"Initial",
+			createdDateStr:$("#prNo").val(),
+			createdBy:"admin",
+			createdByName:"admin",
+			assignedDateStr:"",
+			assignedTo:"",
+			assignedToName:"",
+			authorizedDateStr:"",
+			authorizedBy:"",
+			authorizedByName:"",
+			approvedDateStr:"",
+			approvedBy:"",
+			approvedByName:"",
+			lastUpdatedDateStr:"",
+			lastUpdatedBy:"",
+			lastUpdatedByName:"",
+			prNoPrefix:$("#prNo").val(),
+			action:"",
+			purchaseRequisionItems : allRowsInGrid
+	};
+	$.ajax({
+		type:'POST',
+		url: 'rest/purchaseRequest/newpr',
+		data: JSON.stringify(data),
+		dataType: 'json',
+		contentType :"application/json",
+		success: function(data, status, jqXHR ){
+			alert("test successful");
+		}
+	});
 });
 </script>
 </html>
