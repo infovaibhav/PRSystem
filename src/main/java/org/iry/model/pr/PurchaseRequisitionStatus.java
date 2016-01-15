@@ -10,8 +10,8 @@ package org.iry.model.pr;
 public enum PurchaseRequisitionStatus {
 	
 	INITIAL ("Initial"),
-	SUBMITTED_FOR_AUTHORIZATION ("SubmittedForAuthorization"),
-	SUBMITTED_FOR_APPROVAL ("SubmittedForApproval"),
+	SUBMITTED ("Submitted"),
+	AUTHORIZED ("Authorized"),
 	APPROVED ("Approved"),
 	ACKNOWLEDGED ("Acknowledged"),
 	REQUEST_FOR_QUOTE ("RequestForQuote"),

@@ -14,10 +14,12 @@ import org.iry.dto.pr.PurchaseRequisitionDto;
  */
 public interface PurchaseRequisitionService {
 	
-	PurchaseRequisitionDto save(PurchaseRequisitionDto prDto) throws Exception;
+	PurchaseRequisitionDto save(PurchaseRequisitionDto prDto, Long userId) throws Exception;
 
 	List<PurchaseRequisitionDto> findPurchaseRequisitions(PurchaseRequestSearchCriteria searchCriteria);
 
 	PurchaseRequisitionDto findByPrNo(String prNo);
+
+	void updatePrStatus(String prNo, String status, Long userId);
 
 }
