@@ -13,7 +13,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="true" style="">
             <ul class="nav navbar-nav">
-                <li class=""><a href="#createUser">New PR</a></li>
+                <li class=""><a href="newPr">New PR</a></li>
                 <li class=""><a href="#tech">PR History</a></li>
                 <li class=""><a href="#tech">Pending PR</a></li>
                 <li class=""><a href="#createUser">Purchase Orders</a></li>

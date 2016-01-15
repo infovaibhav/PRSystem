@@ -90,7 +90,6 @@ public class NavigationController {
 				log.debug("Profile : "+ profile.getType());
 			}
 		}
-		
 		model.addAttribute("success", "User " + user.getFirstName() + " has been registered successfully");
 		return "registrationsuccess";
 	}
@@ -103,5 +102,4 @@ public class NavigationController {
 		model.addAttribute("purchaseRequisitionItems", purchaseRequisitionItems);
 		return "newpr";
 	}
-
 }
