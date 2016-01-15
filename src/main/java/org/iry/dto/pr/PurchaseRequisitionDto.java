@@ -40,7 +40,9 @@ public class PurchaseRequisitionDto implements Serializable {
 	private Long lastUpdatedBy;
 	private String lastUpdatedByName;
 	private String prNoPrefix;
-	private String action;
+	private boolean allowedToAuthorize;
+	private boolean allowedToApprove;
+	private List<String> allowedStatusAction;
 	private List<PurchaseRequisitionItemsDto> purchaseRequisionItems = new ArrayList<PurchaseRequisitionItemsDto>();
 	
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -228,11 +230,23 @@ public class PurchaseRequisitionDto implements Serializable {
 	public void setPrNoPrefix(String prNoPrefix) {
 		this.prNoPrefix = prNoPrefix;
 	}
-	public String getAction() {
-		return action;
+	public boolean isAllowedToAuthorize() {
+		return allowedToAuthorize;
 	}
-	public void setAction(String action) {
-		this.action = action;
+	public void setAllowedToAuthorize(boolean allowedToAuthorize) {
+		this.allowedToAuthorize = allowedToAuthorize;
+	}
+	public boolean isAllowedToApprove() {
+		return allowedToApprove;
+	}
+	public void setAllowedToApprove(boolean allowedToApprove) {
+		this.allowedToApprove = allowedToApprove;
+	}
+	public List<String> getAllowedStatusAction() {
+		return allowedStatusAction;
+	}
+	public void setAllowedStatusAction(List<String> allowedStatusAction) {
+		this.allowedStatusAction = allowedStatusAction;
 	}
 	public void addPurchaseRequisionItems(PurchaseRequisitionItemsDto purchaseRequisitionItemDto) {
 		purchaseRequisionItems.add(purchaseRequisitionItemDto);
