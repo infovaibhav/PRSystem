@@ -2,6 +2,8 @@ package org.iry.dao.user;
 
 import java.util.List;
 
+import org.iry.dto.SearchCriteria;
+import org.iry.dto.user.UserDto;
 import org.iry.model.user.User;
 
 public interface UserDao {
@@ -12,9 +14,9 @@ public interface UserDao {
 	
 	User findBySSO(String sso);
 	
-	List<User> findAllActiveUsers();
+	List<UserDto> findAllActiveUsers();
 	
-	List<User> findAllUsers();
+	List<User> findUsers(SearchCriteria searchCriteria);
 	
 }
 

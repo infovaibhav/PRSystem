@@ -8,6 +8,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.iry.dao.AbstractDao;
+import org.iry.dto.SearchCriteria;
+import org.iry.dto.user.UserDto;
 import org.iry.model.user.User;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +32,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> findAllActiveUsers() {
+	public List<UserDto> findAllActiveUsers() {
 		Criteria crit = createEntityCriteria();
 		crit.add(Restrictions.eq("isActive", Boolean.TRUE));
 		crit.add(Restrictions.eq("isRoot", Boolean.FALSE));
@@ -38,13 +40,13 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 			      .add(Projections.property("id"), "id")
 			      .add(Projections.property("ssoId"), "ssoId"));
 		crit.addOrder(Order.asc("ssoId"));
-		crit.setResultTransformer(Transformers.aliasToBean(User.class));
+		crit.setResultTransformer(Transformers.aliasToBean(UserDto.class));
 		return crit.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> findAllUsers() {
+	public List<User> findUsers(SearchCriteria searchCriteria) {
 
 		Criteria crit = createEntityCriteria();
 		crit.add(Restrictions.eq("isRoot", Boolean.FALSE));

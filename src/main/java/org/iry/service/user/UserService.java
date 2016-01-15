@@ -2,6 +2,8 @@ package org.iry.service.user;
 
 import java.util.List;
 
+import org.iry.dto.SearchCriteria;
+import org.iry.dto.user.UserDto;
 import org.iry.model.user.User;
 
 public interface UserService {
@@ -12,8 +14,8 @@ public interface UserService {
 	
 	User findBySso(String sso);
 
-	List<User> findAllActiveUsers();
+	List<UserDto> findAllActiveUsers();
 
-	List<User> findAllUsers();
+	List<UserDto> findUsers(SearchCriteria searchCriteria);
 	
 }

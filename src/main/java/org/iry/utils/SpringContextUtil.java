@@ -35,5 +35,15 @@ public class SpringContextUtil {
 		}
 		return userName;
 	}
+	
+	public static Long getUserId(){
+		Long userId = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails) {
+			User user = ((UserDetails)principal).getUser();
+			userId = user.getId();
+		}
+		return userId;
+	}
 
 }
