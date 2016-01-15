@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="static/css/app.css"></link>
 <link rel="stylesheet" href="static/css/bootstrap.css"></link>
@@ -9,3 +10,11 @@
 <script src="static/js/bootstrap/bootstrap.min.js"></script>
 <script src="static/js/jquery/grid.locale-en.js"></script>
 <script src="static/js/jquery/jquery.jqGrid.min.js"></script>
+<script>
+var defaultPageSize = 20;
+$(function () {
+    $(document).ajaxSend(function(e, xhr, options) {
+        xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
+    });
+});
+</script>

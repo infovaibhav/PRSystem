@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,9 +24,9 @@ import javax.persistence.Table;
 public class PurchaseRequisitionItems {
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PR_NO", nullable = false)
 	private PurchaseRequisition purchaseRequisition;
 
@@ -62,10 +63,10 @@ public class PurchaseRequisitionItems {
 	@Column(name="PREFERRED_SUPPLIER")
 	private String preferredSupplier;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public PurchaseRequisition getPurchaseRequisition() {
@@ -140,15 +141,13 @@ public class PurchaseRequisitionItems {
 	public void setPreferredSupplier(String preferredSupplier) {
 		this.preferredSupplier = preferredSupplier;
 	}
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -158,7 +157,10 @@ public class PurchaseRequisitionItems {
 		if (getClass() != obj.getClass())
 			return false;
 		PurchaseRequisitionItems other = (PurchaseRequisitionItems) obj;
-		if (id != other.id)
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}

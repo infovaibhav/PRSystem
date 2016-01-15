@@ -51,12 +51,20 @@ $(function () {
             rownumbers: true
         });
     	
-        var newUrlUsersTable = "rest/users";
+        var newUrlUsersTable = "rest/user/_search";
         $("#usersTable").jqGrid().setGridParam({
     		url : newUrlUsersTable, 
     		page : 1, 
-    		mtype:'GET',
-    		datatype : "json"
+    		mtype:'POST',
+    		datatype : "json",
+			ajaxGridOptions: { 
+				type :'POST',
+				contentType :"application/json; charset=utf-8"
+			},
+			serializeGridData: function(postData) {
+				postData['pageSize'] =  defaultPageSize;
+			    return JSON.stringify(postData);
+			}
     	});
          $("#usersTable").jqGrid().trigger('reloadGrid');
    });

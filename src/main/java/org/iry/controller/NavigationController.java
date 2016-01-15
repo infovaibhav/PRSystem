@@ -8,7 +8,6 @@ import org.iry.model.user.User;
 import org.iry.model.user.UserProfile;
 import org.iry.service.user.UserProfileService;
 import org.iry.service.user.UserService;
-import org.iry.utils.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class PrsController {
+public class NavigationController {
 
-	private static final Logger log = Logger.getLogger(PrsController.class);
+	private static final Logger log = Logger.getLogger(NavigationController.class);
 	
 	@Autowired
 	UserProfileService userProfileService;

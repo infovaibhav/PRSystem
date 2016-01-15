@@ -5,8 +5,8 @@ package org.iry.model.pr;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -79,8 +79,8 @@ public class PurchaseRequisition implements Serializable {
 	private Long lastUpdatedBy;
 	
 	@Cascade(org.hibernate.annotations.CascadeType.ALL)
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "purchaseRequisition", fetch = FetchType.EAGER)
-	private Set<PurchaseRequisitionItems> purchaseRequisionItems = new HashSet<PurchaseRequisitionItems>();
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "purchaseRequisition", fetch = FetchType.LAZY)
+	private List<PurchaseRequisitionItems> purchaseRequisionItems = new ArrayList<PurchaseRequisitionItems>();
 	
 	private transient String prNoPrefix;
 	
@@ -174,11 +174,10 @@ public class PurchaseRequisition implements Serializable {
 	public void setLastUpdatedBy(Long lastUpdatedBy) {
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
-	public Set<PurchaseRequisitionItems> getPurchaseRequisionItems() {
+	public List<PurchaseRequisitionItems> getPurchaseRequisionItems() {
 		return purchaseRequisionItems;
 	}
-	public void setPurchaseRequisionItems(
-			Set<PurchaseRequisitionItems> purchaseRequisionItems) {
+	public void setPurchaseRequisionItems(List<PurchaseRequisitionItems> purchaseRequisionItems) {
 		this.purchaseRequisionItems = purchaseRequisionItems;
 	}
 	public String getPrNoPrefix() {
