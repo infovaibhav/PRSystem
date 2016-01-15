@@ -47,7 +47,6 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> findUsers(SearchCriteria searchCriteria) {
-
 		Criteria crit = createEntityCriteria();
 		crit.add(Restrictions.eq("isRoot", Boolean.FALSE));
 		crit.addOrder(Order.asc("ssoId"));

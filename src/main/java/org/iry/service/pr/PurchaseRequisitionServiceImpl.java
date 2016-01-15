@@ -17,7 +17,6 @@ import org.iry.exceptions.InvalidRequestException;
 import org.iry.model.pr.PurchaseRequisition;
 import org.iry.model.pr.PurchaseRequisitionItems;
 import org.iry.model.pr.PurchaseRequisitionStatus;
-import org.iry.utils.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +33,8 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	private PurchaseRequisitionDao prDao;
 
 	@Override
-	public PurchaseRequisitionDto save(PurchaseRequisitionDto prDto) throws Exception {
-		PurchaseRequisition pr = convertToPojo(prDto);
+	public PurchaseRequisitionDto save(PurchaseRequisitionDto prDto, Long userId) throws Exception {
+		PurchaseRequisition pr = convertToPojo(prDto, userId);
 		prDao.save(pr);
 		return convertToDto(pr, true);
 	}
@@ -52,14 +51,15 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		return convertToDto(pr, false);
 	}
 	
-	private PurchaseRequisition convertToPojo(PurchaseRequisitionDto dto) throws Exception {
+	@Override
+	public void updatePrStatus(String prNo, String status, Long userId) {
+		prDao.updatePrStauts(prNo, status, userId);
+	}
+	
+	private PurchaseRequisition convertToPojo(PurchaseRequisitionDto dto, Long userId) throws Exception {
 		PurchaseRequisition pr = null;
 		if( dto.getPurchaseRequisionItems() == null || dto.getPurchaseRequisionItems().isEmpty() ) {
 			throw new InvalidRequestException("Purchase Requisition Items not specified.");
-		}
-		Long userId = SpringContextUtil.getUserId();
-		if( userId == null ) {
-			throw new InvalidRequestException("Logged in user information not found.");
 		}
 		if( dto.getPrNo() != null && !dto.getPrNo().isEmpty() ) {
 			pr = prDao.findById(dto.getPrNo());
