@@ -63,7 +63,10 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		}
 		if( dto.getPrNo() != null && !dto.getPrNo().isEmpty() ) {
 			pr = prDao.findById(dto.getPrNo());
-			throw new InvalidRequestException("Requested PR does not exists.");
+			if( pr == null ) {
+				throw new InvalidRequestException("Requested PR does not exists.");
+			}
+			pr.setStatus(dto.getStatus());
 		} else {
 			pr = new PurchaseRequisition();
 			pr.setStatus(PurchaseRequisitionStatus.INITIAL.getStatus());
