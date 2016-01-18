@@ -33,7 +33,6 @@ public class PurchaseRequisitionItemsDto implements Serializable {
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
 	public PurchaseRequisitionItemsDto() {
-		sdf = new SimpleDateFormat("");
 		sdf.setTimeZone(new SimpleTimeZone(0,""));
 	}
 	

@@ -13,6 +13,4 @@ public interface PurchaseRequisitionDao {
 	
 	List<PurchaseRequisition> findPurchaseRequests(PurchaseRequestSearchCriteria searchCriteria);
 
-	void updatePrStauts(String prNo, String status, Long userId);
-	
 }

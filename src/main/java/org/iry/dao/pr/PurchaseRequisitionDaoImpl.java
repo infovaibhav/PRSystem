@@ -1,6 +1,5 @@
 package org.iry.dao.pr;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -8,9 +7,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.iry.dao.AbstractDao;
 import org.iry.dto.pr.PurchaseRequestSearchCriteria;
-import org.iry.exceptions.InvalidRequestException;
 import org.iry.model.pr.PurchaseRequisition;
-import org.iry.model.pr.PurchaseRequisitionStatus;
 import org.springframework.stereotype.Repository;
 
 @Repository("purchaseRequisitionDao")
@@ -24,29 +21,6 @@ public class PurchaseRequisitionDaoImpl extends AbstractDao<String, PurchaseRequ
 	@Override
 	public PurchaseRequisition findById(String prNo) {
 		return getByKey(prNo);
-	}
-
-	@Override
-	public void updatePrStauts(String prNo, String status, Long userId) {
-		PurchaseRequisition pr = getByKey(prNo);
-		if( pr == null ) {
-			throw new InvalidRequestException("Purchase requisition does not exists.");
-		}
-		pr.setStatus(status);
-		if( status.equals(PurchaseRequisitionStatus.AUTHORIZED.getStatus()) ) {
-			pr.setAuthorizedBy(userId);
-			pr.setAuthorizedDate(new Timestamp(System.currentTimeMillis()));
-		} else if( status.equals(PurchaseRequisitionStatus.APPROVED.getStatus()) ) {
-			pr.setApprovedBy(userId);
-			pr.setApprovedDate(new Timestamp(System.currentTimeMillis()));
-			if( pr.getAuthorizedBy() == null ) {
-				pr.setAuthorizedBy(userId);
-				pr.setAuthorizedDate(new Timestamp(System.currentTimeMillis()));
-			}
-		}
-		pr.setLastUpdatedBy(userId);
-		pr.setLastUpdatedDate(new Timestamp(System.currentTimeMillis()));
-		persist(pr);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -12,6 +12,8 @@ public interface UserDao {
 	
 	User findById(long id);
 	
+	String getFullNameById(long id);
+	
 	User findBySSO(String sso);
 	
 	List<UserDto> findAllActiveUsers();

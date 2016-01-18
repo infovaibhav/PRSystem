@@ -16,18 +16,26 @@ import org.springframework.stereotype.Repository;
 @Repository("userDao")
 public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 
+	@Override
 	public void save(User user) {
 		persist(user);
 	}
 	
+	@Override
 	public User findById(long id) {
 		return getByKey(id);
 	}
 
+	@Override
 	public User findBySSO(String sso) {
 		Criteria crit = createEntityCriteria();
 		crit.add(Restrictions.eq("ssoId", sso));
 		return (User) crit.uniqueResult();
+	}
+
+	@Override
+	public String getFullNameById(long id) {
+		return findById(id).getFullName();
 	}
 
 	@SuppressWarnings("unchecked")

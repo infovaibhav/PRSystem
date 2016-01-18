@@ -54,11 +54,17 @@ public class PurchaseRequisition implements Serializable {
 	@Column(name="CREATED_BY")
 	private Long createdBy;
 
+	@Column(name="CREATED_BY_NAME")
+	private String createdByName;
+
 	@Column(name="ASSIGNED_DATE")
 	private Timestamp assignedDate;
 
 	@Column(name="ASSIGNED_TO")
 	private Long assignedTo;
+
+	@Column(name="ASSIGNED_TO_NAME")
+	private String assignedToName;
 
 	@Column(name="AUTHORIZED_DATE")
 	private Timestamp authorizedDate;
@@ -66,17 +72,35 @@ public class PurchaseRequisition implements Serializable {
 	@Column(name="AUTHORIZED_BY")
 	private Long authorizedBy;
 
+	@Column(name="AUTHORIZED_BY_NAME")
+	private String authorizedByName;
+
 	@Column(name="APPROVED_DATE")
 	private Timestamp approvedDate;
 
 	@Column(name="APPROVED_BY")
 	private Long approvedBy;
 
+	@Column(name="APPROVED_BY_NAME")
+	private String approvedByName;
+
+	@Column(name="ACKNOWLEDGED_DATE")
+	private Timestamp acknowledgedDate;
+
+	@Column(name="ACKNOWLEDGED_BY")
+	private Long acknowledgedBy;
+
+	@Column(name="ACKNOWLEDGED_BY_NAME")
+	private String acknowledgedByName;
+
 	@Column(name="LAST_UPDATED_DATE")
 	private Timestamp lastUpdatedDate;
 
 	@Column(name="LAST_UPDATED_BY")
 	private Long lastUpdatedBy;
+
+	@Column(name="LAST_UPDATED_BY_NAME")
+	private String lastUpdatedByName;
 	
 	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "purchaseRequisition", fetch = FetchType.LAZY)
@@ -173,6 +197,54 @@ public class PurchaseRequisition implements Serializable {
 	}
 	public void setLastUpdatedBy(Long lastUpdatedBy) {
 		this.lastUpdatedBy = lastUpdatedBy;
+	}
+	public String getCreatedByName() {
+		return createdByName;
+	}
+	public void setCreatedByName(String createdByName) {
+		this.createdByName = createdByName;
+	}
+	public String getAssignedToName() {
+		return assignedToName;
+	}
+	public void setAssignedToName(String assignedToName) {
+		this.assignedToName = assignedToName;
+	}
+	public String getAuthorizedByName() {
+		return authorizedByName;
+	}
+	public void setAuthorizedByName(String authorizedByName) {
+		this.authorizedByName = authorizedByName;
+	}
+	public String getApprovedByName() {
+		return approvedByName;
+	}
+	public void setApprovedByName(String approvedByName) {
+		this.approvedByName = approvedByName;
+	}
+	public Timestamp getAcknowledgedDate() {
+		return acknowledgedDate;
+	}
+	public void setAcknowledgedDate(Timestamp acknowledgedDate) {
+		this.acknowledgedDate = acknowledgedDate;
+	}
+	public Long getAcknowledgedBy() {
+		return acknowledgedBy;
+	}
+	public void setAcknowledgedBy(Long acknowledgedBy) {
+		this.acknowledgedBy = acknowledgedBy;
+	}
+	public String getAcknowledgedByName() {
+		return acknowledgedByName;
+	}
+	public void setAcknowledgedByName(String acknowledgedByName) {
+		this.acknowledgedByName = acknowledgedByName;
+	}
+	public String getLastUpdatedByName() {
+		return lastUpdatedByName;
+	}
+	public void setLastUpdatedByName(String lastUpdatedByName) {
+		this.lastUpdatedByName = lastUpdatedByName;
 	}
 	public Set<PurchaseRequisitionItems> getPurchaseRequisionItems() {
 		return purchaseRequisionItems;

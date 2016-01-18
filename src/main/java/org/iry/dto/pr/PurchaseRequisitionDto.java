@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.SimpleTimeZone;
 
+import org.iry.dto.Action;
+
 /**
  * @author vaibhavp
  *
@@ -36,19 +38,20 @@ public class PurchaseRequisitionDto implements Serializable {
 	private String approvedDateStr;
 	private Long approvedBy;
 	private String approvedByName;
+	private String acknowledgedDateStr;
+	private Long acknowledgedBy;
+	private String acknowledgedByName;
 	private String lastUpdatedDateStr;
 	private Long lastUpdatedBy;
 	private String lastUpdatedByName;
 	private String prNoPrefix;
-	private boolean allowedToAuthorize;
-	private boolean allowedToApprove;
-	private List<String> allowedStatusAction;
+	private boolean editable;
+	private List<Action> allowedStatusChanges = new ArrayList<Action>();
 	private List<PurchaseRequisitionItemsDto> purchaseRequisionItems = new ArrayList<PurchaseRequisitionItemsDto>();
 	
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	
 	public PurchaseRequisitionDto() {
-		sdf = new SimpleDateFormat("");
 		sdf.setTimeZone(new SimpleTimeZone(0,""));
 	}
 	
@@ -198,6 +201,37 @@ public class PurchaseRequisitionDto implements Serializable {
 	public void setApprovedByName(String approvedByName) {
 		this.approvedByName = approvedByName;
 	}
+	public String getAcknowledgedDateStr() {
+		return acknowledgedDateStr;
+	}
+	public Date getAcknowledgedDate() throws ParseException {
+		if( acknowledgedDateStr == null || acknowledgedDateStr.isEmpty() ) {
+			return null;
+		}
+		return sdf.parse(acknowledgedDateStr);
+	}
+	public void setAcknowledgedDateStr(String acknowledgedDateStr) {
+		this.acknowledgedDateStr = acknowledgedDateStr;
+	}
+	public void setAcknowledgedDate(Date acknowledgedDate) {
+		if( acknowledgedDate != null ) {
+			this.acknowledgedDateStr = sdf.format(acknowledgedDate);
+		}
+	}
+	public Long getAcknowledgedBy() {
+		return acknowledgedBy;
+	}
+	public void setAcknowledgedBy(Long acknowledgedBy) {
+		this.acknowledgedBy = acknowledgedBy;
+	}
+	public String getAcknowledgedByName() {
+		return acknowledgedByName;
+	}
+
+	public void setAcknowledgedByName(String acknowledgedByName) {
+		this.acknowledgedByName = acknowledgedByName;
+	}
+
 	public String getLastUpdatedDateStr() {
 		return lastUpdatedDateStr;
 	}
@@ -207,7 +241,10 @@ public class PurchaseRequisitionDto implements Serializable {
 		}
 		return sdf.parse(lastUpdatedDateStr);
 	}
-	public void setLastUpdatedDateStr(String lastUpdatedDate) {
+	public void setLastUpdatedDateStr(String lastUpdatedDateStr) {
+		this.lastUpdatedDateStr = lastUpdatedDateStr;
+	}
+	public void setLastUpdatedDate(Date lastUpdatedDate) {
 		if( lastUpdatedDateStr != null ) {
 			this.lastUpdatedDateStr = sdf.format(lastUpdatedDate);			
 		}
@@ -230,23 +267,17 @@ public class PurchaseRequisitionDto implements Serializable {
 	public void setPrNoPrefix(String prNoPrefix) {
 		this.prNoPrefix = prNoPrefix;
 	}
-	public boolean isAllowedToAuthorize() {
-		return allowedToAuthorize;
+	public boolean isEditable() {
+		return editable;
 	}
-	public void setAllowedToAuthorize(boolean allowedToAuthorize) {
-		this.allowedToAuthorize = allowedToAuthorize;
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
-	public boolean isAllowedToApprove() {
-		return allowedToApprove;
+	public List<Action> getAllowedStatusChanges() {
+		return allowedStatusChanges;
 	}
-	public void setAllowedToApprove(boolean allowedToApprove) {
-		this.allowedToApprove = allowedToApprove;
-	}
-	public List<String> getAllowedStatusAction() {
-		return allowedStatusAction;
-	}
-	public void setAllowedStatusAction(List<String> allowedStatusAction) {
-		this.allowedStatusAction = allowedStatusAction;
+	public void setAllowedStatusChanges(List<Action> allowedStatusChanges) {
+		this.allowedStatusChanges = allowedStatusChanges;
 	}
 	public void addPurchaseRequisionItems(PurchaseRequisitionItemsDto purchaseRequisitionItemDto) {
 		purchaseRequisionItems.add(purchaseRequisitionItemDto);
@@ -256,5 +287,8 @@ public class PurchaseRequisitionDto implements Serializable {
 	}
 	public void setPurchaseRequisionItems(List<PurchaseRequisitionItemsDto> purchaseRequisionItems) {
 		this.purchaseRequisionItems = purchaseRequisionItems;
+	}
+	public void addAllowedStatusChanges(Action action) {
+		allowedStatusChanges.add(action);
 	}
 }

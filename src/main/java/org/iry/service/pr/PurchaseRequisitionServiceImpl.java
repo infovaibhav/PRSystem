@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.iry.dao.pr.PurchaseRequisitionDao;
+import org.iry.dao.user.UserDao;
 import org.iry.dto.pr.PurchaseRequestSearchCriteria;
 import org.iry.dto.pr.PurchaseRequisitionDto;
 import org.iry.dto.pr.PurchaseRequisitionItemsDto;
@@ -31,10 +32,13 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	
 	@Autowired
 	private PurchaseRequisitionDao prDao;
+	
+	@Autowired
+	private UserDao userDao;
 
 	@Override
-	public PurchaseRequisitionDto save(PurchaseRequisitionDto prDto, Long userId) throws Exception {
-		PurchaseRequisition pr = convertToPojo(prDto, userId);
+	public PurchaseRequisitionDto save(PurchaseRequisitionDto prDto, Long userId, String userName) throws Exception {
+		PurchaseRequisition pr = convertToPojo(prDto, userId, userName);
 		prDao.save(pr);
 		return convertToDto(pr, true);
 	}
@@ -52,11 +56,53 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	}
 	
 	@Override
-	public void updatePrStatus(String prNo, String status, Long userId) {
-		prDao.updatePrStauts(prNo, status, userId);
+	public void updatePrStatus(String prNo, String status, Long userId, String userName) {
+		PurchaseRequisition pr = prDao.findById(prNo);
+		if( pr == null ) {
+			throw new InvalidRequestException("Purchase requisition does not exists.");
+		}
+		
+		setStatusInformation(pr, status, userId, userName);
+		
+		prDao.save(pr);
 	}
 	
-	private PurchaseRequisition convertToPojo(PurchaseRequisitionDto dto, Long userId) throws Exception {
+	private void setStatusInformation(PurchaseRequisition pr, String status, Long userId, String userName) {
+		if( userName == null ) {
+			userName = userDao.getFullNameById(userId);
+		}
+		Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+		if( status != null && status.trim().length() != 0 ) {
+			pr.setStatus(status);
+			if( status.equals(PurchaseRequisitionStatus.INITIAL.getStatus()) ) {
+				pr.setCreatedBy(userId);
+				pr.setCreatedByName(userName);
+				pr.setCreatedDate(currentTimestamp);
+			} else if( status.equals(PurchaseRequisitionStatus.AUTHORIZED.getStatus()) ) {
+				pr.setAuthorizedBy(userId);
+				pr.setAuthorizedByName(userName);
+				pr.setAuthorizedDate(currentTimestamp);
+			} else if( status.equals(PurchaseRequisitionStatus.APPROVED.getStatus()) ) {
+				pr.setApprovedBy(userId);
+				pr.setApprovedByName(userName);
+				pr.setApprovedDate(currentTimestamp);
+				if( pr.getAuthorizedBy() == null ) {
+					pr.setAuthorizedBy(userId);
+					pr.setAuthorizedByName(userName);
+					pr.setAuthorizedDate(currentTimestamp);
+				}
+			} else if( status.equals(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus()) ) {
+				pr.setAcknowledgedBy(userId);
+				pr.setAcknowledgedByName(userName);
+				pr.setAcknowledgedDate(currentTimestamp);
+			}
+		}
+		pr.setLastUpdatedBy(userId);
+		pr.setLastUpdatedByName(userName);
+		pr.setLastUpdatedDate(currentTimestamp);
+	}
+	
+	private PurchaseRequisition convertToPojo(PurchaseRequisitionDto dto, Long userId, String userName) throws Exception {
 		PurchaseRequisition pr = null;
 		if( dto.getPurchaseRequisionItems() == null || dto.getPurchaseRequisionItems().isEmpty() ) {
 			throw new InvalidRequestException("Purchase Requisition Items not specified.");
@@ -66,18 +112,14 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 			if( pr == null ) {
 				throw new InvalidRequestException("Requested PR does not exists.");
 			}
-			pr.setStatus(dto.getStatus());
+			setStatusInformation(pr, dto.getStatus(), userId, userName);
 		} else {
 			pr = new PurchaseRequisition();
-			pr.setStatus(PurchaseRequisitionStatus.INITIAL.getStatus());
-			pr.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-			pr.setCreatedBy(userId);
+			setStatusInformation(pr, PurchaseRequisitionStatus.INITIAL.getStatus(), userId, userName);
 		}
 		pr.setProjectCode(dto.getProjectCode());
 		pr.setProjectName(dto.getProjectName());
 		pr.setRev(dto.getRev());
-		pr.setLastUpdatedDate(new Timestamp(System.currentTimeMillis()));
-		pr.setLastUpdatedBy(userId);
 		
 		Set<PurchaseRequisitionItems> newPrItems = new HashSet<PurchaseRequisitionItems>();
 		for (PurchaseRequisitionItemsDto prItemsDto : dto.getPurchaseRequisionItems()) {
@@ -150,13 +192,22 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setStatus(pr.getStatus());
 		dto.setCreatedDate(pr.getCreatedDate());
 		dto.setCreatedBy(pr.getCreatedBy());
-		dto.setCreatedByName(pr.getCreatedBy() == null ? "" : pr.getCreatedBy().toString());
+		dto.setCreatedByName(pr.getCreatedByName());
+		dto.setAssignedDate(pr.getAssignedDate());
+		dto.setAssignedTo(pr.getAssignedTo());
+		dto.setAssignedToName(pr.getAssignedToName());
 		dto.setAuthorizedDate(pr.getAuthorizedDate());
 		dto.setAuthorizedBy(pr.getAuthorizedBy());
-		dto.setAuthorizedByName(pr.getAuthorizedBy() == null ? "" : pr.getAuthorizedBy().toString());
+		dto.setAuthorizedByName(pr.getAuthorizedByName());
 		dto.setApprovedDate(pr.getApprovedDate());
 		dto.setApprovedBy(pr.getApprovedBy());
-		dto.setApprovedByName(pr.getApprovedBy() == null ? "" : pr.getApprovedBy().toString());
+		dto.setApprovedByName(pr.getApprovedByName());
+		dto.setAcknowledgedDate(pr.getAcknowledgedDate());
+		dto.setAcknowledgedBy(pr.getAcknowledgedBy());
+		dto.setAcknowledgedByName(pr.getAcknowledgedByName());
+		dto.setLastUpdatedDate(pr.getLastUpdatedDate());
+		dto.setLastUpdatedBy(pr.getLastUpdatedBy());
+		dto.setLastUpdatedByName(pr.getApprovedByName());
 		if( loadPrItems ) {
 			for (PurchaseRequisitionItems prItem : pr.getPurchaseRequisionItems()) {
 				dto.addPurchaseRequisionItems(convertToDto(prItem));

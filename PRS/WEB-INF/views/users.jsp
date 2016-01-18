@@ -3,6 +3,14 @@
 <head>
 	<title>Users</title>
 	<jsp:include page="header.jsp"></jsp:include>
+	<style type="text/css" media="screen">
+	    th.ui-th-column div{
+	        white-space:normal !important;
+	        height:auto !important;
+	        padding:2px;
+	    }
+	    .ui-jqgrid .ui-jqgrid-resize {height:100% !important;}
+    </style>
 </head>
 <body>
     <jsp:include page="menubar.jsp"></jsp:include>

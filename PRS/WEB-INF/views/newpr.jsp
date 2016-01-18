@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-	<title>User Registration</title>
+	<title>New Purchase Requisition</title>
 	<jsp:include page="header.jsp"></jsp:include>
 	<link rel="stylesheet" href="static/css/jash.css"></link>
 	<link rel="stylesheet" href="static/css/bootstrap-datepicker.css"></link>
@@ -13,19 +13,20 @@
 		initDate = function (elem) {
             setTimeout(function () {
                 $(elem).datepicker({
-                    format: 'dd-mm-yy',
+                    format: 'dd-mm-yyyy',
                     autoSize: false,
                     changeYear: true,
                     changeMonth: true,
                     showWeek: true,
                     showButtonPanel: true,
                     autoclose: true,
+                    minDate: 0
                 });
             }, 100);
 		}
 		$("#addPrItemGrid").jqGrid({
 		    datatype:'local',
-		    colNames:['Description', 'Total Qty required', 'Qty In stock', 'Qty to be Purchased', 'UOM', 'Unit Value', 'Approx. Total Value','Make','Cat No.','Required by date','Preferred Supplier'],
+		    colNames:['Description*', 'Total Qty required*', 'Qty In stock', 'Qty to be Purchased*', 'UOM', 'Unit Value', 'Approx. Total Value','Make','Cat No.','Required by date','Preferred Supplier'],
 		    colModel:[
 		        {name:'description', width:80, sortable: false, align:'center', resizable: true},
 		        {name:'totalQuantityRequired', width:40, sortable: false, align:'center', resizable: true},
@@ -36,7 +37,7 @@
 		        {name:'approxTotalCost', width:40, sortable: false, align:'left', resizable: true},
 		        {name:'make', width:40, sortable: false, align:'left', resizable: true},
 		        {name:'catNo', width:30, sortable: false, align:'center', resizable: true},
-		        {name:'requiredByDate', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yy'}, datefmt: 'dd-mm-yy',editoptions: { dataInit: initDate }},
+		        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yy'}, datefmt: 'dd-mm-yy',editoptions: { dataInit: initDate }},
 		        {name:'preferredSupplier', width:30, sortable: false, align:'center', resizable: true}
 			],
 		    width: $("#prheader").width()-30,
@@ -87,7 +88,6 @@
 	    }
 	    .ui-jqgrid .ui-jqgrid-resize {height:100% !important;}
     </style>
-	
 </head>
 <body>
     <jsp:include page="menubar.jsp"></jsp:include>
@@ -117,7 +117,7 @@
 					</div>
 				</div>
 				<div class="form-group col-md-6">
-					<label class="control-lable col-md-3" for="rev">Rev <span style="color:red;">*</span></label>
+					<label class="control-lable col-md-3" for="rev">Rev</label>
 					<div class="col-md-4">
 						<form:input type="text" path="rev" id="rev" class="form-control input-sm" required="required"/>
 						<div class="has-error">
@@ -128,7 +128,7 @@
 			</div>
 			<div class="row">
 				<div class="form-group col-md-6">
-					<label class="col-md-3 control-lable" for="projectCode">Project Code <span style="color:red;">*</span></label>
+					<label class="col-md-3 control-lable" for="projectCode">Project Code</label>
 					<div class="col-md-5">
 						<form:input type="text" path="projectCode" id="projectCode" class="form-control input-sm" required="required"/>
 						<div class="has-error">
@@ -171,7 +171,10 @@ $("#submitAllDetails").click(function(){
 		contentType :"application/json",
 		success: function(data, status, jqXHR ){
 			alert("test successful");
-		}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			alert('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+	  	}
 	});
 });
 </script>

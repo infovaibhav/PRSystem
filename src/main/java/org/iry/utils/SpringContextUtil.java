@@ -28,16 +28,32 @@ public class SpringContextUtil {
 		return userName;
 	}
 	
-	public static String getName(){
+	public static String getFullName(){
 		String userName = null;
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof UserDetails) {
 			User user = ((UserDetails)principal).getUser();
-			userName = user.getFirstName() + " " + user.getLastName();
+			userName = user.getFullName();
 		} else {
 			userName = principal.toString();
 		}
 		return userName;
+	}
+	
+	public static User getUser(){
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails) {
+			return ((UserDetails)principal).getUser();
+		}
+		return null;
+	}
+	
+	public static UserDetails getUserDetails(){
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetails) {
+			return (UserDetails)principal;
+		}
+		return null;
 	}
 	
 	public static Long getUserId(){
