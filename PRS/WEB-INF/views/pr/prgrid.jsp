@@ -84,8 +84,8 @@
 	                	this.style.color = HeaderFontColor;
 	               	});
 	                
-	            	var getPrUrl =  "rest/purchaseRequest/"+prNo+"/items";
-	            	$("#"+priSubgridTableId).jqGrid().setGridParam({url : getPrUrl, page : 1, datatype : "json"});
+	            	var getPrItemsUrl =  "rest/purchaseRequest/"+prNo+"/items";
+	            	$("#"+priSubgridTableId).jqGrid().setGridParam({url : getPrItemsUrl, page : 1, datatype : "json"});
 	                $("#"+priSubgridTableId).jqGrid().trigger('reloadGrid');
 	                
 	            },
