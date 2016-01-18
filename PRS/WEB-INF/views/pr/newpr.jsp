@@ -4,7 +4,7 @@
 <html>
 <head>
 	<title>New Purchase Requisition</title>
-	<jsp:include page="header.jsp"></jsp:include>
+	<jsp:include page="../header.jsp"></jsp:include>
 	<link rel="stylesheet" href="static/css/jash.css"></link>
 	<link rel="stylesheet" href="static/css/bootstrap-datepicker.css"></link>
 	<script src="static/js/bootstrap/bootstrap-datepicker.js"></script>
@@ -90,7 +90,7 @@
     </style>
 </head>
 <body>
-    <jsp:include page="menubar.jsp"></jsp:include>
+    <jsp:include page="../menubar.jsp"></jsp:include>
  	<div class="form-container">
  		<h2 class="text-center">IRY Engineering Pvt Ltd</h2>
 	 	<h3 class="text-center">Purchase Requisition</h3>
@@ -150,7 +150,7 @@
             <input type="BUTTON" style="margin-top:5px;margin-right:30px;float:right;" id="submitAllDetails" class="btn btn-primary btn-sm" value="Submit" />
         </div> 
 	</div>
-	<jsp:include page="footer.jsp"></jsp:include>
+	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 <script>
 $("#submitAllDetails").click(function(){

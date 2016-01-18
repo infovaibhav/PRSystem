@@ -44,7 +44,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	}
 	
 	@Override
-	public List<PurchaseRequisitionDto> findPurchaseRequisitions(PurchaseRequestSearchCriteria searchCriteria) {
+	public List<PurchaseRequisitionDto> findPurchaseRequisitions(PurchaseRequestSearchCriteria searchCriteria) throws Exception {
 		List<PurchaseRequisition> prs = prDao.findPurchaseRequests(searchCriteria);
 		return convertToDto(prs, false);
 	}
@@ -52,7 +52,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	@Override
 	public PurchaseRequisitionDto findByPrNo(String prNo) {
 		PurchaseRequisition pr = prDao.findById(prNo);
-		return convertToDto(pr, false);
+		return convertToDto(pr, true);
 	}
 	
 	@Override

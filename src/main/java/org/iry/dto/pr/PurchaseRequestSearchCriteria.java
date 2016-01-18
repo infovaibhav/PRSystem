@@ -3,8 +3,11 @@
  */
 package org.iry.dto.pr;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 import org.iry.dto.SearchCriteria;
 
@@ -24,9 +27,15 @@ public class PurchaseRequestSearchCriteria extends SearchCriteria {
 	private List<Long> assignedTo = null;
 	private List<Long> authorizedBy = null;
 	private List<Long> approvedBy = null;
-	private Date fromTime = null;
-	private Date toTime = null;
+	private String fromTimeStr = null;
+	private String toTimeStr = null;
 	private boolean exactMatch = true;
+
+	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	
+	public PurchaseRequestSearchCriteria() {
+		sdf.setTimeZone(new SimpleTimeZone(0,""));
+	}
 	
 	public String getPrNo() {
 		return prNo;
@@ -76,17 +85,51 @@ public class PurchaseRequestSearchCriteria extends SearchCriteria {
 	public void setApprovedBy(List<Long> approvedBy) {
 		this.approvedBy = approvedBy;
 	}
-	public Date getFromTime() {
-		return fromTime;
+	public boolean needFromTimeRestriction() {
+		if( fromTimeStr == null || fromTimeStr.trim().length() == 0 ) {
+			return false;
+		}
+		return true;
+	}
+	public String getFromTimeStr() {
+		return this.fromTimeStr;
+	}
+	public Date getFromTime() throws ParseException {
+		if( fromTimeStr == null || fromTimeStr.trim().length() == 0 ) {
+			return null;
+		}
+		return sdf.parse(fromTimeStr);
+	}
+	public void setFromTimeStr(String fromTimeStr) {
+		this.fromTimeStr = fromTimeStr;
 	}
 	public void setFromTime(Date fromTime) {
-		this.fromTime = fromTime;
+		if( fromTime != null ) {
+			this.fromTimeStr = sdf.format(fromTime);
+		}
 	}
-	public Date getToTime() {
-		return toTime;
+	public boolean needToTimeRestriction() {
+		if( toTimeStr == null || toTimeStr.trim().length() == 0 ) {
+			return false;
+		}
+		return true;
+	}
+	public String getToTimeStr() {
+		return toTimeStr;
+	}
+	public Date getToTime() throws ParseException {
+		if( toTimeStr == null || toTimeStr.trim().length() == 0 ) {
+			return null;
+		}
+		return sdf.parse(toTimeStr);
+	}
+	public void setToTimeStr(String toTimeStr) {
+		this.toTimeStr = toTimeStr;
 	}
 	public void setToTime(Date toTime) {
-		this.toTime = toTime;
+		if( toTime != null ) {
+			this.toTimeStr = sdf.format(toTime);
+		}
 	}
 	public boolean isExactMatch() {
 		return exactMatch;

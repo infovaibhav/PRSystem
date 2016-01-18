@@ -1,5 +1,6 @@
 package org.iry.dao.pr;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -25,7 +26,7 @@ public class PurchaseRequisitionDaoImpl extends AbstractDao<String, PurchaseRequ
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<PurchaseRequisition> findPurchaseRequests(PurchaseRequestSearchCriteria searchCriteria) {
+	public List<PurchaseRequisition> findPurchaseRequests(PurchaseRequestSearchCriteria searchCriteria) throws Exception {
 		Criteria crit = createEntityCriteria();
 		if( searchCriteria.getPrNo() != null ) {
 			if( searchCriteria.isExactMatch() ) {
@@ -37,11 +38,11 @@ public class PurchaseRequisitionDaoImpl extends AbstractDao<String, PurchaseRequ
 		if( searchCriteria.getStatuses() != null && !searchCriteria.getStatuses().isEmpty() ) {
 			crit.add(Restrictions.in("status", searchCriteria.getStatuses()));
 		}
-		if( searchCriteria.getFromTime() != null ) {
-			crit.add(Restrictions.ge("createdDate", searchCriteria.getFromTime()));
+		if( searchCriteria.needFromTimeRestriction() ) {
+			crit.add(Restrictions.ge("createdDate", new Timestamp(searchCriteria.getFromTime().getTime())));
 		}
-		if( searchCriteria.getToTime() != null ) {
-			crit.add(Restrictions.le("createdDate", searchCriteria.getToTime()));
+		if( searchCriteria.needToTimeRestriction() ) {
+			crit.add(Restrictions.le("createdDate", new Timestamp(searchCriteria.getToTime().getTime() + (24 * 60 * 60 * 1000))));
 		}
 		if( searchCriteria.needPagination() ) {
 			crit.setFirstResult(searchCriteria.getFirstResult());

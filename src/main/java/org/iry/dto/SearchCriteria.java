@@ -34,7 +34,7 @@ public class SearchCriteria implements Serializable {
 		return !(page == 0 || pageSize == 0);
 	}
 	public int getFirstResult() {
-		return (page == 0 ? 1 : (((page - 1) * pageSize) + 1));
+		return (page == 0 ? 1 : (((page - 1) * pageSize) + 0));
 	}
 	public int getMaxResult() {
 		return pageSize;

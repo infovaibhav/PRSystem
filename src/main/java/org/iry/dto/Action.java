@@ -3,12 +3,16 @@
  */
 package org.iry.dto;
 
+import java.io.Serializable;
+
 /**
  * @author vaibhavp
  *
  */
-public class Action {
+public class Action implements Serializable {
 	
+	private static final long serialVersionUID = 3642610803979462518L;
+
 	public String key = null;
 	public String value = null;
 	

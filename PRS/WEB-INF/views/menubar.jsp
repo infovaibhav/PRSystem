@@ -13,17 +13,29 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="true" style="">
             <ul class="nav navbar-nav">
-                <li class=""><a href="newPr">New PR</a></li>
-                <li class=""><a href="#tech">PR History</a></li>
-                <li class=""><a href="#tech">Pending PR</a></li>
-                <li class=""><a href="#createUser">Purchase Orders</a></li>
                 <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="newUser">Create User</a></li>
-                <li><a href="users">View Users</a></li>
-              </ul>
-          </li>
+	                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Purchase Requisition<span class="caret"></span></a>
+	            	<ul class="dropdown-menu">
+	                	<li><a href="newPR">Create</a></li>
+	                	<li><a href="myPR">My PR</a></li>
+	                	<li><a href="searchPR">Search</a></li>
+	              	</ul>
+                </li>
+                <li class="dropdown">
+	                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Purchase Orders<span class="caret"></span></a>
+	            	<ul class="dropdown-menu">
+	                	<li><a href="#newPo">Create</a></li>
+	                	<li><a href="#">My PO</a></li>
+	                	<li><a href="#">PO History</a></li>
+	              	</ul>
+                </li>
+                <li class="dropdown">
+	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+	              <ul class="dropdown-menu">
+	                <li><a href="newUser">Create User</a></li>
+	                <li><a href="users">View Users</a></li>
+	              </ul>
+	          	</li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="logout">Logout</a></li>

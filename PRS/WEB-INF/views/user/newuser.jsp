@@ -4,10 +4,10 @@
 <html>
 <head>
 	<title>User Registration</title>
-	<jsp:include page="header.jsp"></jsp:include>
+	<jsp:include page="../header.jsp"></jsp:include>
 </head>
 <body>
-    <jsp:include page="menubar.jsp"></jsp:include>
+    <jsp:include page="../menubar.jsp"></jsp:include>
  	<div class="form-container">
 	 	<h1>New User Registration Form</h1>
 		<form:form method="POST" modelAttribute="user" class="form-horizontal">
@@ -117,6 +117,6 @@
 			</div>
 		</form:form>
 	</div>
-	<jsp:include page="footer.jsp"></jsp:include>
+	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

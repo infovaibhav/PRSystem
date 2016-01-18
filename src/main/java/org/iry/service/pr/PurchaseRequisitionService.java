@@ -16,7 +16,7 @@ public interface PurchaseRequisitionService {
 	
 	PurchaseRequisitionDto save(PurchaseRequisitionDto prDto, Long userId, String userName) throws Exception;
 
-	List<PurchaseRequisitionDto> findPurchaseRequisitions(PurchaseRequestSearchCriteria searchCriteria);
+	List<PurchaseRequisitionDto> findPurchaseRequisitions(PurchaseRequestSearchCriteria searchCriteria) throws Exception;
 
 	PurchaseRequisitionDto findByPrNo(String prNo);
 

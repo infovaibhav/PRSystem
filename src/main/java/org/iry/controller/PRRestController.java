@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.iry.dto.Action;
 import org.iry.dto.pr.PurchaseRequestSearchCriteria;
 import org.iry.dto.pr.PurchaseRequisitionDto;
+import org.iry.dto.pr.PurchaseRequisitionItemsDto;
 import org.iry.exceptions.InvalidRequestException;
 import org.iry.model.pr.PurchaseRequisitionStatus;
 import org.iry.model.user.User;
@@ -76,6 +77,18 @@ public class PRRestController {
 		} catch( Exception e ) {
 			log.error("Error in fetching Purchase Requisition...", e);
 			return new ResponseEntity<PurchaseRequisitionDto>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value = "/{prNo}/items", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PurchaseRequisitionItemsDto>> getPurchaseRequisitionItems(@PathVariable("prNo") String prNo) {
+		try {
+			PurchaseRequisitionDto purchaseRequisitionDto = prService.findByPrNo(prNo);
+			updateAllowedPrActions(purchaseRequisitionDto, SpringContextUtil.getUserDetails());
+			return new ResponseEntity<List<PurchaseRequisitionItemsDto>>(purchaseRequisitionDto.getPurchaseRequisionItems(), HttpStatus.OK);
+		} catch( Exception e ) {
+			log.error("Error in fetching Purchase Requisition...", e);
+			return new ResponseEntity<List<PurchaseRequisitionItemsDto>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	

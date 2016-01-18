@@ -11,6 +11,6 @@ public interface PurchaseRequisitionDao {
 	
 	PurchaseRequisition findById(String prNo);
 	
-	List<PurchaseRequisition> findPurchaseRequests(PurchaseRequestSearchCriteria searchCriteria);
+	List<PurchaseRequisition> findPurchaseRequests(PurchaseRequestSearchCriteria searchCriteria) throws Exception;
 
 }

@@ -61,12 +61,12 @@ public class NavigationController {
 		model.addAttribute("user", user);
 		model.addAttribute("roles", userProfileService.findAll());
 		model.addAttribute("users", userService.findAllActiveUsers());
-		return "newuser";
+		return "user/newuser";
 	}
 	
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public String viewUsers(ModelMap model) {
-		return "users";
+		return "user/users";
 	}
 
 	/*
@@ -91,15 +91,20 @@ public class NavigationController {
 			}
 		}
 		model.addAttribute("success", "User " + user.getFirstName() + " has been registered successfully");
-		return "registrationsuccess";
+		return "user/registrationsuccess";
 	}
 	
-	@RequestMapping(value = "/newPr", method = RequestMethod.GET)
-	public String newPurchaseOrder(ModelMap model){
+	@RequestMapping(value = "/newPR", method = RequestMethod.GET)
+	public String newPurchaseRequisition(ModelMap model){
 		PurchaseRequisition purchaseRequisition = new PurchaseRequisition();
 		PurchaseRequisitionItems purchaseRequisitionItems = new PurchaseRequisitionItems();
 		model.addAttribute("purchaseRequisition", purchaseRequisition);
 		model.addAttribute("purchaseRequisitionItems", purchaseRequisitionItems);
-		return "newpr";
+		return "pr/newpr";
+	}
+	
+	@RequestMapping(value = "/myPR", method = RequestMethod.GET)
+	public String myPurchaseRequisitions(ModelMap model){
+		return "pr/mypr";
 	}
 }

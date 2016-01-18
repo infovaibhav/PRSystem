@@ -2,15 +2,15 @@
 <html>
 <head>
 	<title>Registration Successful</title>
-	<jsp:include page="header.jsp"></jsp:include>
+	<jsp:include page="../header.jsp"></jsp:include>
 </head>
 <body>
-    <jsp:include page="menubar.jsp"></jsp:include>
+    <jsp:include page="../menubar.jsp"></jsp:include>
 	<div class="form-container">
 		<div class="success">
 			Confirmation message : ${success}
 		</div>
 	</div>
-	<jsp:include page="footer.jsp"></jsp:include>
+	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>
