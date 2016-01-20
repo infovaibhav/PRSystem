@@ -162,7 +162,7 @@ public class PRRestController {
 	
 	private void updateAllowedPrActions(PurchaseRequisitionDto dto, UserDetails userDetails) {
 		String status = dto.getStatus();
-		if( status.equals(PurchaseRequisitionStatus.INITIAL) ) {
+		if( status.equals(PurchaseRequisitionStatus.INITIAL.getStatus()) ) {
 			
 			if( dto.getCreatedBy().longValue() == userDetails.getUser().getId().longValue() 
 					|| userDetails.getAllowedActions().authorizePr
@@ -203,6 +203,10 @@ public class PRRestController {
 			
 			if( userDetails.getAllowedActions().acknowledgePr ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus(), "Acknowledge"));
+			}
+			if( userDetails.getAllowedActions().cancelPr
+					&& userDetails.getAllowedActions().approvePr ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.CANCELLED.getStatus(), "Cancel"));
 			}
 			
 		} else if( status.equals(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus()) ) {
