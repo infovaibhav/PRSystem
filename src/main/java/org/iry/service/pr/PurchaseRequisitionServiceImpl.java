@@ -115,6 +115,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 			setStatusInformation(pr, dto.getStatus(), userId, userName);
 		} else {
 			pr = new PurchaseRequisition();
+			pr.setPrNoPrefix(dto.getPrNoPrefix());
 			setStatusInformation(pr, PurchaseRequisitionStatus.INITIAL.getStatus(), userId, userName);
 		}
 		pr.setProjectCode(dto.getProjectCode());
