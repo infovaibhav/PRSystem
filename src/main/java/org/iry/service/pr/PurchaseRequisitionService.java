@@ -21,5 +21,6 @@ public interface PurchaseRequisitionService {
 	PurchaseRequisitionDto findByPrNo(String prNo);
 
 	void updatePrStatus(String prNo, String status, Long userId, String userName);
-
+	
+	void generatePurchaseRequisitionReport(PurchaseRequisitionDto prDto);
 }

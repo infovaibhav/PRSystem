@@ -40,7 +40,7 @@ public class PRRestController {
 	@Autowired
 	PurchaseRequisitionService prService;
 	
-	@RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PurchaseRequisitionDto> savePurchaseRequisition(@RequestBody PurchaseRequisitionDto purchaseRequisitionDto) {
 		try {
 			User user = SpringContextUtil.getUser();
@@ -283,4 +283,15 @@ public class PRRestController {
 		}
 	}
 	
+	@RequestMapping(value = "/{prNo}/download", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PurchaseRequisitionDto> downloadPurchaseRequisition(@PathVariable("prNo") String prNo) {
+		try {
+			PurchaseRequisitionDto purchaseRequisitionDto = prService.findByPrNo(prNo);
+			updateAllowedPrActions(purchaseRequisitionDto, SpringContextUtil.getUserDetails());
+			return new ResponseEntity<PurchaseRequisitionDto>(purchaseRequisitionDto, HttpStatus.OK);
+		} catch( Exception e ) {
+			log.error("Error in fetching Purchase Requisition...", e);
+			return new ResponseEntity<PurchaseRequisitionDto>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
