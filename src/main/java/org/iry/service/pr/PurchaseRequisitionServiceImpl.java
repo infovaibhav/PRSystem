@@ -232,5 +232,11 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setRequiredByDate(prItem.getRequiredByDate());
 		return dto;
 	}
+
+	@Override
+	public void generatePurchaseRequisitionReport(PurchaseRequisitionDto prDto) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

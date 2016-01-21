@@ -2,13 +2,16 @@
     <div id="prHeader" style="width:100%;position:relative;z-index:3;">
         <table id="prTable"></table>
     </div>
+    <style>
+    .myLink { text-decoration: underline; cursor: pointer; }
+    </style>
 	<script>
 		$(function () {
 	        $("#prTable").jqGrid({
 	            datatype:'local',
 	            colNames:['PR No', 'Project Name', 'Project Code', 'Rev', 'Prepared Date', 'Prepared By', 'Status', 'Action'],
 	            colModel:[
-	                {name:'prNo', width:80, sortable: false, align:'center', resizable: true},
+	                {name:'prNo', index:'prNo',key:true, width:80, sortable: false, align:'center', resizable: true, formatter: 'showlink', formatoptions: { baseLinkUrl: '', showAction: "editPR", idName:"prNo"} },
 	                {name:'projectName', width:80, sortable: false, align:'left', resizable: true},
 	                {name:'projectCode', width:80, sortable: false, align:'left', resizable: true},
 	                {name:'rev', width:80, sortable: false, align:'left', resizable: true},
@@ -118,4 +121,15 @@
 	    	});
 	         $("#prTable").jqGrid().trigger('reloadGrid');
 	   });
+		function Link(id) {
+			alert("test");
+		    var row = id.split("=");
+		    var row_ID = row[1];
+		    var sitename= $("#users_grid").getCell(row_ID, 'Site_Name');
+		    var url = "http://"+sitename; // sitename will be like google.com or yahoo.com
+
+		    window.open(url);
+
+
+		}
 	</script>

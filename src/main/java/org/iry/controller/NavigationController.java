@@ -107,4 +107,13 @@ public class NavigationController {
 	public String myPurchaseRequisitions(ModelMap model){
 		return "pr/mypr";
 	}
+	
+	@RequestMapping(value = "/editPR", method = RequestMethod.GET)
+	public String editPurchaseOrder(ModelMap model){
+		PurchaseRequisition purchaseRequisition = new PurchaseRequisition();
+		PurchaseRequisitionItems purchaseRequisitionItems = new PurchaseRequisitionItems();
+		model.addAttribute("purchaseRequisition", purchaseRequisition);
+		model.addAttribute("purchaseRequisitionItems", purchaseRequisitionItems);
+		return "pr/newpr";
+	}
 }
