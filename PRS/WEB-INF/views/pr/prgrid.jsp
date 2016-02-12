@@ -1,24 +1,29 @@
+    <link rel="stylesheet" href="static/css/jash.css"></link>
     <div style="font-size: 13px;margin: 5px;color: #000080;font-weight: bold;">Purchase Requisitions</div>
     <div id="prHeader" style="width:100%;position:relative;z-index:3;">
         <table id="prTable"></table>
+        <div>&nbsp;</div>
+        <!-- <input type="button" id="search" class="btn btn-primary" value="Search PR"/> -->
     </div>
     <style>
     .myLink { text-decoration: underline; cursor: pointer; }
     </style>
 	<script>
 		$(function () {
+			var lastsel;
 	        $("#prTable").jqGrid({
 	            datatype:'local',
-	            colNames:['PR No', 'Project Name', 'Project Code', 'Rev', 'Prepared Date', 'Prepared By', 'Status', 'Action'],
+	            colNames:['PR No', 'Project Name', 'Project Code', 'Prepared Date', 'Prepared By', 'Status', 'Action','',''],
 	            colModel:[
-	                {name:'prNo', index:'prNo',key:true, width:80, sortable: false, align:'center', resizable: true, formatter: 'showlink', formatoptions: { baseLinkUrl: '', showAction: "editPR", idName:"prNo"} },
-	                {name:'projectName', width:80, sortable: false, align:'left', resizable: true},
-	                {name:'projectCode', width:80, sortable: false, align:'left', resizable: true},
-	                {name:'rev', width:80, sortable: false, align:'left', resizable: true},
-	                {name:'createdDateStr', width:80, sortable: false, align:'left', resizable: true},
-	                {name:'createdByName', width:80, sortable: false, align:'left', resizable: true},
-	                {name:'status', width:80, sortable: false, align:'center', resizable: true},
-	                {name:'', width:80, sortable: false, align:'center', resizable: true}
+	                {name:'prNo', index:'prNo',key:true, width:80, sortable: false, align:'center', resizable: true, search:true/* , formatter: 'showlink', formatoptions: { baseLinkUrl: '', showAction: "editPR", idName:"prNo"}  */},
+	                {name:'projectName', width:80, sortable: false, align:'left', resizable: true, search:false},
+	                {name:'projectCode', width:80, sortable: false, align:'left', resizable: true, search:false},
+	                {name:'createdDateStr', width:80, sortable: false, align:'left', resizable: true, search:false},
+	                {name:'createdByName', width:80, sortable: false, align:'left', resizable: true, search:false},
+	                {name:'status', index:'status', width:80, sortable: false, align:'center', resizable: true, search:false,editable: true,edittype:'select'},
+	                {name:'select', index:'select',width:80, sortable: false, align:'center', resizable: true, search:false},
+	                {name:'editable',  hidden:true},
+	                {name:'allowedStatusChangesStr',  hidden:true}
 				],
 				width: $("#prHeader").width()-30,
 	            height: "400",
@@ -28,6 +33,43 @@
 	            jsonReader: {
 	                repeatitems: false,
 	            },
+	            gridComplete: function(){ 
+	                var ids = jQuery("#prTable").getDataIDs(); 
+	                for(var i=0;i<ids.length;i++){ 
+	                    var cl = ids[i]; 
+	                    
+	                    var rowData = jQuery("#prTable").getRowData(cl);
+	                    var edit = "";
+	                    if(rowData['editable'] == "true"){
+	                    	edit = "<a id='edit' style='cursor:pointer;' href='editPR?prNo="+cl+"'><u>Edit</u></a> | ";
+	                    }
+	                    be = edit + "<a id='download' style='cursor:pointer;' href='rest/purchaseRequest/"+cl+"/download' download><u>Download</u></a> "; 
+	                    jQuery("#prTable").setRowData(ids[i],{select:be}) 
+	                } 
+	            },
+	            onSelectRow: function(id){
+	        		if(id && id!==lastsel){
+	        			jQuery('#prTable').jqGrid('restoreRow',lastsel);
+        		        var cm = jQuery('#prTable').jqGrid('getColProp','status');
+        		        var rowData = jQuery("#prTable").getRowData(id);
+        		        var allowedStatusChanges = rowData['allowedStatusChangesStr'];
+        		        allowedStatusChanges = allowedStatusChanges.replace("[","");
+        		        allowedStatusChanges = allowedStatusChanges.replace("]","");
+        		        if(allowedStatusChanges == ""){
+        		        	allowedStatusChanges = "selected:" + rowData['status'];
+        		        } else {
+        		        	allowedStatusChanges = "selected:" + rowData['status']  + "," +allowedStatusChanges;
+        		        }
+        		        allowedStatusChanges = allowedStatusChanges.replaceAll(",",";");
+        		        allowedStatusChanges = allowedStatusChanges.trim();
+        		        if(allowedStatusChanges != ""){
+            		        cm.editoptions = {value:allowedStatusChanges};
+            		        cm.editoptions.dataEvents = [{ type: 'change', fn: function(e) {changeStatus(e,rowData['status'],rowData['prNo']); } }];
+            		        jQuery('#prTable').jqGrid('editRow',id,true);
+        		        }
+	        			lastsel=id;
+	        		}
+	        	},
 	            subGrid : true,
 	            subGridOptions: { 
 	            	"plusicon" : "ui-icon-triangle-1-e",
@@ -103,7 +145,29 @@
 	            },
 	            rownumbers: true
 	        });
-	    	
+	        String.prototype.replaceAll = function(search, replacement) {
+	            var target = this;
+	            return target.replace(new RegExp(search, 'g'), replacement);
+	        };
+	        function changeStatus(e,prevStatus,prNo) {
+	        	if(e.target.selectedOptions[0].textContent != prevStatus){
+	        		$.ajax({
+	        			type:'PUT',
+	        			url: 'rest/purchaseRequest/'+prNo+'/updatestatus?status='+e.target.selectedOptions[0].value,
+	        			success: function(data, status, jqXHR ){
+	        					alert("Updated Successfully!!");
+	        					$("#prTable").jqGrid().trigger('reloadGrid');
+	        			},
+	                    error : function(jqXHR, status, error) {
+	                    	if( jqXHR.status == 401 ) {
+	                        	alert('Session Expired');            		
+	                    	} else {
+	                    		alert(jqXHR.statusText);
+	                    	}
+	                    }
+	        		});
+	        	}
+	        }
 	        var newUrlUsersTable = "rest/purchaseRequest/_search";
 	        $("#prTable").jqGrid().setGridParam({
 	    		url : newUrlUsersTable, 
@@ -120,16 +184,19 @@
 				}
 	    	});
 	         $("#prTable").jqGrid().trigger('reloadGrid');
+	         
+	         $("#search").click(function(){
+	        	 var options = {
+		        	     caption: "Search...",
+		        	     Find: "Find",
+		        	     Reset: "Reset",
+		        	     sopt : ['cn']
+		        	   };
+		        jQuery("#prTable").jqGrid('searchGrid', options );
+	         });
+	         
+	         $("#fbox_prTable_search").click(function(){
+		        	alert("got the click!!!"); 
+		     });
 	   });
-		function Link(id) {
-			alert("test");
-		    var row = id.split("=");
-		    var row_ID = row[1];
-		    var sitename= $("#users_grid").getCell(row_ID, 'Site_Name');
-		    var url = "http://"+sitename; // sitename will be like google.com or yahoo.com
-
-		    window.open(url);
-
-
-		}
 	</script>

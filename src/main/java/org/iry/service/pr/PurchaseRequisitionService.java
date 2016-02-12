@@ -3,6 +3,7 @@
  */
 package org.iry.service.pr;
 
+import java.io.File;
 import java.util.List;
 
 import org.iry.dto.pr.PurchaseRequestSearchCriteria;
@@ -22,5 +23,5 @@ public interface PurchaseRequisitionService {
 
 	void updatePrStatus(String prNo, String status, Long userId, String userName);
 	
-	void generatePurchaseRequisitionReport(PurchaseRequisitionDto prDto);
+	File generatePurchaseRequisitionReport(PurchaseRequisitionDto prDto) throws Exception;
 }

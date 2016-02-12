@@ -3,7 +3,13 @@
  */
 package org.iry.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 import org.iry.dto.Action;
@@ -17,6 +23,11 @@ import org.iry.service.pr.PurchaseRequisitionService;
 import org.iry.service.user.UserDetails;
 import org.iry.utils.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +50,7 @@ public class PRRestController {
 	
 	@Autowired
 	PurchaseRequisitionService prService;
+	
 	
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PurchaseRequisitionDto> savePurchaseRequisition(@RequestBody PurchaseRequisitionDto purchaseRequisitionDto) {
@@ -281,17 +293,38 @@ public class PRRestController {
 		} else if( status.equals(PurchaseRequisitionStatus.CANCELLED.getStatus()) ) {
 			
 		}
+		dto.setAllowedStatusChangesStr(dto.getAllowedStatusChanges().toString());
 	}
 	
 	@RequestMapping(value = "/{prNo}/download", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PurchaseRequisitionDto> downloadPurchaseRequisition(@PathVariable("prNo") String prNo) {
+	public ResponseEntity<InputStreamResource> downloadPurchaseRequisition(@PathVariable("prNo") String prNo) {
 		try {
 			PurchaseRequisitionDto purchaseRequisitionDto = prService.findByPrNo(prNo);
 			updateAllowedPrActions(purchaseRequisitionDto, SpringContextUtil.getUserDetails());
-			return new ResponseEntity<PurchaseRequisitionDto>(purchaseRequisitionDto, HttpStatus.OK);
+			File reportFile = null;
+			try {
+				reportFile = prService.generatePurchaseRequisitionReport(purchaseRequisitionDto);
+			} catch (Exception e) {
+				log.error("Error while generating report", e);
+				return new ResponseEntity<InputStreamResource>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			InputStream pdf = new FileInputStream(reportFile);
+			HttpHeaders headers = new HttpHeaders();
+		    headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+		    headers.add("Pragma", "no-cache");
+		    headers.add("Content-Disposition", "attachment; filename="+reportFile.getName());
+		    
+		    headers.add("Expires", "0");
+
+		    return ResponseEntity
+		            .ok()
+		            .headers(headers)
+		            .contentLength(reportFile.length())
+		            .contentType(MediaType.parseMediaType("application/octet-stream"))
+		            .body(new InputStreamResource(pdf));
 		} catch( Exception e ) {
 			log.error("Error in fetching Purchase Requisition...", e);
-			return new ResponseEntity<PurchaseRequisitionDto>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<InputStreamResource>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

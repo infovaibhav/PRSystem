@@ -42,5 +42,17 @@ public class UsersRestController {
 			return new ResponseEntity<List<UserDto>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
+	
+	@RequestMapping(value = "/changepassword", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE )
+    public ResponseEntity<String> changePassword(@RequestBody UserDto userDto) {
+		try {
+			userService.changePassword(userDto);
+			return new ResponseEntity<String>("Password changed successfully!!", HttpStatus.OK);
+		} catch( Exception e ) {
+			log.error("Error in changing password...", e);
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+    }
 
 }
