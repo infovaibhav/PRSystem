@@ -47,6 +47,8 @@ public class PurchaseRequisitionDto implements Serializable {
 	private String prNoPrefix;
 	private boolean editable;
 	private List<Action> allowedStatusChanges = new ArrayList<Action>();
+	private String allowedStatusChangesStr;
+	private boolean submitted;
 	private List<PurchaseRequisitionItemsDto> purchaseRequisionItems = new ArrayList<PurchaseRequisitionItemsDto>();
 	
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -290,5 +292,21 @@ public class PurchaseRequisitionDto implements Serializable {
 	}
 	public void addAllowedStatusChanges(Action action) {
 		allowedStatusChanges.add(action);
+	}
+
+	public String getAllowedStatusChangesStr() {
+		return allowedStatusChangesStr;
+	}
+
+	public void setAllowedStatusChangesStr(String allowedStatusChangesStr) {
+		this.allowedStatusChangesStr = allowedStatusChangesStr;
+	}
+
+	public boolean isSubmitted() {
+		return submitted;
+	}
+
+	public void setSubmitted(boolean submitted) {
+		this.submitted = submitted;
 	}
 }

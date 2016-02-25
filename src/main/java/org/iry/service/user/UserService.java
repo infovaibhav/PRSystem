@@ -18,4 +18,6 @@ public interface UserService {
 
 	List<UserDto> findUsers(SearchCriteria searchCriteria);
 	
+	void changePassword(UserDto dto);
+	
 }

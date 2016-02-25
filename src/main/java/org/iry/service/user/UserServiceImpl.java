@@ -65,5 +65,12 @@ public class UserServiceImpl implements UserService{
 		}
 		return userDtos;
 	}
+
+	@Override
+	public void changePassword(UserDto dto) {
+		User user = dao.findById(dto.getId());
+		user.setPassword(dto.getNewPassword());
+		save(user);
+	}
 	
 }

@@ -16,6 +16,7 @@ public class UserDto implements Serializable {
 	private String reportingTo;
 	private String roles;
 	private String status;
+	private String newPassword;
 	
 	public Long getId() {
 		return id;
@@ -76,5 +77,11 @@ public class UserDto implements Serializable {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getNewPassword() {
+		return newPassword;
+	}
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
 }

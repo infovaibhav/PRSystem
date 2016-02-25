@@ -28,12 +28,17 @@
 	    .ui-jqgrid .ui-jqgrid-resize {height:100% !important;}
     </style>
     <script type="text/javascript">
+    function myFunction(){
+    	
+    }
     function onLoad(){
     	var path = window.location.href.substr(window.location.href.lastIndexOf("/")+1);
     	if(createPr == false){
     		$("#Download").show();
+    		$("#submitAllDetails").show();
     		$("#prNoValue").html("PR No.  <span style='color:red;'>*</span>");
     		prno = path.substr(path.lastIndexOf("=")+1);
+    		$("#Download").attr('href','rest/purchaseRequest/'+prno+'/download');
     		$.ajax({
     			type:'GET',
     			url: 'rest/purchaseRequest/'+prno,
@@ -46,8 +51,6 @@
     				$("#projectName").attr("disabled", "disabled");
     				$("#projectCode").val(data.projectCode);
     				$("#projectCode").attr("disabled", "disabled");
-    				$("#rev").val(data.rev);
-    				$("#rev").attr("disabled", "disabled");
     				$('#addPrItemGrid').jqGrid('setGridParam', {data: data.purchaseRequisionItems}).trigger('reloadGrid');
     			},
                 error : function(jqXHR, status, error) {
@@ -60,6 +63,8 @@
                 	}
                 }
     		});
+    	} else {
+    		$("#submitAllDetails").hide();
     	}
     }
     
@@ -118,7 +123,12 @@
 		    	}
 		    }
 		});
-		$("#addPrItemGrid").jqGrid('inlineNav', '#addgridPager', {addParams: {position: "last",edit: true, del:false}});
+		$("#addPrItemGrid").jqGrid('inlineNav', '#addgridPager', { edittext: "Edit",
+		    addtext: "Add",
+		    savetext: "Save",
+		    canceltext: "Cancel",
+		    addParams: {position: "last",edit: true, del:false}
+		});
 		$.extend($.jgrid.inlineEdit, {
             keys: true
         });
@@ -126,14 +136,14 @@
 		});
 		$("#addPrItemGrid").navButtonAdd('#addgridPager',{
 			   buttonicon:"ui-icon-close", 
-			   caption:"", 
+			   caption:"Delete", 
 			   onClickButton: function(){ 
 				   var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
 					if( gr != null ) jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
 					else alert("Please Select Row to delete!");
 			   }, 
 			   position:"last"
-			})
+			});
 	});
 	</script>
 </head>
@@ -142,7 +152,7 @@
  	<div class="form-container">
  		<h2 class="text-center">IRY Engineering Pvt Ltd</h2>
 	 	<h3 class="text-center">Purchase Requisition</h3>
-		<form:form method="POST" modelAttribute="purchaseRequisition" class="form-horizontal">
+		<form:form method="POST" action="javascript:myFunction();" modelAttribute="purchaseRequisition" class="form-horizontal" id="purchaseRequisition">
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label class="control-lable col-md-3" for="prNo" id="prNoValue">PR No. Prefix <span style="color:red;">*</span></label>
@@ -167,7 +177,7 @@
 			</div>
 			<div class="row">
 				<div class="form-group col-md-6">
-					<label class="col-md-3 control-lable" for="projectCode">Project Code</label>
+					<label class="col-md-3 control-lable" for="projectCode">Project Code <span style="color:red;">*</span></label>
 					<div class="col-md-5">
 						<form:input type="text" path="projectCode" id="projectCode" class="form-control input-sm" required="required"/>
 						<div class="has-error">
@@ -175,28 +185,20 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group col-md-6">
-					<label class="control-lable col-md-3" for="rev">Rev</label>
-					<div class="col-md-4">
-						<form:input type="text" path="rev" id="rev" class="form-control input-sm" required="required"/>
-						<div class="has-error">
-							<form:errors path="rev" class="help-inline"/>
-						</div>
-					</div>
-				</div>
 			</div>
 			<div id="prheader" style="width:100%;position:relative;z-index:3;"> 
 	            <table id="addPrItemGrid"></table>
 	            <div id="addgridPager"></div>
-        		<input type="Button" style="margin-top:5px;margin-right:30px;float:right; display:none;" id="Download" class="btn btn-primary btn-sm" value="Download" />
-	            <input type="Button" style="margin-top:5px;margin-right:30px;float:right;" id="submitAllDetails" class="btn btn-primary btn-sm" value="Save" />
+        		<a style="margin-top:5px;margin-right:30px;float:right; display:none;" id="Download"  class="btn btn-primary btn-sm" >Download</a>
+	            <input type="SUBMIT" style="margin-top:5px;margin-right:30px;float:right;" id="saveAllDetails" class="btn btn-primary btn-sm" value="Save" />
+	            <input type="SUBMIT" style="margin-top:5px;margin-right:30px;float:right;" id="submitAllDetails" class="btn btn-primary btn-sm" value="Submit" />
 	        </div> 
         </form:form>
 	</div>
 	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 <script>
-$("#submitAllDetails").click(function(){
+$("#saveAllDetails").click(function(e){
 	if(isValid()){
 		var allRowsInGrid = $('#addPrItemGrid').jqGrid('getGridParam','data');
 		var data;
@@ -204,7 +206,6 @@ $("#submitAllDetails").click(function(){
 			data = {
 					projectName:$("#projectName").val(),
 					projectCode:$("#projectCode").val(),
-					rev:$("#rev").val(),
 					prNoPrefix:$("#prNo").val(),
 					purchaseRequisionItems : allRowsInGrid
 			};
@@ -213,11 +214,9 @@ $("#submitAllDetails").click(function(){
 					prNo:$("#prNo").val(),
 					projectName:$("#projectName").val(),
 					projectCode:$("#projectCode").val(),
-					rev:$("#rev").val(),
 					purchaseRequisionItems : allRowsInGrid
 			};
 		}
-		
 		$.ajax({
 			type:'POST',
 			url: 'rest/purchaseRequest',
@@ -225,7 +224,12 @@ $("#submitAllDetails").click(function(){
 			dataType: 'json',
 			contentType :"application/json",
 			success: function(data, status, jqXHR ){
-				alert("Purchase Requisition created Successfully.");
+				if(createPr){
+					alert("Purchase Requisition created Successfully.");
+				} else {
+					alert("Purchase Requisition updated Successfully.");
+				}
+				
 				window.location.href="myPR";
 			},
             error : function(jqXHR, status, error) {
@@ -240,23 +244,58 @@ $("#submitAllDetails").click(function(){
 		alert("Please provide valid Purchase Requisition details.")
 	}
 });
-$("#Download").click(function(){
-	$.ajax({
-		type:'POST',
-		url: 'rest/purchaseRequest/IRY_DEFAULT_1/download',
-		dataType: 'json',
-		contentType :"application/json",
-		success: function(data, status, jqXHR ){
-		},
-        error : function(jqXHR, status, error) {
-        	if( jqXHR.status == 401 ) {
-            	alert('Session Expired');            		
-        	} else {
-        		alert(jqXHR.statusText);
-        	}
-        }
-	});
+
+$("#submitAllDetails").click(function(e){
+	if(isValid()){
+		if(confirm("Do you want to Submit?")){
+			var allRowsInGrid = $('#addPrItemGrid').jqGrid('getGridParam','data');
+			var data;
+			if( createPr == true ) {
+				data = {
+						projectName:$("#projectName").val(),
+						projectCode:$("#projectCode").val(),
+						prNoPrefix:$("#prNo").val(),
+						submitted : true,
+						purchaseRequisionItems : allRowsInGrid
+				};
+			} else {
+				data = {
+						prNo:$("#prNo").val(),
+						projectName:$("#projectName").val(),
+						projectCode:$("#projectCode").val(),
+						submitted : true,
+						purchaseRequisionItems : allRowsInGrid
+				};
+			}
+			$.ajax({
+				type:'POST',
+				url: 'rest/purchaseRequest',
+				data: JSON.stringify(data),
+				dataType: 'json',
+				contentType :"application/json",
+				success: function(data, status, jqXHR ){
+					if(createPr){
+						alert("Purchase Requisition Submitted Successfully.");
+					} else {
+						alert("Purchase Requisition updated Successfully.");
+					}
+					
+					window.location.href="myPR";
+				},
+	            error : function(jqXHR, status, error) {
+	            	if( jqXHR.status == 401 ) {
+	                	alert('Session Expired');            		
+	            	} else {
+	            		alert(jqXHR.statusText);
+	            	}
+	            }
+			});
+		}
+	} else {
+		alert("Please provide valid Purchase Requisition details.")
+	}
 });
+
 function isValid (){
 	var allRowsInGrid = $('#addPrItemGrid').jqGrid('getGridParam','data');
 	if(allRowsInGrid.length == 0){
