@@ -3,11 +3,12 @@
  */
 package org.iry.service.pr;
 
-import java.io.File;
+import java.io.OutputStream;
 import java.util.List;
 
 import org.iry.dto.pr.PurchaseRequestSearchCriteria;
 import org.iry.dto.pr.PurchaseRequisitionDto;
+import org.iry.model.user.User;
 
 /**
  * @author vaibhavp
@@ -23,5 +24,7 @@ public interface PurchaseRequisitionService {
 
 	void updatePrStatus(String prNo, String status, Long userId, String userName);
 	
-	File generatePurchaseRequisitionReport(PurchaseRequisitionDto prDto) throws Exception;
+	void generatePdfReportStream(PurchaseRequisitionDto prDto, OutputStream pdfStream) throws Exception;
+
+	boolean sendEmailNotification(String prNo, User user);
 }

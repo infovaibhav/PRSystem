@@ -3,12 +3,11 @@
  */
 package org.iry.service.pr;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,13 +15,13 @@ import java.util.Map;
 import java.util.Set;
 
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 
+import org.apache.log4j.Logger;
 import org.iry.dao.pr.PurchaseRequisitionDao;
 import org.iry.dao.user.UserDao;
 import org.iry.dto.pr.PurchaseRequestSearchCriteria;
@@ -32,10 +31,13 @@ import org.iry.exceptions.InvalidRequestException;
 import org.iry.model.pr.PurchaseRequisition;
 import org.iry.model.pr.PurchaseRequisitionItems;
 import org.iry.model.pr.PurchaseRequisitionStatus;
-import org.iry.utils.SpringContextUtil;
+import org.iry.model.user.User;
+import org.iry.model.user.UserProfileType;
+import org.iry.utils.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StopWatch;
 
 /**
  * @author vaibhavp
@@ -45,11 +47,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionService {
 	
+	private static final Logger log = Logger.getLogger(PurchaseRequisitionServiceImpl.class);
+	
 	@Autowired
 	private PurchaseRequisitionDao prDao;
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private MailSender mailSender;
 
 	@Override
 	public PurchaseRequisitionDto save(PurchaseRequisitionDto prDto, Long userId, String userName) throws Exception {
@@ -72,14 +79,17 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	
 	@Override
 	public void updatePrStatus(String prNo, String status, Long userId, String userName) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		PurchaseRequisition pr = prDao.findById(prNo);
 		if( pr == null ) {
 			throw new InvalidRequestException("Purchase requisition does not exists.");
 		}
 		
-		setStatusInformation(pr, status, userId, userName);
+		this.setStatusInformation(pr, status, userId, userName);
 		
 		prDao.save(pr);
+		log.debug("Updated #PR- " + prNo + " with #Stauts- " + status + " in #Millis-" + watch.getTotalTimeMillis());
 	}
 	
 	private void setStatusInformation(PurchaseRequisition pr, String status, Long userId, String userName) {
@@ -256,45 +266,96 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setRequiredByDate(prItem.getRequiredByDate());
 		return dto;
 	}
-
+	
 	@Override
-	public File generatePurchaseRequisitionReport(PurchaseRequisitionDto prDto) throws Exception {
-		String filePath = System.getProperty("user.home") + File.separator + "iryReports";
-		File folder = new File(filePath + File.separator + SpringContextUtil.getUserDetails().getUsername());
-		if (!folder.exists()) {
-            folder.mkdirs();
-        }
-		Date today = new Date();
-		String reportFileName = "" + SpringContextUtil.getUserDetails().getUsername() + "_" + prDto.getPrNo()+ "_" + "_" + new java.sql.Timestamp(today.getTime()).toString();
-        reportFileName = reportFileName.replaceAll("[^a-zA-Z0-9_]", "");
-        String reportFile = folder.getAbsolutePath() + File.separatorChar + reportFileName;
-        reportFile = reportFile + ".pdf";
-        File reportFilePdf = new File(reportFile);
-        Map<String, Object> reportParams = new HashMap<String, Object>();
-		reportParams.put("prNo", prDto.getPrNo());
-		reportParams.put("projectName", prDto.getProjectName());
-		reportParams.put("projectCode", prDto.getProjectCode());
-		reportParams.put("rev", prDto.getRev());
-		JRDataSource reportDataSource = new JRBeanCollectionDataSource(prDto.getPurchaseRequisionItems());
-		exportPDFReport(reportFilePdf, reportParams, "IRYReport1.jasper", reportDataSource);
-		return reportFilePdf;
+	public boolean sendEmailNotification( String prNo, User user ) {
+		ByteArrayOutputStream pdfStream = new ByteArrayOutputStream();
+		try {
+			PurchaseRequisitionDto prDto = findByPrNo(prNo);
+			
+			this.generatePdfReportStream(prDto, pdfStream);
+			
+			List<String> to = new ArrayList<String>( buildEmailToList( user, prDto ) );
+			
+			String subject = user.getFullName() + " has Updated PR [" + prDto.getPrNo() + "] with status- " + prDto.getStatus();
+			String body = subject;
+			String fileName = prDto.getPrNo() + ".pdf";
+			
+			return mailSender.sendMail(to, null, subject, body, pdfStream.toByteArray(), fileName);
+		} catch (Exception e) {
+			log.error("Error in sending email notifications....", e);
+		} finally {
+			try {
+				pdfStream.close();
+			} catch ( Exception e ) {
+				log.error(e);
+			}
+		}
+		return false;
 	}
 	
-	private void exportPDFReport(File reportFile, Map<String, Object> reportParams, String jasperFile, JRDataSource dataSource) throws Exception{
+	private Set<String> buildEmailToList( User user, PurchaseRequisitionDto prDto ) {
+		
+		String status = prDto.getStatus();
+		
+		Set<String> emailTo = new HashSet<String>();
+		emailTo.add(user.getEmail());
+		if( user.getReportingTo() != null ) {
+			emailTo.add(user.getReportingTo().getEmail());
+		}
+		
+		Set<String> userTypes = new HashSet<String>();
+		if ( status.equals(PurchaseRequisitionStatus.AUTHORIZED.getStatus()) ) {
+			userTypes.add( UserProfileType.MANAGER.getUserProfileType() );
+		} else if ( status.equals(PurchaseRequisitionStatus.APPROVED.getStatus()) ) {
+			userTypes.add( UserProfileType.PURCHASE_MANAGER.getUserProfileType() );
+			userTypes.add( UserProfileType.PURCHASE_SUPERVISOR.getUserProfileType() );
+		} else if ( status.equals(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus()) ) {
+			userTypes.add( UserProfileType.PURCHASE_MANAGER.getUserProfileType() );
+			userTypes.add( UserProfileType.PURCHASE_SUPERVISOR.getUserProfileType() );
+		}
+		
+		Set<Long> userIds = new HashSet<Long>();
+		if( prDto.getCreatedBy().longValue() != user.getId().longValue() ) {
+			userIds.add( prDto.getCreatedBy() );
+		}
+		
+		if( !userTypes.isEmpty() ) {
+			emailTo.addAll(userDao.getUserEmailsByTypes(userTypes));
+		}
+		
+		if( !userIds.isEmpty() ) {
+			emailTo.addAll(userDao.getUserEmailsByIds(userIds));
+		}
+		
+		return emailTo;
+	}
+
+	@Override
+	public void generatePdfReportStream(PurchaseRequisitionDto prDto, OutputStream pdfStream) throws Exception {
 		InputStream jasperFileStream = null;
 		try {
-			jasperFileStream = this.getClass().getClassLoader().getResourceAsStream(jasperFile);
-			JasperPrint jrPrint = JasperFillManager.fillReport(jasperFileStream, reportParams, dataSource);
+			Map<String, Object> reportParams = new HashMap<String, Object>();
+			reportParams.put("prNo", prDto.getPrNo());
+			reportParams.put("projectName", prDto.getProjectName());
+			reportParams.put("projectCode", prDto.getProjectCode());
+			reportParams.put("rev", prDto.getRev());
+			JRDataSource reportDataSource = new JRBeanCollectionDataSource(prDto.getPurchaseRequisionItems());
+			jasperFileStream = this.getClass().getClassLoader().getResourceAsStream("IRYReport1.jasper");
+			JasperPrint jrPrint = JasperFillManager.fillReport(jasperFileStream, reportParams, reportDataSource);
 			JRPdfExporter exporter = new JRPdfExporter();
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jrPrint);
-			exporter.setParameter(JRExporterParameter.OUTPUT_FILE, reportFile);
+			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, pdfStream);
 			exporter.exportReport();
+		} catch ( Exception e ) {
+			log.error("Error in generating PDF Report...", e);
 		} finally {
-			if (jasperFileStream != null) {
-				try {
+			try {
+				if( jasperFileStream != null ) {
 					jasperFileStream.close();
-				} catch (IOException ignored) {
 				}
+			} catch ( Exception e ) {
+				log.error(e);
 			}
 		}
 	}

@@ -153,7 +153,7 @@
 	        	if(e.target.selectedOptions[0].textContent != prevStatus){
 	        		$.ajax({
 	        			type:'PUT',
-	        			url: 'rest/purchaseRequest/'+prNo+'/updatestatus?status='+e.target.selectedOptions[0].value,
+	        			url: 'rest/purchaseRequest/'+prNo+'/updatestatus/'+e.target.selectedOptions[0].value,
 	        			success: function(data, status, jqXHR ){
 	        					alert("Updated Successfully!!");
 	        					$("#prTable").jqGrid().trigger('reloadGrid');

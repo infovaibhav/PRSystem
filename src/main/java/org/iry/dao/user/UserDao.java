@@ -1,6 +1,7 @@
 package org.iry.dao.user;
 
 import java.util.List;
+import java.util.Set;
 
 import org.iry.dto.SearchCriteria;
 import org.iry.dto.user.UserDto;
@@ -19,6 +20,10 @@ public interface UserDao {
 	List<UserDto> findAllActiveUsers();
 	
 	List<User> findUsers(SearchCriteria searchCriteria);
+
+	List<String> getUserEmailsByIds(Set<Long> userIds);
+
+	List<String> getUserEmailsByTypes(Set<String> userProfileTypes);
 	
 }
 

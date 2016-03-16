@@ -1,6 +1,7 @@
 package org.iry.dao.user;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
@@ -59,6 +60,29 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 		crit.add(Restrictions.eq("isRoot", Boolean.FALSE));
 		crit.addOrder(Order.asc("ssoId"));
 		crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return crit.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getUserEmailsByIds( Set<Long> userIds ) {
+		Criteria crit = createEntityCriteria();
+		crit.add(Restrictions.eq("isActive", Boolean.TRUE));
+		crit.add(Restrictions.eq("isRoot", Boolean.FALSE));
+		crit.add(Restrictions.in("id", userIds));
+		crit.setProjection(Projections.distinct(Projections.property("email")));
+		return crit.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getUserEmailsByTypes( Set<String> userProfileTypes ) {
+		Criteria crit = createEntityCriteria();
+		crit.add(Restrictions.eq("isActive", Boolean.TRUE));
+		crit.add(Restrictions.eq("isRoot", Boolean.FALSE));
+		Criteria profileCrieria = crit.createAlias("userProfiles", "userProfiles");
+		profileCrieria.add(Restrictions.in("userProfiles.type", userProfileTypes));
+		crit.setProjection(Projections.distinct(Projections.property("email")));
 		return crit.list();
 	}
 
