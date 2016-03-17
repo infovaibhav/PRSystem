@@ -242,6 +242,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setLastUpdatedDate(pr.getLastUpdatedDate());
 		dto.setLastUpdatedBy(pr.getLastUpdatedBy());
 		dto.setLastUpdatedByName(pr.getApprovedByName());
+		dto.setTotalRecords(pr.getTotalRecords());
 		if( loadPrItems ) {
 			for (PurchaseRequisitionItems prItem : pr.getPurchaseRequisionItems()) {
 				dto.addPurchaseRequisionItems(convertToDto(prItem));

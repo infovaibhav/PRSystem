@@ -50,7 +50,8 @@ public class PurchaseRequisitionDto implements Serializable {
 	private String allowedStatusChangesStr;
 	private boolean submitted;
 	private List<PurchaseRequisitionItemsDto> purchaseRequisionItems = new ArrayList<PurchaseRequisitionItemsDto>();
-	
+
+	private transient int totalRecords = 0;
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	
 	public PurchaseRequisitionDto() {
@@ -293,20 +294,22 @@ public class PurchaseRequisitionDto implements Serializable {
 	public void addAllowedStatusChanges(Action action) {
 		allowedStatusChanges.add(action);
 	}
-
 	public String getAllowedStatusChangesStr() {
 		return allowedStatusChangesStr;
 	}
-
 	public void setAllowedStatusChangesStr(String allowedStatusChangesStr) {
 		this.allowedStatusChangesStr = allowedStatusChangesStr;
 	}
-
 	public boolean isSubmitted() {
 		return submitted;
 	}
-
 	public void setSubmitted(boolean submitted) {
 		this.submitted = submitted;
+	}
+	public int getTotalRecords() {
+		return totalRecords;
+	}
+	public void setTotalRecords(int totalRecords) {
+		this.totalRecords = totalRecords;
 	}
 }

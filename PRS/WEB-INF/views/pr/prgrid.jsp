@@ -2,8 +2,6 @@
     <div style="font-size: 13px;margin: 5px;color: #000080;font-weight: bold;">Purchase Requisitions</div>
     <div id="prHeader" style="width:100%;position:relative;z-index:3;">
         <table id="prTable"></table>
-        <div>&nbsp;</div>
-        <!-- <input type="button" id="search" class="btn btn-primary" value="Search PR"/> -->
     </div>
     <style>
     .myLink { text-decoration: underline; cursor: pointer; }
@@ -26,7 +24,7 @@
 	                {name:'allowedStatusChangesStr',  hidden:true}
 				],
 				width: $("#prHeader").width()-30,
-	            height: "400",
+	            height: "360",
 	            scroll : true,
 	            gridview : true,
 	            loadtext: 'building list...',
@@ -150,53 +148,31 @@
 	            return target.replace(new RegExp(search, 'g'), replacement);
 	        };
 	        function changeStatus(e,prevStatus,prNo) {
-	        	if(e.target.selectedOptions[0].textContent != prevStatus){
-	        		$.ajax({
-	        			type:'PUT',
-	        			url: 'rest/purchaseRequest/'+prNo+'/updatestatus/'+e.target.selectedOptions[0].value,
-	        			success: function(data, status, jqXHR ){
+	        	var newStatus = e.target.selectedOptions[0].textContent;
+	        	if( newStatus != prevStatus ){
+	        		if( confirm('Do you want to change the status to ' + newStatus + ' ?') ) {
+	        			$('#loading').show();
+		        		$.ajax({
+		        			type:'PUT',
+		        			url: 'rest/purchaseRequest/'+prNo+'/updatestatus/'+e.target.selectedOptions[0].value,
+		        			success: function(data, status, jqXHR ){
+		        				$('#loading').hide();
 	        					alert("Updated Successfully!!");
 	        					$("#prTable").jqGrid().trigger('reloadGrid');
-	        			},
-	                    error : function(jqXHR, status, error) {
-	                    	if( jqXHR.status == 401 ) {
-	                        	alert('Session Expired');            		
-	                    	} else {
-	                    		alert(jqXHR.statusText);
-	                    	}
-	                    }
-	        		});
+		        			},
+		                    error : function(jqXHR, status, error) {
+		                    	$('#loading').hide();
+		                    	if( jqXHR.status == 401 ) {
+		                        	alert('Session Expired');            		
+		                    	} else {
+		                    		alert(jqXHR.statusText);
+		                    	}
+		                    }
+		        		});
+	        		} else {
+	        			
+	        		}
 	        	}
-	        }
-	        var newUrlUsersTable = "rest/purchaseRequest/_search";
-	        $("#prTable").jqGrid().setGridParam({
-	    		url : newUrlUsersTable, 
-	    		page : 1, 
-	    		mtype:'POST',
-	    		datatype : "json",
-				ajaxGridOptions: { 
-					type :'POST',
-					contentType :"application/json; charset=utf-8"
-				},
-				serializeGridData: function(postData) {
-					postData['pageSize'] =  defaultPageSize;
-				    return JSON.stringify(postData);
-				}
-	    	});
-	         $("#prTable").jqGrid().trigger('reloadGrid');
-	         
-	         $("#search").click(function(){
-	        	 var options = {
-		        	     caption: "Search...",
-		        	     Find: "Find",
-		        	     Reset: "Reset",
-		        	     sopt : ['cn']
-		        	   };
-		        jQuery("#prTable").jqGrid('searchGrid', options );
-	         });
-	         
-	         $("#fbox_prTable_search").click(function(){
-		        	alert("got the click!!!"); 
-		     });
+	        };
 	   });
 	</script>

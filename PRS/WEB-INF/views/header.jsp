@@ -17,4 +17,9 @@ $(function () {
         xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
     });
 });
+$body = $("body");
+$(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+     ajaxStop: function() { $body.removeClass("loading"); }    
+});
 </script>

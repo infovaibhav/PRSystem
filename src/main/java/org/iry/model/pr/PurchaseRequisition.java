@@ -106,6 +106,8 @@ public class PurchaseRequisition implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "purchaseRequisition", fetch = FetchType.LAZY)
 	private Set<PurchaseRequisitionItems> purchaseRequisionItems = new HashSet<PurchaseRequisitionItems>();
 	
+	private transient int totalRecords = 0;
+	
 	private transient String prNoPrefix;
 	
 	public String getPrNo() {
@@ -257,5 +259,11 @@ public class PurchaseRequisition implements Serializable {
 	}
 	public void setPrNoPrefix(String prNoPrefix) {
 		this.prNoPrefix = prNoPrefix;
+	}
+	public int getTotalRecords() {
+		return totalRecords;
+	}
+	public void setTotalRecords(int totalRecords) {
+		this.totalRecords = totalRecords;
 	}
 }
