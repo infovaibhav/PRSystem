@@ -1,3 +1,5 @@
+<%@page import="org.iry.model.user.UserProfileType"%>
+<%@page import="java.util.Set"%>
 <%@page import="org.iry.utils.SpringContextUtil"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <body>
@@ -12,6 +14,9 @@
             </button>
             <a class="navbar-brand" href="home"><%=SpringContextUtil.getFullName() %></a>
         </div>
+        <%
+        	Set<String> privileges = SpringContextUtil.getPrivileges();
+        %>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="true" style="">
             <ul class="nav navbar-nav">
                 <li class="dropdown">
@@ -19,17 +24,23 @@
 	            	<ul class="dropdown-menu">
 	                	<li><a href="newPR">Create</a></li>
 	                	<li><a href="myPR">My PR</a></li>
+	                	<% if( privileges.contains( UserProfileType.MANAGER.getUserProfileType() )
+	                			|| privileges.contains( UserProfileType.PURCHASE_MANAGER.getUserProfileType() )
+   	                			|| privileges.contains( UserProfileType.PURCHASE_SUPERVISOR.getUserProfileType() )
+   	                			|| privileges.contains( UserProfileType.PURCHASE_USER.getUserProfileType() ) ) { %>
 	                	<li><a href="searchPR">Search</a></li>
+	                	<% } %>
 	              	</ul>
                 </li>
-                <li class="dropdown">
+                <!-- <li class="dropdown">
 	                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Purchase Orders<span class="caret"></span></a>
 	            	<ul class="dropdown-menu">
 	                	<li><a href="#newPo">Create</a></li>
 	                	<li><a href="#">My PO</a></li>
 	                	<li><a href="#">PO History</a></li>
 	              	</ul>
-                </li>
+                </li> -->
+                <% if( privileges.contains( UserProfileType.ADMIN.getUserProfileType() ) ) { %>
                 <li class="dropdown">
 	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
 	              <ul class="dropdown-menu">
@@ -37,6 +48,7 @@
 	                <li><a href="users">View Users</a></li>
 	              </ul>
 	          	</li>
+	            <% } %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
             	<li class="dropdown">

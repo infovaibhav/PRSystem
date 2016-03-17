@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
 <head>
-	<title>My Purchase Requisitions</title>
+	<title>Search Purchase Requisitions</title>
 	<jsp:include page="../header.jsp"></jsp:include>
 	<link rel="stylesheet" href="static/css/bootstrap-datepicker.css"></link>
 	<script src="static/js/bootstrap/bootstrap-datepicker.js"></script>
@@ -18,7 +18,7 @@
 <body>
     <jsp:include page="../menubar.jsp"></jsp:include>
 	<div class="form-container">
-		<input type="hidden" id="createdBy" value="<%=SpringContextUtil.getUserId()%>"/>
+		<input type="hidden" id="createdBy" value=""/>
 		<jsp:include page="searchform.jsp"></jsp:include>
 		<jsp:include page="prgrid.jsp"></jsp:include>
 	</div>

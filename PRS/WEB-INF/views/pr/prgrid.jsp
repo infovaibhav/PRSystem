@@ -4,7 +4,7 @@
         <table id="prTable"></table>
     </div>
     <style>
-    .myLink { text-decoration: underline; cursor: pointer; }
+    	.myLink { text-decoration: underline; cursor: pointer; }
     </style>
 	<script>
 		$(function () {
@@ -174,5 +174,37 @@
 	        		}
 	        	}
 	        };
+
+			loadData();
+	        
 	   });
+		
+		function loadData() {
+			var newUrlUsersTable = "rest/purchaseRequest/_search";
+			$("#prTable").jqGrid().setGridParam({
+	    		url : newUrlUsersTable, 
+	    		page : 1, 
+	    		mtype:'POST',
+	    		datatype : "json",
+				ajaxGridOptions: { 
+					type :'POST',
+					contentType :"application/json; charset=utf-8"
+				},
+				serializeGridData: function(postData) {
+					postData['pageSize'] = defaultPageSize;
+					postData['exactMatch'] = $('#exactMatch').is(':checked');
+					postData['prNo'] = $('#prNo').val();
+					postData['projectName'] = $('#projectName').val();
+					postData['projectCode'] = $('#projectCode').val();
+					if( $('#createdBy').val().trim().length > 0 ) {
+						postData['createdBy'] = [$('#createdBy').val()];
+					}
+					postData['fromTimeStr'] = $('#fromDate').val();
+					postData['toTimeStr'] = $('#toDate').val();
+				    return JSON.stringify(postData);
+				}
+	    	});
+			$("#prTable").jqGrid().trigger('reloadGrid');
+		}
+		
 	</script>

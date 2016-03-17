@@ -1,5 +1,7 @@
 package org.iry.controller;
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,8 +10,10 @@ import org.iry.model.pr.PurchaseRequisition;
 import org.iry.model.pr.PurchaseRequisitionItems;
 import org.iry.model.user.User;
 import org.iry.model.user.UserProfile;
+import org.iry.model.user.UserProfileType;
 import org.iry.service.user.UserProfileService;
 import org.iry.service.user.UserService;
+import org.iry.utils.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +37,17 @@ public class NavigationController {
 	
 	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
 	public String homePage(ModelMap model) {
-		return "home";
+		Set<String> privileges = SpringContextUtil.getPrivileges();
+		if( privileges.contains(UserProfileType.MANAGER.getUserProfileType())
+				|| privileges.contains(UserProfileType.PURCHASE_MANAGER.getUserProfileType())
+				|| privileges.contains(UserProfileType.PURCHASE_SUPERVISOR.getUserProfileType())
+				|| privileges.contains(UserProfileType.PURCHASE_USER.getUserProfileType()) ) {
+			return searchPurchaseRequisitions(model);
+		} else if( privileges.contains(UserProfileType.ADMIN.getUserProfileType()) ) {
+			return viewUsers(model);
+		} else {
+			return myPurchaseRequisitions(model);
+		}
 	}
 
 	@RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
@@ -106,6 +120,11 @@ public class NavigationController {
 	@RequestMapping(value = "/myPR", method = RequestMethod.GET)
 	public String myPurchaseRequisitions(ModelMap model){
 		return "pr/mypr";
+	}
+	
+	@RequestMapping(value = "/searchPR", method = RequestMethod.GET)
+	public String searchPurchaseRequisitions(ModelMap model){
+		return "pr/searchpr";
 	}
 	
 	@RequestMapping(value = "/editPR", method = RequestMethod.GET)
