@@ -3,13 +3,12 @@
  */
 package org.iry.dto;
 
-import java.io.Serializable;
 
 /**
  * @author vaibhavp
  *
  */
-public class SearchCriteria implements Serializable {
+public class SearchCriteria implements BaseDto {
 	
 	private static final long serialVersionUID = -2937528338413447658L;
 	

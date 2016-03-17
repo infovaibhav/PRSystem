@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.iry.dto.Action;
+import org.iry.dto.BaseDto;
+import org.iry.dto.ResponseDto;
 import org.iry.dto.pr.PurchaseRequestSearchCriteria;
 import org.iry.dto.pr.PurchaseRequisitionDto;
 import org.iry.dto.pr.PurchaseRequisitionItemsDto;
@@ -61,15 +63,28 @@ public class PRRestController {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/_search", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PurchaseRequisitionDto>> searchPurchaseRequisitions(@RequestBody PurchaseRequestSearchCriteria searchCriteria) {
+	public ResponseEntity<BaseDto> searchPurchaseRequisitions(@RequestBody PurchaseRequestSearchCriteria searchCriteria) {
 		try {
 			List<PurchaseRequisitionDto> purchaseRequisitionDtos = prService.findPurchaseRequisitions(searchCriteria);
 			updateAllowedPrActions(purchaseRequisitionDtos, SpringContextUtil.getUserDetails());
-			return new ResponseEntity<List<PurchaseRequisitionDto>>(purchaseRequisitionDtos, HttpStatus.OK);
+			
+			int recordCnt = purchaseRequisitionDtos.isEmpty() ? 0 : purchaseRequisitionDtos.get(0).getTotalRecords();
+	        int pages = recordCnt % searchCriteria.getPageSize();
+	        if (pages > 0) pages = (recordCnt / searchCriteria.getPageSize()) + 1;
+	        else  pages = recordCnt / searchCriteria.getPageSize();
+	        
+	        ResponseDto response = new ResponseDto();
+	        response.setPage( searchCriteria.getPage() );
+	        response.setTotal(pages);
+	        response.setRecords(recordCnt);
+	        response.setRows((List)purchaseRequisitionDtos);
+	        
+			return new ResponseEntity<BaseDto>(response, HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in searching Purchase Requisitions...", e);
-			return new ResponseEntity<List<PurchaseRequisitionDto>>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<BaseDto>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	

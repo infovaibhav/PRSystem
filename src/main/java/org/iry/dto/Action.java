@@ -3,13 +3,12 @@
  */
 package org.iry.dto;
 
-import java.io.Serializable;
 
 /**
  * @author vaibhavp
  *
  */
-public class Action implements Serializable {
+public class Action implements BaseDto {
 	
 	private static final long serialVersionUID = 3642610803979462518L;
 

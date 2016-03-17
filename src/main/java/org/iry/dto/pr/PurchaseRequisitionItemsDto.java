@@ -3,17 +3,18 @@
  */
 package org.iry.dto.pr;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.SimpleTimeZone;
 
+import org.iry.dto.BaseDto;
+
 /**
  * @author vaibhavp
  *
  */
-public class PurchaseRequisitionItemsDto implements Serializable {
+public class PurchaseRequisitionItemsDto implements BaseDto {
 	
 	private static final long serialVersionUID = 7394238383087126315L;
 	

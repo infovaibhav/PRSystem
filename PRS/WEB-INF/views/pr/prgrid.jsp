@@ -25,6 +25,7 @@
 				],
 				width: $("#prHeader").width()-30,
 	            height: "360",
+	            rowNum : defaultPageSize,
 	            scroll : true,
 	            gridview : true,
 	            loadtext: 'building list...',
@@ -198,6 +199,11 @@
 					postData['projectCode'] = $('#projectCode').val();
 					if( $('#createdBy').val().trim().length > 0 ) {
 						postData['createdBy'] = [$('#createdBy').val()];
+					}
+					if( $('#status').val().trim().length > 0 ) {
+						postData['statuses'] = [$('#status').val()];
+					}else{
+						postData['statuses'] = [];
 					}
 					postData['fromTimeStr'] = $('#fromDate').val();
 					postData['toTimeStr'] = $('#toDate').val();

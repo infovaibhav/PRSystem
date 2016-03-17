@@ -1,3 +1,4 @@
+<%@page import="org.iry.model.pr.PurchaseRequisitionStatus"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
 
@@ -46,6 +47,25 @@
 				<label class="col-md-5 control-lable" for="toDate" style="padding-top: 5px">To Date:</label>
 				<div class="col-md-7">
 					<input type="text" id="toDate" readonly="readonly" class="form-control input-sm" value="<%=toDate %>"/>
+				</div>
+			</div>
+			<div class="form-group col-md-3">
+				<label class="col-md-5 control-lable" for="status" style="padding-top: 5px">Status:</label>
+				<div class="col-md-7">
+					<select id="status" class="form-control input-sm">
+					  <option value="">-- All --</option>
+					  <option value="<%=PurchaseRequisitionStatus.INITIAL.getStatus() %>"><%=PurchaseRequisitionStatus.INITIAL.getStatus() %></option>
+					  <option value="<%=PurchaseRequisitionStatus.SUBMITTED.getStatus() %>"><%=PurchaseRequisitionStatus.SUBMITTED.getStatus() %></option>
+					  <option value="<%=PurchaseRequisitionStatus.AUTHORIZED.getStatus() %>"><%=PurchaseRequisitionStatus.AUTHORIZED.getStatus() %></option>
+					  <option value="<%=PurchaseRequisitionStatus.APPROVED.getStatus() %>"><%=PurchaseRequisitionStatus.APPROVED.getStatus() %></option>
+					  <option value="<%=PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus() %>"><%=PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus() %></option>
+					  <option value="<%=PurchaseRequisitionStatus.REQUEST_FOR_QUOTE.getStatus() %>"><%=PurchaseRequisitionStatus.REQUEST_FOR_QUOTE.getStatus() %></option>
+					  <option value="<%=PurchaseRequisitionStatus.QUOTE_RECEIVED.getStatus() %>"><%=PurchaseRequisitionStatus.QUOTE_RECEIVED.getStatus() %></option>
+					  <option value="<%=PurchaseRequisitionStatus.QUOTE_FINALIZATION.getStatus() %>"><%=PurchaseRequisitionStatus.QUOTE_FINALIZATION.getStatus() %></option>
+					  <option value="<%=PurchaseRequisitionStatus.PO_CREATED.getStatus() %>"><%=PurchaseRequisitionStatus.PO_CREATED.getStatus() %></option>
+					  <option value="<%=PurchaseRequisitionStatus.PARTIAL_PO_CREATED.getStatus() %>"><%=PurchaseRequisitionStatus.PARTIAL_PO_CREATED.getStatus() %></option>
+					  <option value="<%=PurchaseRequisitionStatus.CANCELLED.getStatus() %>"><%=PurchaseRequisitionStatus.CANCELLED.getStatus() %></option>
+					</select>
 				</div>
 			</div>
 			<div class="form-group col-md-3">

@@ -3,7 +3,6 @@
  */
 package org.iry.dto.pr;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,12 +11,13 @@ import java.util.List;
 import java.util.SimpleTimeZone;
 
 import org.iry.dto.Action;
+import org.iry.dto.BaseDto;
 
 /**
  * @author vaibhavp
  *
  */
-public class PurchaseRequisitionDto implements Serializable {
+public class PurchaseRequisitionDto implements BaseDto {
 	
 	private static final long serialVersionUID = 1749793282106208706L;
 	

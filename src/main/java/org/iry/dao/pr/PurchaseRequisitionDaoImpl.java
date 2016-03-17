@@ -62,13 +62,14 @@ public class PurchaseRequisitionDaoImpl extends AbstractDao<String, PurchaseRequ
 		if( searchCriteria.needToTimeRestriction() ) {
 			crit.add(Restrictions.le("createdDate", new Timestamp(searchCriteria.getToTime().getTime() + (24 * 60 * 60 * 1000))));
 		}
+		
+		crit.setProjection(Projections.count("prNo"));
+		int totalRecords = ((Long)crit.uniqueResult()).intValue();
+		
 		if( searchCriteria.needPagination() ) {
 			crit.setFirstResult(searchCriteria.getFirstResult());
 			crit.setMaxResults(searchCriteria.getMaxResult());
 		}
-		
-		crit.setProjection(Projections.count("prNo"));
-		int totalRecords = ((Long)crit.uniqueResult()).intValue();
 		
 		crit.setProjection(null);
 		

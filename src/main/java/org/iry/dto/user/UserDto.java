@@ -1,8 +1,8 @@
 package org.iry.dto.user;
 
-import java.io.Serializable;
+import org.iry.dto.BaseDto;
 
-public class UserDto implements Serializable {
+public class UserDto implements BaseDto {
 
 	private static final long serialVersionUID = 5088675486430341270L;
 
