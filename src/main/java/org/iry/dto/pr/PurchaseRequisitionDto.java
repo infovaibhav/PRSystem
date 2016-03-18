@@ -55,7 +55,7 @@ public class PurchaseRequisitionDto implements BaseDto {
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	
 	public PurchaseRequisitionDto() {
-		sdf.setTimeZone(new SimpleTimeZone(0,""));
+		
 	}
 	
 	public String getPrNo() {

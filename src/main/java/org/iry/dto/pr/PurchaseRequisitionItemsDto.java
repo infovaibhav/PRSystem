@@ -34,7 +34,6 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
 	public PurchaseRequisitionItemsDto() {
-		sdf.setTimeZone(new SimpleTimeZone(0,""));
 	}
 	
 	public Long getPriId() {
