@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.SimpleTimeZone;
 
 import org.iry.dto.Action;
 import org.iry.dto.BaseDto;
@@ -52,11 +51,7 @@ public class PurchaseRequisitionDto implements BaseDto {
 	private List<PurchaseRequisitionItemsDto> purchaseRequisionItems = new ArrayList<PurchaseRequisitionItemsDto>();
 
 	private transient int totalRecords = 0;
-	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-	
-	public PurchaseRequisitionDto() {
-		
-	}
+	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 	
 	public String getPrNo() {
 		return prNo;
@@ -248,7 +243,7 @@ public class PurchaseRequisitionDto implements BaseDto {
 		this.lastUpdatedDateStr = lastUpdatedDateStr;
 	}
 	public void setLastUpdatedDate(Date lastUpdatedDate) {
-		if( lastUpdatedDateStr != null ) {
+		if( lastUpdatedDate != null ) {
 			this.lastUpdatedDateStr = sdf.format(lastUpdatedDate);			
 		}
 	}

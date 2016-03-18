@@ -3,8 +3,6 @@
  */
 package org.iry.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -164,7 +162,7 @@ public class PRRestController {
 	}
 	
 	@RequestMapping(value = "/{prNo}/updatestatus/{status}", method = RequestMethod.PUT)
-	public ResponseEntity<String> updateStauts(@PathVariable("prNo") String prNo, @PathVariable("status") String status) {
+	public ResponseEntity<String> updateStatus(@PathVariable("prNo") String prNo, @PathVariable("status") String status) {
 		try {
 			User user = SpringContextUtil.getUser();
 			if( user == null ) {
@@ -202,6 +200,9 @@ public class PRRestController {
 					|| userDetails.getAllowedActions().authorizePr
 					|| userDetails.getAllowedActions().approvePr ) {
 				dto.setEditable(true);
+			}
+			if( dto.getCreatedBy().longValue() == userDetails.getUser().getId().longValue() ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.SUBMITTED.getStatus(), "Submit"));
 			}
 			if( userDetails.getAllowedActions().cancelPr ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.CANCELLED.getStatus(), "Cancel"));
@@ -325,7 +326,7 @@ public class PRRestController {
 		
 		PurchaseRequisitionDto purchaseRequisitionDto = prService.findByPrNo(prNo);
 		
-		String reportName = purchaseRequisitionDto.getPrNo() + "_" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
+		String reportName = purchaseRequisitionDto.getPrNo() + ".pdf";
 		
 	    response.addHeader("Content-Disposition", "attachment; filename=" + reportName);
 	    response.setContentType("text/pdf");

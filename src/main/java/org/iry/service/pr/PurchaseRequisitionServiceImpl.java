@@ -242,6 +242,10 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setLastUpdatedDate(pr.getLastUpdatedDate());
 		dto.setLastUpdatedBy(pr.getLastUpdatedBy());
 		dto.setLastUpdatedByName(pr.getApprovedByName());
+		dto.setLastUpdatedDate(pr.getLastUpdatedDate());
+		if( !pr.getStatus().equals(PurchaseRequisitionStatus.INITIAL.getStatus()) ) {
+			dto.setSubmitted(true);
+		}
 		dto.setTotalRecords(pr.getTotalRecords());
 		if( loadPrItems ) {
 			for (PurchaseRequisitionItems prItem : pr.getPurchaseRequisionItems()) {
@@ -278,7 +282,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 			
 			List<String> to = new ArrayList<String>( buildEmailToList( user, prDto ) );
 			
-			String subject = user.getFullName() + " has Updated PR [" + prDto.getPrNo() + "] with status- " + prDto.getStatus();
+			String subject = "PR [ " + prDto.getPrNo() + " ] has been updated with status \"" + prDto.getStatus() + "\" by " + user.getFullName();
 			String body = subject;
 			String fileName = prDto.getPrNo() + ".pdf";
 			

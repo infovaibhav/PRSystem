@@ -35,7 +35,6 @@
     	var path = window.location.href.substr(window.location.href.lastIndexOf("/")+1);
     	if(createPr == false){
     		$("#Download").show();
-    		$("#submitAllDetails").show();
     		$("#prNoValue").html("PR No.  <span style='color:red;'>*</span>");
     		prno = path.substr(path.lastIndexOf("=")+1);
     		$("#Download").attr('href','rest/purchaseRequest/'+prno+'/download');
@@ -51,6 +50,18 @@
     				$("#projectName").attr("disabled", "disabled");
     				$("#projectCode").val(data.projectCode);
     				$("#projectCode").attr("disabled", "disabled");
+    				$("#createdDateStr").val(data.createdDateStr);
+    				$("#createdByName").val(data.createdByName);
+    				$("#status").val(data.status);
+    				$("#createdDate").show();
+    				$("#createdBy").show();
+    				$("#currentStatus").show();
+					if( data.submitted ) {
+						$("#submitAllDetails").hide();
+					} else {
+						$("#submitAllDetails").show();
+					}
+    	    		
     				$('#addPrItemGrid').jqGrid('setGridParam', {data: data.purchaseRequisionItems}).trigger('reloadGrid');
     			},
                 error : function(jqXHR, status, error) {
@@ -89,17 +100,17 @@
 		    datatype:'local',
 		    colNames:['Description*', 'Total Qty required*', 'Qty In stock', 'Qty to be Purchased*', 'UOM', 'Unit Value', 'Approx. Total Value','Make','Cat No.','Required by date','Preferred Supplier',''],
 		    colModel:[
-		        {name:'description', width:80, sortable: false, align:'center', resizable: true, editrules:{required:true}},
-		        {name:'totalQuantityRequired', width:40, sortable: false, align:'center', resizable: true, editrules:{number:true, required:true}},
-		        {name:'quantityInStock', width:40, sortable: false, align:'left', resizable: true, editrules:{number:true}},
-		        {name:'quantityTobePurchased', width:40, sortable: false, align:'left', resizable: true, editrules:{number:true, required:true}},
+		        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
+		        {name:'totalQuantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
+		        {name:'quantityInStock', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true}},
+		        {name:'quantityTobePurchased', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
 		        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
 		        {name:'unitCost', width:40, sortable: true, align:'right', resizable: true, editrules:{number:true}},
-		        {name:'approxTotalCost', width:40, sortable: false, align:'left', resizable: true, editrules:{number:true}},
+		        {name:'approxTotalCost', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true}},
 		        {name:'make', width:40, sortable: false, align:'left', resizable: true},
-		        {name:'catNo', width:30, sortable: false, align:'center', resizable: true},
+		        {name:'catNo', width:30, sortable: false, align:'left', resizable: true},
 		        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true}},
-		        {name:'preferredSupplier', width:30, sortable: false, align:'center', resizable: true},
+		        {name:'preferredSupplier', width:30, sortable: false, align:'left', resizable: true},
 		        {name:'priId', hidden:true}
 			],
 		    width: $("#prheader").width()-30,
@@ -152,10 +163,11 @@
  	<div class="form-container">
  		<h2 class="text-center">IRY Engineering Pvt Ltd</h2>
 	 	<h3 class="text-center">Purchase Requisition</h3>
+	 	<hr>
 		<form:form method="POST" action="javascript:myFunction();" modelAttribute="purchaseRequisition" class="form-horizontal" id="purchaseRequisition">
 			<div class="row">
 				<div class="form-group col-md-6">
-					<label class="control-lable col-md-3" for="prNo" id="prNoValue">PR No. Prefix <span style="color:red;">*</span></label>
+					<label class="control-lable col-md-3" for="prNo" id="prNoValue">PR No. Prefix: <span style="color:red;">*</span></label>
 					<div class="col-md-5">
 						<form:input type="text" path="prNo" id="prNo" class="form-control input-sm" required="required"/>
 						<div class="has-error">
@@ -163,10 +175,16 @@
 						</div>
 					</div>
 				</div>
+				<div class="form-group col-md-5" id="createdDate" style="display: none">
+					<label class="control-lable col-md-3" for="prNo" id="prNoValue">Created Date:</label>
+					<div class="col-md-5">
+						<input type="text" id="createdDateStr" disabled="true" readonly="true" class="form-control input-sm"/>
+					</div>
+				</div>
 			</div>
 			<div class="row">
 				<div class="form-group col-md-6">
-					<label class="col-md-3 control-lable" for="projectName">Project Name <span style="color:red;">*</span></label>
+					<label class="col-md-3 control-lable" for="projectName">Project Name: <span style="color:red;">*</span></label>
 					<div class="col-md-5">
 						<form:input type="text" path="projectName" id="projectName" class="form-control input-sm" required="required"/>
 						<div class="has-error">
@@ -174,15 +192,27 @@
 						</div>
 					</div>
 				</div>
+				<div class="form-group col-md-5" id="createdBy" style="display: none">
+					<label class="control-lable col-md-3" for="prNo" id="prNoValue">Created By:</label>
+					<div class="col-md-5">
+						<input type="text" id="createdByName" disabled="true" readonly="true" class="form-control input-sm"/>
+					</div>
+				</div>
 			</div>
 			<div class="row">
 				<div class="form-group col-md-6">
-					<label class="col-md-3 control-lable" for="projectCode">Project Code <span style="color:red;">*</span></label>
+					<label class="col-md-3 control-lable" for="projectCode">Project Code: <span style="color:red;">*</span></label>
 					<div class="col-md-5">
 						<form:input type="text" path="projectCode" id="projectCode" class="form-control input-sm" required="required"/>
 						<div class="has-error">
 							<form:errors path="projectCode" class="help-inline"/>
 						</div>
+					</div>
+				</div>
+				<div class="form-group col-md-5" id="currentStatus" style="display: none">
+					<label class="control-lable col-md-3" for="prNo" id="prNoValue">Status:</label>
+					<div class="col-md-5">
+						<input type="text" id="status" disabled="true" readonly="true" class="form-control input-sm"/>
 					</div>
 				</div>
 			</div>
