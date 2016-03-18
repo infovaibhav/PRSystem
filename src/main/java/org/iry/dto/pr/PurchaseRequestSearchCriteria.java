@@ -34,7 +34,6 @@ public class PurchaseRequestSearchCriteria extends SearchCriteria {
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
 	public PurchaseRequestSearchCriteria() {
-		sdf.setTimeZone(new SimpleTimeZone(0,""));
 	}
 	
 	public String getPrNo() {

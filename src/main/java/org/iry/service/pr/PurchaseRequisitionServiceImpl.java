@@ -341,8 +341,14 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 			reportParams.put("projectName", prDto.getProjectName());
 			reportParams.put("projectCode", prDto.getProjectCode());
 			reportParams.put("rev", prDto.getRev());
+			reportParams.put("createdByName", prDto.getCreatedByName());
+			reportParams.put("createdDateStr", prDto.getCreatedDateStr());
+			reportParams.put("authorizedByName", prDto.getAuthorizedByName());
+			reportParams.put("authorizedDateStr", prDto.getAuthorizedDateStr());
+			reportParams.put("approvedByName", prDto.getApprovedByName());
+			reportParams.put("approvedDateStr", prDto.getApprovedDateStr());
 			JRDataSource reportDataSource = new JRBeanCollectionDataSource(prDto.getPurchaseRequisionItems());
-			jasperFileStream = this.getClass().getClassLoader().getResourceAsStream("IRYReport1.jasper");
+			jasperFileStream = this.getClass().getClassLoader().getResourceAsStream("IRY_PR_Report.jasper");
 			JasperPrint jrPrint = JasperFillManager.fillReport(jasperFileStream, reportParams, reportDataSource);
 			JRPdfExporter exporter = new JRPdfExporter();
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jrPrint);

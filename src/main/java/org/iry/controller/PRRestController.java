@@ -63,7 +63,7 @@ public class PRRestController {
 		}
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes" })
 	@RequestMapping(value = "/_search", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<BaseDto> searchPurchaseRequisitions(@RequestBody PurchaseRequestSearchCriteria searchCriteria) {
 		try {
