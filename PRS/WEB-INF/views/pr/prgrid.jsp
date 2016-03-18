@@ -18,7 +18,7 @@
 	                {name:'projectCode', width:80, sortable: false, align:'left', resizable: true, search:false},
 	                {name:'createdDateStr', width:80, sortable: false, align:'left', resizable: true, search:false},
 	                {name:'createdByName', width:80, sortable: false, align:'left', resizable: true, search:false},
-	                {name:'status', index:'status', width:80, sortable: false, align:'center', resizable: true, search:false,editable: true,edittype:'select'},
+	                {name:'status', index:'status', width:80, sortable: false, align:'center', resizable: true, search:false,editable: false},
 	                {name:'select', index:'select',width:80, sortable: false, align:'center', resizable: true, search:false},
 	                {name:'editable',  hidden:true},
 	                {name:'allowedStatusChangesStr',  hidden:true}
@@ -46,29 +46,6 @@
 	                    jQuery("#prTable").setRowData(ids[i],{select:be}) 
 	                } 
 	            },
-	            onSelectRow: function(id){
-	        		if(id && id!==lastsel){
-	        			jQuery('#prTable').jqGrid('restoreRow',lastsel);
-        		        var cm = jQuery('#prTable').jqGrid('getColProp','status');
-        		        var rowData = jQuery("#prTable").getRowData(id);
-        		        var allowedStatusChanges = rowData['allowedStatusChangesStr'];
-        		        allowedStatusChanges = allowedStatusChanges.replace("[","");
-        		        allowedStatusChanges = allowedStatusChanges.replace("]","");
-        		        if(allowedStatusChanges == ""){
-        		        	allowedStatusChanges = "selected:" + rowData['status'];
-        		        } else {
-        		        	allowedStatusChanges = "selected:" + rowData['status']  + "," +allowedStatusChanges;
-        		        }
-        		        allowedStatusChanges = allowedStatusChanges.replaceAll(",",";");
-        		        allowedStatusChanges = allowedStatusChanges.trim();
-        		        if(allowedStatusChanges != ""){
-            		        cm.editoptions = {value:allowedStatusChanges};
-            		        cm.editoptions.dataEvents = [{ type: 'change', fn: function(e) {changeStatus(e,rowData['status'],rowData['prNo']); } }];
-            		        jQuery('#prTable').jqGrid('editRow',id,true);
-        		        }
-	        			lastsel=id;
-	        		}
-	        	},
 	            subGrid : true,
 	            subGridOptions: { 
 	            	"plusicon" : "ui-icon-triangle-1-e",
@@ -83,8 +60,33 @@
 	            	var prNo = rowData['prNo'];
 	            	var html = "";
 	            	var priSubgridTableId = subgridId + "_pri";
-            		$("#" + subgridId).html(html + "<div>&nbsp</div><div style='margin: 5px;color: #000080;font-weight: bold;'>Items - </div><table id='" + priSubgridTableId + "'></table><div>&nbsp</div>");
-	                
+    		        var allowedStatusChanges = rowData['allowedStatusChangesStr'];
+    		        allowedStatusChanges = allowedStatusChanges.replace("[","");
+    		        allowedStatusChanges = allowedStatusChanges.replace("]","");
+    		        var showDropDown = true;
+    		        if(allowedStatusChanges == ""){
+    		        	showDropDown = false;
+    		        } 
+    		        var arrayofStatus = [];
+    		        arrayofStatus = allowedStatusChanges.split(",");
+	            	var options;
+	            	for(var i = 0; i < arrayofStatus.length ;i++ ){
+	            		var optionsValue = [];
+	            		optionValue = arrayofStatus[i].split(":");
+	            		options = "<option id="+optionValue[0]+" value="+optionValue[1]+">"+optionValue[1]+"</option>";
+	            	}
+	            	var dropDown = "<select id='statusDropDown'>"+ options+"</select>";
+	            	var updateStatusHtml = "";
+	            	if(showDropDown){
+	            		updateStatusHtml = "<div>Status Change : "+dropDown+ "</div>";
+	            	}
+            		$("#" + subgridId).html(html + "<div>&nbsp</div>" + updateStatusHtml + "<div style='margin: 5px;color: #000080;font-weight: bold;'>Items - </div><table id='" + priSubgridTableId + "'></table><div>&nbsp</div>");
+            		if(showDropDown){
+            			document.getElementById("statusDropDown").selectedIndex = -1;
+            		}
+            		$("#statusDropDown").change(function (e) {
+            			changeStatus(e,rowData['status'],rowData['prNo']);
+        	        });
 	                $("#" + priSubgridTableId).jqGrid({
 	                	datatype:'local',
 	                	mtype: 'GET',
@@ -148,6 +150,7 @@
 	            var target = this;
 	            return target.replace(new RegExp(search, 'g'), replacement);
 	        };
+	        
 	        function changeStatus(e,prevStatus,prNo) {
 	        	var newStatus = e.target.selectedOptions[0].textContent;
 	        	if( newStatus != prevStatus ){
@@ -171,7 +174,7 @@
 		                    }
 		        		});
 	        		} else {
-	        			
+	        			document.getElementById("statusDropDown").selectedIndex = -1;
 	        		}
 	        	}
 	        };
