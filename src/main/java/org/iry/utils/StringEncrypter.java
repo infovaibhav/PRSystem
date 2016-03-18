@@ -139,7 +139,7 @@ public class StringEncrypter {
 	public static void main(String[] args) {
 		try {
 			StringEncrypter encrypter = new StringEncrypter();
-			String test = encrypter.encrypt("vaibhav93");
+			String test = encrypter.encrypt("");
 			System.out.println(test);
 			System.out.println(encrypter.decrypt(test));
 		} catch (Exception e) {
