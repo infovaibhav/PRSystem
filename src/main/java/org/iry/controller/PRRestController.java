@@ -54,6 +54,9 @@ public class PRRestController {
 			}
 			purchaseRequisitionDto = prService.save(purchaseRequisitionDto, user.getId(), user.getFullName());
 			updateAllowedPrActions(purchaseRequisitionDto, SpringContextUtil.getUserDetails());
+			if( purchaseRequisitionDto.isSubmitted() ) {
+				prService.sendEmailNotification(purchaseRequisitionDto.getPrNo(), user);
+			}
 			return new ResponseEntity<PurchaseRequisitionDto>(purchaseRequisitionDto, HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in saving Purchase Requisition...", e);
@@ -210,8 +213,7 @@ public class PRRestController {
 			
 		} else if( status.equals(PurchaseRequisitionStatus.SUBMITTED.getStatus()) ) {
 			
-			if( dto.getCreatedBy().longValue() == userDetails.getUser().getId().longValue() 
-					|| userDetails.getAllowedActions().authorizePr
+			if( userDetails.getAllowedActions().authorizePr
 					|| userDetails.getAllowedActions().approvePr ) {
 				dto.setEditable(true);
 			}
