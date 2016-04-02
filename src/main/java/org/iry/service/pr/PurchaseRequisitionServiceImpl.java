@@ -78,14 +78,14 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	}
 	
 	@Override
-	public void updatePrStatus(String prNo, String status, Long userId, String userName) {
+	public void updatePrStatus(String prNo, String status, Long userId, String userName, String remark) {
 		StopWatch watch = new StopWatch();
 		watch.start();
 		PurchaseRequisition pr = prDao.findById(prNo);
 		if( pr == null ) {
 			throw new InvalidRequestException("Purchase requisition does not exists.");
 		}
-		
+		pr.setPrRemark(remark);
 		this.setStatusInformation(pr, status, userId, userName);
 		
 		prDao.save(pr);
@@ -170,9 +170,9 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		if( dto.getTotalQuantityRequired() == 0 ) {
 			throw new InvalidRequestException("Required Quantity zero.");
 		}
-		if( dto.getTotalQuantityRequired() <= dto.getQuantityInStock() ) {
+		/*if( dto.getTotalQuantityRequired() <= dto.getQuantityInStock() ) {
 			throw new InvalidRequestException("Required Quantity is less than or equal to quantity in stock.");
-		}
+		}*/
 		
 		if( dto.getPriId() == null ) {
 			prItem = new PurchaseRequisitionItems();
@@ -193,17 +193,18 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		
 		prItem.setDescription(dto.getDescription());
 		prItem.setTotalQuantityRequired(dto.getTotalQuantityRequired());
-		prItem.setQuantityInStock(dto.getQuantityInStock());
-		prItem.setQuantityTobePurchased(dto.getTotalQuantityRequired() - dto.getQuantityInStock());
 		prItem.setUom(dto.getUom());
-		prItem.setUnitCost(dto.getUnitCost());
-		prItem.setApproxTotalCost(dto.getApproxTotalCost());
 		prItem.setMake(dto.getMake());
 		prItem.setCatNo(dto.getCatNo());
-		prItem.setPreferredSupplier(dto.getPreferredSupplier());
 		if( dto.getRequiredByDate() != null ) {
 			prItem.setRequiredByDate(new Timestamp(dto.getRequiredByDate().getTime()));
 		}
+		if( dto.getDeliveryDate() != null ) {
+			prItem.setDeliveryDate(new Timestamp(dto.getDeliveryDate().getTime()));
+		}
+		prItem.setDeviation(dto.getDeviation());
+		prItem.setOrderedQuantity(dto.getOrderedQuantity());
+		prItem.setRemark(dto.getRemark());
 		prItem.setPurchaseRequisition(existingPr);
 		
 		return prItem;
@@ -243,6 +244,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setLastUpdatedBy(pr.getLastUpdatedBy());
 		dto.setLastUpdatedByName(pr.getApprovedByName());
 		dto.setLastUpdatedDate(pr.getLastUpdatedDate());
+		dto.setPrRemark(pr.getPrRemark());
 		if( !pr.getStatus().equals(PurchaseRequisitionStatus.INITIAL.getStatus()) ) {
 			dto.setSubmitted(true);
 		}
@@ -260,15 +262,14 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setPriId(prItem.getId());
 		dto.setDescription(prItem.getDescription());
 		dto.setTotalQuantityRequired(prItem.getTotalQuantityRequired());
-		dto.setQuantityInStock(prItem.getQuantityInStock());
-		dto.setQuantityTobePurchased(prItem.getTotalQuantityRequired() - prItem.getQuantityInStock());
 		dto.setUom(prItem.getUom());
-		dto.setUnitCost(prItem.getUnitCost());
-		dto.setApproxTotalCost(prItem.getApproxTotalCost());
 		dto.setMake(prItem.getMake());
 		dto.setCatNo(prItem.getCatNo());
-		dto.setPreferredSupplier(prItem.getPreferredSupplier());
 		dto.setRequiredByDate(prItem.getRequiredByDate());
+		dto.setDeliveryDate(prItem.getDeliveryDate());
+		dto.setDeviation(prItem.getDeviation());
+		dto.setOrderedQuantity(prItem.getOrderedQuantity());
+		dto.setRemark(prItem.getRemark());
 		return dto;
 	}
 	
@@ -351,6 +352,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 			reportParams.put("authorizedDateStr", prDto.getAuthorizedDateStr());
 			reportParams.put("approvedByName", prDto.getApprovedByName());
 			reportParams.put("approvedDateStr", prDto.getApprovedDateStr());
+			reportParams.put("prRemark", prDto.getPrRemark());
 			JRDataSource reportDataSource = new JRBeanCollectionDataSource(prDto.getPurchaseRequisionItems());
 			jasperFileStream = this.getClass().getClassLoader().getResourceAsStream("IRY_PR_Report.jasper");
 			JasperPrint jrPrint = JasperFillManager.fillReport(jasperFileStream, reportParams, reportDataSource);

@@ -4,6 +4,7 @@
 package org.iry.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -121,7 +122,7 @@ public class PRRestController {
 				throw new InvalidRequestException("Logged in user information not found.");
 			}
 			
-			boolean notificationSent = updatePrStatusAndNotify(prNo, PurchaseRequisitionStatus.AUTHORIZED.getStatus(), user);
+			boolean notificationSent = updatePrStatusAndNotify(prNo, PurchaseRequisitionStatus.AUTHORIZED.getStatus(), user, null);
 			
 			return new ResponseEntity<String>("PR has been authorized. Email" + (notificationSent ? " " : " not ") + "Sent.", HttpStatus.OK);
 		} catch( Exception e ) {
@@ -138,7 +139,7 @@ public class PRRestController {
 				throw new InvalidRequestException("Logged in user information not found.");
 			}
 			
-			boolean notificationSent = updatePrStatusAndNotify(prNo, PurchaseRequisitionStatus.APPROVED.getStatus(), user);
+			boolean notificationSent = updatePrStatusAndNotify(prNo, PurchaseRequisitionStatus.APPROVED.getStatus(), user, null);
 			
 			return new ResponseEntity<String>("PR has been authorized. Email" + (notificationSent ? " " : " not ") + "Sent.", HttpStatus.OK);
 		} catch( Exception e ) {
@@ -155,7 +156,7 @@ public class PRRestController {
 				throw new InvalidRequestException("Logged in user information not found.");
 			}
 			
-			boolean notificationSent = updatePrStatusAndNotify(prNo, PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus(), user);
+			boolean notificationSent = updatePrStatusAndNotify(prNo, PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus(), user, null);
 			
 			return new ResponseEntity<String>("PR has been acknowledged. Email" + (notificationSent ? " " : " not ") + "Sent.", HttpStatus.OK);
 		} catch( Exception e ) {
@@ -164,26 +165,26 @@ public class PRRestController {
 		}
 	}
 	
-	@RequestMapping(value = "/{prNo}/updatestatus/{status}", method = RequestMethod.PUT)
-	public ResponseEntity<String> updateStatus(@PathVariable("prNo") String prNo, @PathVariable("status") String status) {
+	@RequestMapping(value = "/{prNo}/updatestatus/{status}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> updateStatus(@PathVariable("prNo") String prNo, @PathVariable("status") String status, @RequestBody Map<String, String> remark) {
 		try {
 			User user = SpringContextUtil.getUser();
 			if( user == null ) {
 				throw new InvalidRequestException("Logged in user information not found.");
 			}
 			
-			boolean notificationSent = updatePrStatusAndNotify(prNo, status, user);
-			
-			return new ResponseEntity<String>("PR has been authorized. Email" + (notificationSent ? " " : " not ") + "Sent.", HttpStatus.OK);
+			boolean notificationSent = updatePrStatusAndNotify(prNo, status, user, remark.get("remark") == "" ? null : remark.get("remark"));
+			String response = "{\"response\":"+"\"PR has been authorized. Email" + ( notificationSent ? "" : " not ") + "Sent.\"}";
+			return new ResponseEntity<String>(response, HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in Updating Status of Purchase Requisition...", e);
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	private boolean updatePrStatusAndNotify(String prNo, String status, User user) {
-		log.info("Updating #PR- " + prNo + " with #Status- " + status);
-		prService.updatePrStatus(prNo, status, user.getId(), user.getFullName());
+	private boolean updatePrStatusAndNotify(String prNo, String status, User user, String remark) {
+		log.info("Updating #PR- " + prNo + " with #Status- " + status + " #Remark - " + remark);
+		prService.updatePrStatus(prNo, status, user.getId(), user.getFullName(), remark);
 		return prService.sendEmailNotification(prNo, user);
 	}
 	

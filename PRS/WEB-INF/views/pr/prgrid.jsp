@@ -93,7 +93,8 @@
 		            	}
 		            	var dropDown = "<select id='statusDropDown_"+prNo+"'>"+ options+"</select>";
 		            	updateStatusHtml = emptyDivHtml + "<div><span style='margin: 5px;color: #000080;font-weight: bold;'>Status : </span><span>"+dropDown+ " </span>&nbsp;&nbsp;";
-		            	updateStatusHtml += "<span><input type='button' id='updateStatus_"+prNo+"' class='btn btn-primary' value='Update'/></div>";
+		            	updateStatusHtml += "<span><span style='margin: 5px;color: #000080;font-weight: bold;'>Remark : </span><input type='text' id='remark_"+prNo+"'/>";
+		            	updateStatusHtml += "<span><input type='button' style='margin-left: 10px;margin-top:-3px' id='updateStatus_"+prNo+"' class='btn btn-primary' value='Update'/></div>";
 	            	}
     		        
 	            	auditHtml = emptyDivHtml + "<table id='" + priSubgridAuditTableId + "'></table>";
@@ -132,7 +133,7 @@
 	            	$("#" + subgridId).html( finalHtml );
             		
             		$("#updateStatus_"+prNo).click(function (e) {
-            			changeStatus( $("#statusDropDown_"+prNo), prNo );
+            			changeStatus( $("#statusDropDown_"+prNo), prNo, $("#remark_"+prNo) );
         	        });
             		
             		$("#" + priSubgridAuditTableId).jqGrid({
@@ -211,8 +212,11 @@
 	            return target.replace(new RegExp(search, 'g'), replacement);
 	        };
 	        
-	        function changeStatus(target, prNo) {
+	        function changeStatus(target, prNo, remarkTarget) {
 	        	var newStatus = target.val();
+	        	var data = {
+	        			remark : remarkTarget.val()
+	        	};
 	        	if( newStatus == '' ) {
 	        		alert("Please select from the dropdown.");
 	        		return;
@@ -222,6 +226,9 @@
 	        		$.ajax({
 	        			type:'PUT',
 	        			url: 'rest/purchaseRequest/'+prNo+'/updatestatus/'+newStatus,
+	        			data: JSON.stringify(data),
+	    				dataType: 'json',
+	    				contentType :"application/json",
 	        			success: function(data, status, jqXHR ){
 	        				$('#progress').hide();
         					alert("Updated Successfully!!");
