@@ -188,12 +188,11 @@ $("#saveChanges").click(function(){
 	   $("#ucase").hasClass('glyphicon-ok') && $("#ucase").hasClass('glyphicon-ok') &&
 	   $("#lcase").hasClass('glyphicon-ok')){
 		var data = {
-			'id':	id,
 			'newPassword': $('#password1').val()
 		};
 		$.ajax({
 			type:'POST',
-			url: 'rest/user/changepassword',
+			url: 'rest/user/' + id + '/changepassword',
 			data: JSON.stringify(data),
 			contentType :"application/json; charset=utf-8",
 			success: function(data, status, jqXHR ){

@@ -27,23 +27,46 @@
 $(function () {
         $("#usersTable").jqGrid({
             datatype:'local',
-            colNames:['User Id', 'User Name', 'First Name', 'Last Name', 'Email Address', 'Authorized Transaction Limit', 'Reporting To','Roles','Status'],
+            colNames:['User Id', 'User Name', 'First Name', 'Last Name', 'Email Address', 'Authorized Transaction Limit', 'Reporting To','Roles','Action',''],
             colModel:[
                 {name:'id', width:30, sortable: false, align:'center', resizable: true},
-                {name:'ssoId', width:40, sortable: false, align:'left', resizable: true},
+                {name:'ssoId', width:50, sortable: false, align:'left', resizable: true},
                 {name:'firstName', width:40, sortable: false, align:'left', resizable: true},
                 {name:'lastName', width:40, sortable: false, align:'left', resizable: true},
                 {name:'email', width:60, sortable: false, align:'left', resizable: true},
                 {name:'authorizedTransactionLimit', width:40, sortable: false, align:'right', resizable: true},
                 {name:'reportingTo', width:60, sortable: false, align:'left', resizable: true},
                 {name:'roles', width:80, sortable: false, align:'left', resizable: true},
-                {name:'status', width:30, sortable: false, align:'center', resizable: true}
+                {name:'action', width:55, sortable: false, align:'center', resizable: true},
+                {name:'status', hidden:true}
 			],
             width: $("#usersHeader").width()-30,
             height: "400",
             scroll : true,
             gridview : true,
             loadtext: 'building list...',
+            gridComplete: function(){ 
+                var ids = jQuery("#usersTable").getDataIDs(); 
+                for(var i=0;i<ids.length;i++){ 
+                	var selRowData = jQuery("#usersTable").getRowData(ids[i]);
+                	var statusAction = "Activate";
+                	var resetPassLink = "";
+                	//alert( selRowData.status );
+                	if( selRowData.status == "true" ) {
+                		statusAction = "Deactivate";
+                		var colModel = {
+            				id		: selRowData.id,
+                			ssoId	: selRowData.ssoId
+	                	};
+                		resetPassLink = "<a id='resetPassword' style='cursor:pointer;' onclick='resetPassword("+JSON.stringify(colModel)+")' ><u>Reset</u></a>";
+                	}
+                	var actionLinks = "<a id='changeStatus' style='cursor:pointer;' onclick='changeStatus("+selRowData.id+")' ><u>"+ statusAction +"</u></a>"; 
+                	if( resetPassLink.length > 0 ) {
+                		actionLinks = actionLinks + " | " + resetPassLink;
+                	}
+                	jQuery("#usersTable").setRowData(ids[i],{action:actionLinks});
+                }
+            },
             jsonReader: {
                 repeatitems: false,
             },
@@ -59,12 +82,16 @@ $(function () {
             rownumbers: true
         });
     	
-        var newUrlUsersTable = "rest/user/_search";
-        $("#usersTable").jqGrid().setGridParam({
-    		url : newUrlUsersTable, 
-    		page : 1, 
-    		mtype:'POST',
-    		datatype : "json",
+        loadUsers();
+   });
+   
+   function loadUsers() {
+	   var newUrlUsersTable = "rest/user/_search";
+       $("#usersTable").jqGrid().setGridParam({
+   		url : newUrlUsersTable, 
+   		page : 1, 
+   		mtype:'POST',
+   		datatype : "json",
 			ajaxGridOptions: { 
 				type :'POST',
 				contentType :"application/json; charset=utf-8"
@@ -73,9 +100,52 @@ $(function () {
 				postData['pageSize'] =  defaultPageSize;
 			    return JSON.stringify(postData);
 			}
-    	});
-         $("#usersTable").jqGrid().trigger('reloadGrid');
-   });
+   		});
+        $("#usersTable").jqGrid().trigger('reloadGrid');
+   }
+   
+   function changeStatus( userId ) {
+	   if(confirm('Do you want to change the status?')){
+	    	$.ajax({
+	            url: 'rest/user/'+userId+'/changestatus',
+	            type: 'PUT',
+	            success: function(data, textStatus, jqXHR) { 
+	                alert("Status Changed Successfully.");
+	                loadUsers();
+	            },
+	            error: function(jqXHR, textStatus, errorThrown) { 
+	            	if( jqXHR.status == 401 ) {
+	            		alert("Unsuccessful - Session Expired.");
+	            	} else if( jqXHR.responseText.length == 0 ) {
+	            		alert("Service Unavailable");
+	            	} else {
+	                    alert(jqXHR.statusText); 	
+	            	}
+	            }
+	        });
+	    }
+   }
+   
+   function resetPassword( user ) {
+	   if(confirm('Do you want to reset password for user ' + user.ssoId + ' ?')){
+	    	$.ajax({
+	            url: 'rest/user/'+user.id+'/resetpassword',
+	            type: 'PUT',
+	            success: function(data, textStatus, jqXHR) { 
+	                alert("Password reset Successfully.");
+	            },
+	            error: function(jqXHR, textStatus, errorThrown) { 
+	            	if( jqXHR.status == 401 ) {
+	            		alert("Unsuccessful - Session Expired.");
+	            	} else if( jqXHR.responseText.length == 0 ) {
+	            		alert("Service Unavailable");
+	            	} else {
+	                    alert(jqXHR.statusText); 	
+	            	}
+	            }
+	        });
+	    }
+   }
 </script>
 </body>
 </html>

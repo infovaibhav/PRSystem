@@ -21,7 +21,6 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
 	
 	public void save(User user){
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -59,7 +58,7 @@ public class UserServiceImpl implements UserService{
 				userDto.setAuthorizedTransactionLimit(user.getAuthorizedTransactionLimit());
 				userDto.setReportingTo(user.getReportingToStr());
 				userDto.setRoles(user.getUserProfileStr());
-				userDto.setStatus(user.getIsActive() ? "Active" : "Inactive");
+				userDto.setStatus(user.getIsActive());
 				userDtos.add(userDto);
 			}
 		}
@@ -67,10 +66,21 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void changePassword(UserDto dto) {
-		User user = dao.findById(dto.getId());
-		user.setPassword(dto.getNewPassword());
-		save(user);
+	public void changePassword(Long id, String newPassword) {
+		User user = dao.findById(id);
+		user.setPassword(newPassword);
+		this.save(user);
+	}
+
+	@Override
+	public void changeStatus(Long id) {
+		User user = dao.findById(id);
+		if( user.getIsActive() ) {
+			user.setIsActive( false );
+		} else {
+			user.setIsActive( true );
+		}
+		dao.save(user);
 	}
 	
 }

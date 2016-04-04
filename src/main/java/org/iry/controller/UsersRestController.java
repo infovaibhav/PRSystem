@@ -4,6 +4,7 @@
 package org.iry.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.iry.dto.SearchCriteria;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,16 +45,37 @@ public class UsersRestController {
 		}
     }
 	
-	@RequestMapping(value = "/changepassword", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<String> changePassword(@RequestBody UserDto userDto) {
+	@RequestMapping(value = "/{id}/changepassword", method = RequestMethod.POST, produces = MediaType.TEXT_HTML_VALUE )
+    public ResponseEntity<String> changePassword(@PathVariable("id") Long id, @RequestBody Map<String, String> data) {
 		try {
-			userService.changePassword(userDto);
+			userService.changePassword(id, data.get("newPassword"));
 			return new ResponseEntity<String>("Password changed successfully!!", HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in changing password...", e);
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
+    }
+	
+	@RequestMapping(value = "/{id}/resetpassword", method = RequestMethod.PUT, produces = MediaType.TEXT_HTML_VALUE )
+    public ResponseEntity<String> resetPassword(@PathVariable("id") Long id) {
+		try {
+			userService.changePassword(id, "temp1234");
+			return new ResponseEntity<String>("Password reset successfully!!", HttpStatus.OK);
+		} catch( Exception e ) {
+			log.error("Error in changing password...", e);
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+	
+	@RequestMapping(value = "/{id}/changestatus", method = RequestMethod.PUT, produces = MediaType.TEXT_HTML_VALUE )
+    public ResponseEntity<String> changeStatus(@PathVariable("id") Long id) {
+		try {
+			userService.changeStatus(id);
+			return new ResponseEntity<String>("Status Changed successfully!!", HttpStatus.OK);
+		} catch( Exception e ) {
+			log.error("Error in changing password...", e);
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
     }
 
 }

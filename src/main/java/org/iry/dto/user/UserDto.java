@@ -15,8 +15,7 @@ public class UserDto implements BaseDto {
 	private Double authorizedTransactionLimit;
 	private String reportingTo;
 	private String roles;
-	private String status;
-	private String newPassword;
+	private Boolean status;
 	
 	public Long getId() {
 		return id;
@@ -72,16 +71,10 @@ public class UserDto implements BaseDto {
 	public void setRoles(String roles) {
 		this.roles = roles;
 	}
-	public String getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
-	}
-	public String getNewPassword() {
-		return newPassword;
-	}
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
 	}
 }
