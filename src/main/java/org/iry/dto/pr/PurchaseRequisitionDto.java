@@ -45,6 +45,7 @@ public class PurchaseRequisitionDto implements BaseDto {
 	private String lastUpdatedByName;
 	private String prNoPrefix;
 	private boolean editable;
+	private String prRemark;
 	private List<Action> allowedStatusChanges = new ArrayList<Action>();
 	private String allowedStatusChangesStr;
 	private boolean submitted;
@@ -306,5 +307,11 @@ public class PurchaseRequisitionDto implements BaseDto {
 	}
 	public void setTotalRecords(int totalRecords) {
 		this.totalRecords = totalRecords;
+	}
+	public String getPrRemark() {
+		return prRemark;
+	}
+	public void setPrRemark(String prRemark) {
+		this.prRemark = prRemark;
 	}
 }

@@ -102,6 +102,9 @@ public class PurchaseRequisition implements Serializable {
 	@Column(name="LAST_UPDATED_BY_NAME")
 	private String lastUpdatedByName;
 	
+	@Column(name="REMARK")
+	private String prRemark;
+	
 	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "purchaseRequisition", fetch = FetchType.LAZY)
 	private Set<PurchaseRequisitionItems> purchaseRequisionItems = new HashSet<PurchaseRequisitionItems>();
@@ -265,5 +268,11 @@ public class PurchaseRequisition implements Serializable {
 	}
 	public void setTotalRecords(int totalRecords) {
 		this.totalRecords = totalRecords;
+	}
+	public String getPrRemark() {
+		return prRemark;
+	}
+	public void setPrRemark(String prRemark) {
+		this.prRemark = prRemark;
 	}
 }

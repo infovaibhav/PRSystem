@@ -36,20 +36,8 @@ public class PurchaseRequisitionItems {
 	@Column(name="TOTAL_QUANTITY_REQUIRED")
 	private int totalQuantityRequired;
 
-	@Column(name="QUANTITY_IN_STOCK")
-	private int quantityInStock;
-
-	@Column(name="QUANTITY_TO_BE_PURCHASED", nullable = false)
-	private int quantityTobePurchased;
-
 	@Column(name="UOM")
 	private String uom;
-
-	@Column(name="UNIT_COST")
-	private Double unitCost;
-
-	@Column(name="APPROX_TOTAL_COST")
-	private Double approxTotalCost;
 
 	@Column(name="MAKE")
 	private String make;
@@ -60,8 +48,17 @@ public class PurchaseRequisitionItems {
 	@Column(name="REQUIRED_BY_DATE")
 	private Timestamp requiredByDate;
 	
-	@Column(name="PREFERRED_SUPPLIER")
-	private String preferredSupplier;
+	@Column(name="DELIVERY_DATE")
+	private Timestamp deliveryDate;
+	
+	@Column(name="ORDERED_QUANTITY")
+	private Integer orderedQuantity;
+	
+	@Column(name="DEVIATION")
+	private Double deviation;
+	
+	@Column(name="REMARK")
+	private String remark;
 	
 	public Long getId() {
 		return id;
@@ -87,35 +84,11 @@ public class PurchaseRequisitionItems {
 	public void setTotalQuantityRequired(int totalQuantityRequired) {
 		this.totalQuantityRequired = totalQuantityRequired;
 	}
-	public int getQuantityInStock() {
-		return quantityInStock;
-	}
-	public void setQuantityInStock(int quantityInStock) {
-		this.quantityInStock = quantityInStock;
-	}
-	public int getQuantityTobePurchased() {
-		return quantityTobePurchased;
-	}
-	public void setQuantityTobePurchased(int quantityTobePurchased) {
-		this.quantityTobePurchased = quantityTobePurchased;
-	}
 	public String getUom() {
 		return uom;
 	}
 	public void setUom(String uom) {
 		this.uom = uom;
-	}
-	public Double getUnitCost() {
-		return unitCost;
-	}
-	public void setUnitCost(Double unitCost) {
-		this.unitCost = unitCost;
-	}
-	public Double getApproxTotalCost() {
-		return approxTotalCost;
-	}
-	public void setApproxTotalCost(Double approxTotalCost) {
-		this.approxTotalCost = approxTotalCost;
 	}
 	public String getMake() {
 		return make;
@@ -135,11 +108,29 @@ public class PurchaseRequisitionItems {
 	public void setRequiredByDate(Timestamp requiredByDate) {
 		this.requiredByDate = requiredByDate;
 	}
-	public String getPreferredSupplier() {
-		return preferredSupplier;
+	public Timestamp getDeliveryDate() {
+		return deliveryDate;
 	}
-	public void setPreferredSupplier(String preferredSupplier) {
-		this.preferredSupplier = preferredSupplier;
+	public void setDeliveryDate(Timestamp deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+	public Integer getOrderedQuantity() {
+		return orderedQuantity;
+	}
+	public void setOrderedQuantity(Integer orderedQuantity) {
+		this.orderedQuantity = orderedQuantity;
+	}
+	public Double getDeviation() {
+		return deviation;
+	}
+	public void setDeviation(Double deviation) {
+		this.deviation = deviation;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	@Override
 	public int hashCode() {

@@ -50,6 +50,7 @@
     				$("#projectName").attr("disabled", "disabled");
     				$("#projectCode").val(data.projectCode);
     				$("#projectCode").attr("disabled", "disabled");
+    				$("#remark").val(data.prRemark);
     				$("#createdDateStr").val(data.createdDateStr);
     				$("#createdByName").val(data.createdByName);
     				$("#status").val(data.status);
@@ -96,23 +97,39 @@
                 });
             }, 100);
 		}
+		//Which columns to show for pr items
+		var colNames = ['Description*', 'Total Qty required*', 'UOM', 'Make','Cat No.','Required by date', ''];
+		var colModel = [
+				        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
+				        {name:'totalQuantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
+				        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
+				        {name:'make', width:40, sortable: false, align:'left', resizable: true},
+				        {name:'catNo', width:30, sortable: false, align:'left', resizable: true},
+				        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true}},
+				        {name:'priId', hidden:true}
+					];
+		
+		if ( false ) {
+			colNames = ['Description*', 'Total Qty required*', 'UOM', 'Make','Cat No.','Required by date', 'Delivery Date', 'Ordered Quantity', 'Deviation', 'Remark', ''];
+			colModel = [
+				        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
+				        {name:'totalQuantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
+				        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
+				        {name:'make', width:40, sortable: false, align:'left', resizable: true},
+				        {name:'catNo', width:30, sortable: false, align:'left', resizable: true},
+				        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true}},
+				        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true}},
+				        {name:'orderedQuantity', width:30, sortable: false, align:'right', resizable: true},
+				        {name:'deviation', width:30, sortable: false, align:'right', resizable: true},
+				        {name:'remark', width:80, sortable: false, align:'left', resizable: true},
+				        {name:'priId', hidden:true}
+					];
+		}
+		
 		$("#addPrItemGrid").jqGrid({
 		    datatype:'local',
-		    colNames:['Description*', 'Total Qty required*', 'Qty In stock', 'Qty to be Purchased*', 'UOM', 'Unit Value', 'Approx. Total Value','Make','Cat No.','Required by date','Preferred Supplier',''],
-		    colModel:[
-		        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
-		        {name:'totalQuantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
-		        {name:'quantityInStock', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true}},
-		        {name:'quantityTobePurchased', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
-		        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
-		        {name:'unitCost', width:40, sortable: true, align:'right', resizable: true, editrules:{number:true}},
-		        {name:'approxTotalCost', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true}},
-		        {name:'make', width:40, sortable: false, align:'left', resizable: true},
-		        {name:'catNo', width:30, sortable: false, align:'left', resizable: true},
-		        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true}},
-		        {name:'preferredSupplier', width:30, sortable: false, align:'left', resizable: true},
-		        {name:'priId', hidden:true}
-			],
+		    colNames:colNames,
+		    colModel:colModel,
 		    width: $("#prheader").width()-30,
 		    cmTemplate: {editable: true}, 
 		    pager: '#addgridPager',
@@ -161,8 +178,8 @@
 <body onload="onLoad()">
     <jsp:include page="../menubar.jsp"></jsp:include>
  	<div class="form-container">
- 		<h2 class="text-center">IRY Engineering Pvt Ltd</h2>
-	 	<h3 class="text-center">Purchase Requisition</h3>
+ 		<h3 class="text-center">IRY Engineering Pvt Ltd</h3>
+	 	<h4 class="text-center">Purchase Requisition</h4>
 	 	<hr>
 		<form:form method="POST" action="javascript:myFunction();" modelAttribute="purchaseRequisition" class="form-horizontal" id="purchaseRequisition">
 			<div class="row">
@@ -210,9 +227,17 @@
 					</div>
 				</div>
 				<div class="form-group col-md-5" id="currentStatus" style="display: none">
-					<label class="control-lable col-md-3" for="prNo" id="prNoValue">Status:</label>
+					<label class="control-lable col-md-3" for="status" id="status">Status:</label>
 					<div class="col-md-5">
 						<input type="text" id="status" disabled="true" readonly="true" class="form-control input-sm"/>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-6">
+					<label class="col-md-3 control-lable" for="remark">Remark:</label>
+					<div class="col-md-5">
+						<input type="text" id="remark" disabled="true" readonly="true" class="form-control input-sm"/>
 					</div>
 				</div>
 			</div>
