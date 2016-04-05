@@ -83,4 +83,9 @@ public class UserServiceImpl implements UserService{
 		dao.save(user);
 	}
 	
+	@Override
+	public List<Long> getAllSubordinateUserIds( Long userId ) {
+		return dao.getAllSubordinateUserIds(userId);
+	}
+	
 }

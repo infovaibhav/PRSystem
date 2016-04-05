@@ -85,5 +85,14 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 		crit.setProjection(Projections.distinct(Projections.property("email")));
 		return crit.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Long> getAllSubordinateUserIds( Long userId ) {
+		Criteria crit = createEntityCriteria();
+		crit.add(Restrictions.eq("reportingTo.id", userId));
+		crit.setProjection(Projections.distinct(Projections.property("id")));
+		return crit.list();
+	}
 
 }

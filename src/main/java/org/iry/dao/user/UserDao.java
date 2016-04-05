@@ -24,6 +24,8 @@ public interface UserDao {
 	List<String> getUserEmailsByIds(Set<Long> userIds);
 
 	List<String> getUserEmailsByTypes(Set<String> userProfileTypes);
+
+	List<Long> getAllSubordinateUserIds(Long userId);
 	
 }
 

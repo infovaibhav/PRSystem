@@ -45,6 +45,8 @@ public class PurchaseRequisitionDto implements BaseDto {
 	private String lastUpdatedByName;
 	private String prNoPrefix;
 	private boolean editable;
+	private boolean editablePrRemark;
+	private boolean editablePrItemsRemark;
 	private String prRemark;
 	private List<Action> allowedStatusChanges = new ArrayList<Action>();
 	private String allowedStatusChangesStr;
@@ -271,6 +273,18 @@ public class PurchaseRequisitionDto implements BaseDto {
 	}
 	public void setEditable(boolean editable) {
 		this.editable = editable;
+	}
+	public boolean isEditablePrRemark() {
+		return editablePrRemark;
+	}
+	public void setEditablePrRemark(boolean editablePrRemark) {
+		this.editablePrRemark = editablePrRemark;
+	}
+	public boolean isEditablePrItemsRemark() {
+		return editablePrItemsRemark;
+	}
+	public void setEditablePrItemsRemark(boolean editablePrItemsRemark) {
+		this.editablePrItemsRemark = editablePrItemsRemark;
 	}
 	public List<Action> getAllowedStatusChanges() {
 		return allowedStatusChanges;

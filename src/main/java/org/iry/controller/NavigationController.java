@@ -1,5 +1,6 @@
 package org.iry.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +37,7 @@ public class NavigationController {
 	UserService userService;
 	
 	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
-	public String homePage(ModelMap model) {
+	public String homePage(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Set<String> privileges = SpringContextUtil.getPrivileges();
 		if( privileges.contains(UserProfileType.MANAGER.getUserProfileType())
 				|| privileges.contains(UserProfileType.PURCHASE_MANAGER.getUserProfileType())
@@ -46,7 +47,7 @@ public class NavigationController {
 		} else if( privileges.contains(UserProfileType.ADMIN.getUserProfileType()) ) {
 			return viewUsers(model);
 		} else {
-			return myPurchaseRequisitions(model);
+			return myPurchaseRequisitions(request, response, model);
 		}
 	}
 
@@ -117,22 +118,30 @@ public class NavigationController {
 		return "pr/newpr";
 	}
 	
+	@RequestMapping(value = "/editPR", method = RequestMethod.GET)
+	public String editPurchaseRequisition(ModelMap model){
+		PurchaseRequisition purchaseRequisition = new PurchaseRequisition();
+		PurchaseRequisitionItems purchaseRequisitionItems = new PurchaseRequisitionItems();
+		model.addAttribute("purchaseRequisition", purchaseRequisition);
+		model.addAttribute("purchaseRequisitionItems", purchaseRequisitionItems);
+		return "pr/newpr";
+	}
+	
 	@RequestMapping(value = "/myPR", method = RequestMethod.GET)
-	public String myPurchaseRequisitions(ModelMap model){
+	public String myPurchaseRequisitions(HttpServletRequest request, HttpServletResponse response, ModelMap model){
+		Long userId = SpringContextUtil.getUserId();
+		StringBuilder createdBy = new StringBuilder(userId.toString());
+		List<Long> subordinates = userService.getAllSubordinateUserIds(userId);
+		for (Long user : subordinates) {
+			createdBy.append(',');
+			createdBy.append(user.toString());
+		}
+		request.setAttribute("createdBy", createdBy);
 		return "pr/mypr";
 	}
 	
 	@RequestMapping(value = "/searchPR", method = RequestMethod.GET)
 	public String searchPurchaseRequisitions(ModelMap model){
 		return "pr/searchpr";
-	}
-	
-	@RequestMapping(value = "/editPR", method = RequestMethod.GET)
-	public String editPurchaseOrder(ModelMap model){
-		PurchaseRequisition purchaseRequisition = new PurchaseRequisition();
-		PurchaseRequisitionItems purchaseRequisitionItems = new PurchaseRequisitionItems();
-		model.addAttribute("purchaseRequisition", purchaseRequisition);
-		model.addAttribute("purchaseRequisitionItems", purchaseRequisitionItems);
-		return "pr/newpr";
 	}
 }

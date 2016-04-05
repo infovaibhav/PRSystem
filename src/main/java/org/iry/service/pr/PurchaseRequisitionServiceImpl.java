@@ -85,7 +85,9 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		if( pr == null ) {
 			throw new InvalidRequestException("Purchase requisition does not exists.");
 		}
-		pr.setPrRemark(remark);
+		if( remark != null && remark.trim().length() > 0 ) {
+			pr.setPrRemark(remark);
+		}
 		this.setStatusInformation(pr, status, userId, userName);
 		
 		prDao.save(pr);
@@ -100,9 +102,11 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		if( status != null && status.trim().length() != 0 ) {
 			pr.setStatus(status);
 			if( status.equals(PurchaseRequisitionStatus.INITIAL.getStatus()) ) {
-				pr.setCreatedBy(userId);
-				pr.setCreatedByName(userName);
-				pr.setCreatedDate(currentTimestamp);
+				if( pr.getCreatedBy() == null ) {
+					pr.setCreatedBy(userId);
+					pr.setCreatedByName(userName);
+					pr.setCreatedDate(currentTimestamp);
+				}
 			} else if( status.equals(PurchaseRequisitionStatus.SUBMITTED.getStatus()) ) {
 				pr.setCreatedBy(userId);
 				pr.setCreatedByName(userName);
@@ -167,7 +171,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	
 	private PurchaseRequisitionItems convertToPojo(PurchaseRequisitionItemsDto dto, PurchaseRequisition existingPr) throws Exception {
 		PurchaseRequisitionItems prItem = null;
-		if( dto.getTotalQuantityRequired() == 0 ) {
+		if( dto.getQuantityRequired() == 0 ) {
 			throw new InvalidRequestException("Required Quantity zero.");
 		}
 		/*if( dto.getTotalQuantityRequired() <= dto.getQuantityInStock() ) {
@@ -192,19 +196,31 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		}
 		
 		prItem.setDescription(dto.getDescription());
-		prItem.setTotalQuantityRequired(dto.getTotalQuantityRequired());
-		prItem.setUom(dto.getUom());
-		prItem.setMake(dto.getMake());
-		prItem.setCatNo(dto.getCatNo());
+		
+		prItem.setQuantityRequired(dto.getQuantityRequired());
+		
+		if( dto.getUom() != null && dto.getUom().trim().length() > 0 ) {
+			prItem.setUom(dto.getUom());
+		}
+		if( dto.getMake() != null && dto.getMake().trim().length() > 0 ) {
+			prItem.setMake(dto.getMake());
+		}
+		if( dto.getCatNo() != null && dto.getCatNo().trim().length() > 0 ) {
+			prItem.setCatNo(dto.getCatNo());
+		}
 		if( dto.getRequiredByDate() != null ) {
 			prItem.setRequiredByDate(new Timestamp(dto.getRequiredByDate().getTime()));
 		}
 		if( dto.getDeliveryDate() != null ) {
 			prItem.setDeliveryDate(new Timestamp(dto.getDeliveryDate().getTime()));
 		}
-		prItem.setDeviation(dto.getDeviation());
+		if( dto.getDeviation() != null && dto.getDeviation().trim().length() > 0 ) {
+			prItem.setDeviation(dto.getDeviation());
+		}
 		prItem.setOrderedQuantity(dto.getOrderedQuantity());
-		prItem.setRemark(dto.getRemark());
+		if( dto.getRemark() != null && dto.getRemark().trim().length() > 0 ) {
+			prItem.setRemark(dto.getRemark());
+		}
 		prItem.setPurchaseRequisition(existingPr);
 		
 		return prItem;
@@ -261,7 +277,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		PurchaseRequisitionItemsDto dto = new PurchaseRequisitionItemsDto();
 		dto.setPriId(prItem.getId());
 		dto.setDescription(prItem.getDescription());
-		dto.setTotalQuantityRequired(prItem.getTotalQuantityRequired());
+		dto.setQuantityRequired(prItem.getQuantityRequired());
 		dto.setUom(prItem.getUom());
 		dto.setMake(prItem.getMake());
 		dto.setCatNo(prItem.getCatNo());

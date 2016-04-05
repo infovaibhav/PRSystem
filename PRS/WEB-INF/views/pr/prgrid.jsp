@@ -11,7 +11,7 @@
 			var lastsel;
 	        $("#prTable").jqGrid({
 	            datatype:'local',
-	            colNames:['PR No', 'Project Name', 'Project Code', 'Prepared By', 'Prepared Date', 'Last Updated By', 'Last Updated Date', 'Status', 'Action','','','','','','','',''],
+	            colNames:['PR No', 'Project Name', 'Project Code', 'Prepared By', 'Prepared Date', 'Last Updated By', 'Last Updated Date', 'Status', 'Action','','','','','','','','',''],
 	            colModel:[
 	                {name:'prNo', index:'prNo',key:true, width:80, sortable: false, align:'left', resizable: true, search:true/* , formatter: 'showlink', formatoptions: { baseLinkUrl: '', showAction: "editPR", idName:"prNo"}  */},
 	                {name:'projectName', width:80, sortable: false, align:'left', resizable: true, search:false},
@@ -29,6 +29,7 @@
 	                {name:'acknowledgedDateStr',  hidden:true},
 	                {name:'acknowledgedByName',  hidden:true},
 	                {name:'editable',  hidden:true},
+	                {name:'editablePrRemark',  hidden:true},
 	                {name:'allowedStatusChangesStr',  hidden:true}
 				],
 				width: $("#prHeader").width()-30,
@@ -75,6 +76,7 @@
 	            	var approvedByName = rowData['approvedByName'];
 	            	var acknowledgedDateStr = rowData['acknowledgedDateStr'];
 	            	var acknowledgedByName = rowData['acknowledgedByName'];
+	            	var editablePrRemark = rowData['editablePrRemark'];
 	            	
 	            	var emptyDivHtml = "<div>&nbsp</div>";
 	            	
@@ -93,8 +95,12 @@
 		            	}
 		            	var dropDown = "<select id='statusDropDown_"+prNo+"'>"+ options+"</select>";
 		            	updateStatusHtml = emptyDivHtml + "<div><span style='margin: 5px;color: #000080;font-weight: bold;'>Status : </span><span>"+dropDown+ " </span>&nbsp;&nbsp;";
-		            	updateStatusHtml += "<span><span style='margin: 5px;color: #000080;font-weight: bold;'>Remark : </span><input type='text' id='remark_"+prNo+"'/>";
-		            	updateStatusHtml += "<span><input type='button' style='margin-left: 10px;margin-top:-3px' id='updateStatus_"+prNo+"' class='btn btn-primary' value='Update'/></div>";
+		            	if( editablePrRemark == 'true' ) {
+		            		updateStatusHtml += "<span><span style='margin: 5px;color: #000080;font-weight: bold;'>Remark : </span><input type='text' id='remark_"+prNo+"'/><span>";
+		            	} else {
+		            		updateStatusHtml += "<input type='hidden' id='remark_"+prNo+"' value=''/>";
+		            	}
+		            	updateStatusHtml += "<span><input type='button' style='margin-left: 10px;margin-top:-3px' id='updateStatus_"+prNo+"' class='btn btn-primary' value='Update'/></span></div>";
 	            	}
     		        
 	            	auditHtml = emptyDivHtml + "<table id='" + priSubgridAuditTableId + "'></table>";
@@ -151,19 +157,18 @@
 	                $("#" + priSubgridTableId).jqGrid({
 	                	datatype:'local',
 	                	mtype: 'GET',
-	                	colNames:['Description*', 'Total Qty required*', 'Qty In stock', 'Qty to be Purchased*', 'UOM', 'Unit Value', 'Approx. Total Value','Make','Cat No.','Required by date','Preferred Supplier'],
+	                	colNames:['Description', 'Quantity required', 'UOM', 'Make', 'Cat No.', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark'],
 	        		    colModel:[
 	        		        {name:'description', width:80, sortable: false, align:'left', resizable: true},
-	        		        {name:'totalQuantityRequired', width:40, sortable: false, align:'right', resizable: true},
-	        		        {name:'quantityInStock', width:40, sortable: false, align:'right', resizable: true},
-	        		        {name:'quantityTobePurchased', width:40, sortable: false, align:'right', resizable: true},
+	        		        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true},
 	        		        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
-	        		        {name:'unitCost', width:30, sortable: false, align:'right', resizable: true},
-	        		        {name:'approxTotalCost', width:40, sortable: false, align:'right', resizable: true},
 	        		        {name:'make', width:40, sortable: false, align:'left', resizable: true},
 	        		        {name:'catNo', width:40, sortable: false, align:'left', resizable: true},
 	        		        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true},
-	        		        {name:'preferredSupplier', width:40, sortable: false, align:'left', resizable: true}
+	        		        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true},
+	        		        {name:'orderedQuantity', width:50, sortable: false, align:'right', resizable: true},
+	        		        {name:'deviation', width:50, sortable: false, align:'left', resizable: true},
+	        		        {name:'remark', width:50, sortable: false, align:'left', resizable: true}
 	        			],
 	    				width: $("#prHeader").width()-111,
 	                    height: '100%',
@@ -214,12 +219,13 @@
 	        
 	        function changeStatus(target, prNo, remarkTarget) {
 	        	var newStatus = target.val();
-	        	var data = {
-	        			remark : remarkTarget.val()
-	        	};
 	        	if( newStatus == '' ) {
 	        		alert("Please select from the dropdown.");
 	        		return;
+	        	}
+	        	var data = {};
+	        	if( remarkTarget.val().trim().length > 0 ) {
+	        		data = { "remark" : remarkTarget.val().trim() };
 	        	}
      			if( confirm('Do you want to change the status to ' + newStatus + ' ?') ) {
         			$('#progress').show();
@@ -268,7 +274,11 @@
 					postData['projectName'] = $('#projectName').val();
 					postData['projectCode'] = $('#projectCode').val();
 					if( $('#createdBy').val().trim().length > 0 ) {
-						postData['createdBy'] = [$('#createdBy').val()];
+						postData['createdBy'] = [];
+						var createdBy = $('#createdBy').val().split(',');
+						for( var i=0; i< createdBy.length; i++) {
+							postData['createdBy'].push(createdBy[i]);
+						}
 					}
 					if( $('#status').val().trim().length > 0 ) {
 						postData['statuses'] = [$('#status').val()];

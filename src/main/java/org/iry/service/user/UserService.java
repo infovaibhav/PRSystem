@@ -21,5 +21,7 @@ public interface UserService {
 	void changePassword(Long id, String newPassword);
 
 	void changeStatus(Long id);
+
+	List<Long> getAllSubordinateUserIds(Long userId);
 	
 }

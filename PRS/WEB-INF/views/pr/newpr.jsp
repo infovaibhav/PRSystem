@@ -51,6 +51,9 @@
     				$("#projectCode").val(data.projectCode);
     				$("#projectCode").attr("disabled", "disabled");
     				$("#remark").val(data.prRemark);
+    				if( data.editablePrRemark == false ) {
+    					$("#remark").attr("disabled", "disabled");
+    				}
     				$("#createdDateStr").val(data.createdDateStr);
     				$("#createdByName").val(data.createdByName);
     				$("#status").val(data.status);
@@ -63,7 +66,85 @@
 						$("#submitAllDetails").show();
 					}
     	    		
+					//Which columns to show for pr items
+					var colNames = ['Description*', 'Quantity Required*', 'UOM', 'Make', 'Cat No.', 'Required Date', ''];
+					var colModel = [
+							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
+							        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
+							        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
+							        {name:'make', width:40, sortable: false, align:'left', resizable: true},
+							        {name:'catNo', width:30, sortable: false, align:'left', resizable: true},
+							        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:false}},
+							        {name:'priId', hidden:true}
+								];
+					
+					if( data.editablePrItemsRemark == true ) {
+						colNames = ['Description*', 'Quantity Required*', 'UOM', 'Make', 'Cat No.', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark', ''];
+						colModel = [
+							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editable:false},
+							        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'make', width:40, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'catNo', width:30, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editable:false},
+							        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true}},
+							        {name:'orderedQuantity', width:30, sortable: false, align:'right', resizable: true},
+							        {name:'deviation', width:30, sortable: false, align:'right', resizable: true},
+							        {name:'remark', width:80, sortable: false, align:'left', resizable: true},
+							        {name:'priId', hidden:true}
+								];
+					}
+					
+					$("#addPrItemGrid").jqGrid({
+					    datatype:'local',
+					    colNames:colNames,
+					    colModel:colModel,
+					    width: $("#prheader").width()-30,
+					    cmTemplate: {editable: true}, 
+					    pager: '#addgridPager',
+					    gridview: true,
+					    rownumbers: true,
+					    pgbuttons : false,
+					    pginput : false,
+					    editurl: "clientArray",
+					    jsonReader: {
+					        repeatitems: false,
+					    },
+					    loadError: function(jqXHR, status, error) {
+					    	if( jqXHR.status == 401 ) {
+					        	jQuery("#addPrItemGrid").html('<div style="height: 205px">Session Expired</div>');            		
+					    	} else if ( jqXHR.responseText.length == 0 ) {
+					    		jQuery("#addPrItemGrid").html('<div style="height: 205px">Service Unavailable</div>');
+					    	} else {
+					        	jQuery("#addPrItemGrid").html('<div style="height: 205px">' + jqXHR.statusText + '</div>');
+					    	}
+					    }
+					});
+					$("#addPrItemGrid").jqGrid('inlineNav', '#addgridPager', { edittext: "Edit",
+					    addtext: "Add",
+					    savetext: "Save",
+					    canceltext: "Cancel",
+					    addParams: {position: "last",edit: true, del:false}
+					});
+					$.extend($.jgrid.inlineEdit, {
+			            keys: true
+			        });
+					$("#addPrItemGrid_ilsave").click(function(){
+					});
+					$("#addPrItemGrid").navButtonAdd('#addgridPager',{
+						   buttonicon:"ui-icon-close", 
+						   caption:"Delete", 
+						   onClickButton: function(){ 
+							   var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
+								if( gr != null ) jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
+								else alert("Please Select Row to delete!");
+						   }, 
+						   position:"last"
+						});
+					
     				$('#addPrItemGrid').jqGrid('setGridParam', {data: data.purchaseRequisionItems}).trigger('reloadGrid');
+    				
+    				
     			},
                 error : function(jqXHR, status, error) {
                 	if( jqXHR.status == 401 ) {
@@ -97,88 +178,12 @@
                 });
             }, 100);
 		}
-		//Which columns to show for pr items
-		var colNames = ['Description*', 'Total Qty required*', 'UOM', 'Make','Cat No.','Required by date', ''];
-		var colModel = [
-				        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
-				        {name:'totalQuantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
-				        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
-				        {name:'make', width:40, sortable: false, align:'left', resizable: true},
-				        {name:'catNo', width:30, sortable: false, align:'left', resizable: true},
-				        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true}},
-				        {name:'priId', hidden:true}
-					];
-		
-		if ( false ) {
-			colNames = ['Description*', 'Total Qty required*', 'UOM', 'Make','Cat No.','Required by date', 'Delivery Date', 'Ordered Quantity', 'Deviation', 'Remark', ''];
-			colModel = [
-				        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
-				        {name:'totalQuantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
-				        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
-				        {name:'make', width:40, sortable: false, align:'left', resizable: true},
-				        {name:'catNo', width:30, sortable: false, align:'left', resizable: true},
-				        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true}},
-				        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true}},
-				        {name:'orderedQuantity', width:30, sortable: false, align:'right', resizable: true},
-				        {name:'deviation', width:30, sortable: false, align:'right', resizable: true},
-				        {name:'remark', width:80, sortable: false, align:'left', resizable: true},
-				        {name:'priId', hidden:true}
-					];
-		}
-		
-		$("#addPrItemGrid").jqGrid({
-		    datatype:'local',
-		    colNames:colNames,
-		    colModel:colModel,
-		    width: $("#prheader").width()-30,
-		    cmTemplate: {editable: true}, 
-		    pager: '#addgridPager',
-		    gridview: true,
-		    rownumbers: true,
-		    pgbuttons : false,
-		    pginput : false,
-		    editurl: "clientArray",
-		    jsonReader: {
-		        repeatitems: false,
-		    },
-		    loadError: function(jqXHR, status, error) {
-		    	if( jqXHR.status == 401 ) {
-		        	jQuery("#addPrItemGrid").html('<div style="height: 205px">Session Expired</div>');            		
-		    	} else if ( jqXHR.responseText.length == 0 ) {
-		    		jQuery("#addPrItemGrid").html('<div style="height: 205px">Service Unavailable</div>');
-		    	} else {
-		        	jQuery("#addPrItemGrid").html('<div style="height: 205px">' + jqXHR.statusText + '</div>');
-		    	}
-		    }
-		});
-		$("#addPrItemGrid").jqGrid('inlineNav', '#addgridPager', { edittext: "Edit",
-		    addtext: "Add",
-		    savetext: "Save",
-		    canceltext: "Cancel",
-		    addParams: {position: "last",edit: true, del:false}
-		});
-		$.extend($.jgrid.inlineEdit, {
-            keys: true
-        });
-		$("#addPrItemGrid_ilsave").click(function(){
-		});
-		$("#addPrItemGrid").navButtonAdd('#addgridPager',{
-			   buttonicon:"ui-icon-close", 
-			   caption:"Delete", 
-			   onClickButton: function(){ 
-				   var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
-					if( gr != null ) jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
-					else alert("Please Select Row to delete!");
-			   }, 
-			   position:"last"
-			});
 	});
 	</script>
 </head>
 <body onload="onLoad()">
     <jsp:include page="../menubar.jsp"></jsp:include>
  	<div class="form-container">
- 		<h3 class="text-center">IRY Engineering Pvt Ltd</h3>
 	 	<h4 class="text-center">Purchase Requisition</h4>
 	 	<hr>
 		<form:form method="POST" action="javascript:myFunction();" modelAttribute="purchaseRequisition" class="form-horizontal" id="purchaseRequisition">
@@ -237,7 +242,7 @@
 				<div class="form-group col-md-6">
 					<label class="col-md-3 control-lable" for="remark">Remark:</label>
 					<div class="col-md-5">
-						<input type="text" id="remark" disabled="true" readonly="true" class="form-control input-sm"/>
+						<input type="text" id="remark" class="form-control input-sm"/>
 					</div>
 				</div>
 			</div>

@@ -19,14 +19,14 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 	
 	private Long priId;
 	private String description;
-	private int totalQuantityRequired;
+	private int quantityRequired;
 	private String uom;
 	private String make;
 	private String catNo;
 	private String requiredByDateStr;
 	private String deliveryDateStr;
 	private Integer orderedQuantity;
-	private Double deviation;
+	private String deviation;
 	private String remark;
 	
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -46,11 +46,11 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public int getTotalQuantityRequired() {
-		return totalQuantityRequired;
+	public int getQuantityRequired() {
+		return quantityRequired;
 	}
-	public void setTotalQuantityRequired(int totalQuantityRequired) {
-		this.totalQuantityRequired = totalQuantityRequired;
+	public void setQuantityRequired(int quantityRequired) {
+		this.quantityRequired = quantityRequired;
 	}
 	public String getUom() {
 		return uom;
@@ -87,45 +87,35 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 			this.requiredByDateStr = sdf.format(requiredByDate);
 		}
 	}
-
 	public Integer getOrderedQuantity() {
 		return orderedQuantity;
 	}
-
 	public void setOrderedQuantity(Integer orderedQuantity) {
 		this.orderedQuantity = orderedQuantity;
 	}
-
-	public Double getDeviation() {
+	public String getDeviation() {
 		return deviation;
 	}
-
-	public void setDeviation(Double deviation) {
+	public void setDeviation(String deviation) {
 		this.deviation = deviation;
 	}
-
 	public String getRemark() {
 		return remark;
 	}
-
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-
 	public String getDeliveryDateStr() {
 		return deliveryDateStr;
 	}
-
 	public void setDeliveryDateStr(String deliveryDateStr) {
 		this.deliveryDateStr = deliveryDateStr;
 	}
-	
 	public void setDeliveryDate(Date deliveryDate) {
 		if( deliveryDate != null ) {
 			this.deliveryDateStr = sdf.format(deliveryDate);
 		}
 	}
-	
 	public Date getDeliveryDate() throws ParseException {
 		if( deliveryDateStr == null || deliveryDateStr.isEmpty() ) {
 			return null;

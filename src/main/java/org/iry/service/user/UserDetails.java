@@ -44,11 +44,15 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
 				allowedActions.cancelPr = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.SUPERVISOR.getUserProfileType())) {
 				allowedActions.authorizePr = true;
+				allowedActions.reopenPr = true;
 				allowedActions.cancelPr = true;
+				allowedActions.editPrRemark = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.MANAGER.getUserProfileType())) {
 				allowedActions.authorizePr = true;
 				allowedActions.approvePr = true;
+				allowedActions.reopenPr = true;
 				allowedActions.cancelPr = true;
+				allowedActions.editPrRemark = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.PURCHASE_USER.getUserProfileType())) {
 				allowedActions.createPo = true;
 				allowedActions.acknowledgePr = true;
@@ -56,6 +60,7 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
 				allowedActions.updateReceiveQuote = true;
 				allowedActions.updateFinalizeQuote = true;
 				allowedActions.updatePoCreated = true;
+				allowedActions.editPrItemsRemark = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.PURCHASE_SUPERVISOR.getUserProfileType())) {
 				allowedActions.approvePo = true;
 				allowedActions.acknowledgePr = true;
@@ -63,6 +68,7 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
 				allowedActions.updateReceiveQuote = true;
 				allowedActions.updateFinalizeQuote = true;
 				allowedActions.updatePoCreated = true;
+				allowedActions.editPrItemsRemark = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.PURCHASE_MANAGER.getUserProfileType())) {
 				allowedActions.approvePo = true;
 				allowedActions.acknowledgePr = true;
@@ -70,6 +76,7 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
 				allowedActions.updateReceiveQuote = true;
 				allowedActions.updateFinalizeQuote = true;
 				allowedActions.updatePoCreated = true;
+				allowedActions.editPrItemsRemark = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.STORE_USER.getUserProfileType())) {
 				allowedActions.updateReceiveMaterial = true;
 			}

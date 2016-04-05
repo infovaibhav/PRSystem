@@ -33,8 +33,8 @@ public class PurchaseRequisitionItems {
 	@Column(name="DESCRIPTION", nullable = false)
 	private String description;
 
-	@Column(name="TOTAL_QUANTITY_REQUIRED")
-	private int totalQuantityRequired;
+	@Column(name="QUANTITY_REQUIRED")
+	private int quantityRequired;
 
 	@Column(name="UOM")
 	private String uom;
@@ -55,7 +55,7 @@ public class PurchaseRequisitionItems {
 	private Integer orderedQuantity;
 	
 	@Column(name="DEVIATION")
-	private Double deviation;
+	private String deviation;
 	
 	@Column(name="REMARK")
 	private String remark;
@@ -78,11 +78,11 @@ public class PurchaseRequisitionItems {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public int getTotalQuantityRequired() {
-		return totalQuantityRequired;
+	public int getQuantityRequired() {
+		return quantityRequired;
 	}
-	public void setTotalQuantityRequired(int totalQuantityRequired) {
-		this.totalQuantityRequired = totalQuantityRequired;
+	public void setQuantityRequired(int quantityRequired) {
+		this.quantityRequired = quantityRequired;
 	}
 	public String getUom() {
 		return uom;
@@ -120,10 +120,10 @@ public class PurchaseRequisitionItems {
 	public void setOrderedQuantity(Integer orderedQuantity) {
 		this.orderedQuantity = orderedQuantity;
 	}
-	public Double getDeviation() {
+	public String getDeviation() {
 		return deviation;
 	}
-	public void setDeviation(Double deviation) {
+	public void setDeviation(String deviation) {
 		this.deviation = deviation;
 	}
 	public String getRemark() {
@@ -132,13 +132,23 @@ public class PurchaseRequisitionItems {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		if( id != null ) {
+			result = prime * result + ((id == null) ? 0 : id.hashCode());
+		} else {
+			result = prime * result + ((catNo == null) ? 0 : catNo.hashCode());
+			result = prime * result + ((description == null) ? 0 : description.hashCode());
+			result = prime * result + ((make == null) ? 0 : make.hashCode());
+			result = prime * result + ((requiredByDate == null) ? 0 : requiredByDate.hashCode());
+			result = prime * result + quantityRequired;
+		}
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -149,8 +159,7 @@ public class PurchaseRequisitionItems {
 			return false;
 		PurchaseRequisitionItems other = (PurchaseRequisitionItems) obj;
 		if (id == null) {
-			if (other.id != null)
-				return false;
+			return false;
 		} else if (!id.equals(other.id))
 			return false;
 		return true;

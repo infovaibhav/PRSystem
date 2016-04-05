@@ -18,7 +18,7 @@
 <body>
     <jsp:include page="../menubar.jsp"></jsp:include>
 	<div class="form-container">
-		<input type="hidden" id="createdBy" value="<%=SpringContextUtil.getUserId()%>"/>
+		<input type="hidden" id="createdBy" value="<%=request.getAttribute("createdBy")%>"/>
 		<jsp:include page="searchform.jsp"></jsp:include>
 		<jsp:include page="prgrid.jsp"></jsp:include>
 	</div>
