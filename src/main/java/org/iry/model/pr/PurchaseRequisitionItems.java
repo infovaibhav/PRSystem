@@ -29,9 +29,15 @@ public class PurchaseRequisitionItems {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PR_NO", nullable = false)
 	private PurchaseRequisition purchaseRequisition;
+	
+	@Column(name="ITEM_CODE", nullable = false)
+	private String code;
 
 	@Column(name="DESCRIPTION", nullable = false)
 	private String description;
+
+	@Column(name="DIAMENTIONS")
+	private String diamentions;
 
 	@Column(name="QUANTITY_REQUIRED")
 	private int quantityRequired;
@@ -42,8 +48,8 @@ public class PurchaseRequisitionItems {
 	@Column(name="MAKE")
 	private String make;
 
-	@Column(name="CAT_NO")
-	private String catNo;
+	@Column(name="SPECIFICATIONS")
+	private String specifications;
 
 	@Column(name="REQUIRED_BY_DATE")
 	private Timestamp requiredByDate;
@@ -78,6 +84,24 @@ public class PurchaseRequisitionItems {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getDiamentions() {
+		return diamentions;
+	}
+	public void setDiamentions(String diamentions) {
+		this.diamentions = diamentions;
+	}
+	public String getSpecifications() {
+		return specifications;
+	}
+	public void setSpecifications(String specifications) {
+		this.specifications = specifications;
+	}
 	public int getQuantityRequired() {
 		return quantityRequired;
 	}
@@ -95,12 +119,6 @@ public class PurchaseRequisitionItems {
 	}
 	public void setMake(String make) {
 		this.make = make;
-	}
-	public String getCatNo() {
-		return catNo;
-	}
-	public void setCatNo(String catNo) {
-		this.catNo = catNo;
 	}
 	public Timestamp getRequiredByDate() {
 		return requiredByDate;
@@ -140,9 +158,11 @@ public class PurchaseRequisitionItems {
 		if( id != null ) {
 			result = prime * result + ((id == null) ? 0 : id.hashCode());
 		} else {
-			result = prime * result + ((catNo == null) ? 0 : catNo.hashCode());
+			result = prime * result + ((code == null) ? 0 : code.hashCode());
 			result = prime * result + ((description == null) ? 0 : description.hashCode());
+			result = prime * result + ((diamentions == null) ? 0 : diamentions.hashCode());
 			result = prime * result + ((make == null) ? 0 : make.hashCode());
+			result = prime * result + ((specifications == null) ? 0 : specifications.hashCode());
 			result = prime * result + ((requiredByDate == null) ? 0 : requiredByDate.hashCode());
 			result = prime * result + quantityRequired;
 		}

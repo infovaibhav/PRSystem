@@ -18,11 +18,13 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 	private static final long serialVersionUID = 7394238383087126315L;
 	
 	private Long priId;
+	private String code;
 	private String description;
+	private String diamentions;
 	private int quantityRequired;
 	private String uom;
 	private String make;
-	private String catNo;
+	private String specifications;
 	private String requiredByDateStr;
 	private String deliveryDateStr;
 	private Integer orderedQuantity;
@@ -64,11 +66,23 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 	public void setMake(String make) {
 		this.make = make;
 	}
-	public String getCatNo() {
-		return catNo;
+	public String getCode() {
+		return code;
 	}
-	public void setCatNo(String catNo) {
-		this.catNo = catNo;
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getDiamentions() {
+		return diamentions;
+	}
+	public void setDiamentions(String diamentions) {
+		this.diamentions = diamentions;
+	}
+	public String getSpecifications() {
+		return specifications;
+	}
+	public void setSpecifications(String specifications) {
+		this.specifications = specifications;
 	}
 	public String getRequiredByDateStr() {
 		return requiredByDateStr;

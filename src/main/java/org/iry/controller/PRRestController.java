@@ -59,6 +59,9 @@ public class PRRestController {
 				prService.sendEmailNotification(purchaseRequisitionDto.getPrNo(), user);
 			}
 			return new ResponseEntity<PurchaseRequisitionDto>(purchaseRequisitionDto, HttpStatus.OK);
+		} catch( InvalidRequestException e ) {
+			log.error("Error in saving Purchase Requisition...", e);
+			return new ResponseEntity<PurchaseRequisitionDto>(HttpStatus.BAD_REQUEST);
 		} catch( Exception e ) {
 			log.error("Error in saving Purchase Requisition...", e);
 			return new ResponseEntity<PurchaseRequisitionDto>(HttpStatus.INTERNAL_SERVER_ERROR);

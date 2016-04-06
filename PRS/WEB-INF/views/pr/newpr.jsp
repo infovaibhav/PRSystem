@@ -65,37 +65,42 @@
 					} else {
 						$("#submitAllDetails").show();
 					}
-    	    		
+    	    		var showAddDelete = true;
 					//Which columns to show for pr items
-					var colNames = ['Description*', 'Quantity Required*', 'UOM', 'Make', 'Cat No.', 'Required Date', ''];
+					var colNames = ['Code*', 'Description*', 'Diamentions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
 					var colModel = [
+							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
 							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
+							        {name:'diamentions', width:50, sortable: false, align:'left', resizable: true, editrules:{required:false}},
 							        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
-							        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
+							        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
 							        {name:'make', width:40, sortable: false, align:'left', resizable: true},
-							        {name:'catNo', width:30, sortable: false, align:'left', resizable: true},
-							        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:false}},
+							        {name:'specifications', width:50, sortable: false, align:'left', resizable: true},
+							        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:true}},
 							        {name:'priId', hidden:true}
 								];
 					
 					if( data.editablePrItemsRemark == true ) {
-						colNames = ['Description*', 'Quantity Required*', 'UOM', 'Make', 'Cat No.', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark', ''];
+						colNames = ['Code', 'Description', 'Diamentions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark', ''];
 						colModel = [
+							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editable:false},
 							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'diamentions', width:50, sortable: false, align:'left', resizable: true, editable:false},
 							        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editable:false},
 							        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editable:false},
 							        {name:'make', width:40, sortable: false, align:'left', resizable: true, editable:false},
-							        {name:'catNo', width:30, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'specifications', width:50, sortable: false, align:'left', resizable: true, editable:false},
 							        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editable:false},
-							        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true}},
+							        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:false}},
 							        {name:'orderedQuantity', width:30, sortable: false, align:'right', resizable: true},
 							        {name:'deviation', width:30, sortable: false, align:'right', resizable: true},
 							        {name:'remark', width:80, sortable: false, align:'left', resizable: true},
 							        {name:'priId', hidden:true}
 								];
+						showAddDelete = false;
 					}
 					
-					initGrid(colNames, colModel);
+					initGrid(colNames, colModel, showAddDelete);
 					
     				$('#addPrItemGrid').jqGrid('setGridParam', {data: data.purchaseRequisionItems}).trigger('reloadGrid');
     				
@@ -113,20 +118,22 @@
     		});
     	} else {
     		$("#submitAllDetails").hide();
-    		var colNames = ['Description*', 'Quantity Required*', 'UOM', 'Make', 'Cat No.', 'Required Date', ''];
+    		var colNames = ['Code*', 'Description*', 'Diamentions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
 			var colModel = [
+					        {name:'code', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
 					        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
+					        {name:'diamentions', width:50, sortable: false, align:'left', resizable: true, editrules:{required:false}},
 					        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
-					        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
+					        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
 					        {name:'make', width:40, sortable: false, align:'left', resizable: true},
-					        {name:'catNo', width:30, sortable: false, align:'left', resizable: true},
-					        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:false}},
+					        {name:'specifications', width:50, sortable: false, align:'left', resizable: true},
+					        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:true}},
 					        {name:'priId', hidden:true}
 						];
-			initGrid(colNames, colModel);
+			initGrid(colNames, colModel, true);
     	}
     }
-    initGrid = function(colNames, colModel){
+    initGrid = function(colNames, colModel, showAddDelete){
     	$("#addPrItemGrid").jqGrid({
 		    datatype:'local',
 		    colNames:colNames,
@@ -136,6 +143,7 @@
 		    pager: '#addgridPager',
 		    gridview: true,
 		    rownumbers: true,
+		    rownumWidth: 50,
 		    pgbuttons : false,
 		    pginput : false,
 		    editurl: "clientArray",
@@ -152,8 +160,10 @@
 		    	}
 		    }
 		});
+    	$("#addPrItemGrid").jqGrid("setLabel", "rn", "S. No.");
 		$("#addPrItemGrid").jqGrid('inlineNav', '#addgridPager', { edittext: "Edit",
 		    addtext: "Add",
+		    add: showAddDelete, 
 		    savetext: "Save",
 		    canceltext: "Cancel",
 		    addParams: {position: "last",edit: true, del:false}
@@ -163,16 +173,19 @@
         });
 		$("#addPrItemGrid_ilsave").click(function(){
 		});
-		$("#addPrItemGrid").navButtonAdd('#addgridPager',{
-			   buttonicon:"ui-icon-close", 
-			   caption:"Delete", 
-			   onClickButton: function(){ 
-				   var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
-					if( gr != null ) jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
-					else alert("Please Select Row to delete!");
-			   }, 
-			   position:"last"
-		});
+		
+		if( showAddDelete ) {
+			$("#addPrItemGrid").navButtonAdd('#addgridPager',{
+				   buttonicon:"ui-icon-close", 
+				   caption:"Delete", 
+				   onClickButton: function(){ 
+					   var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
+						if( gr != null ) jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
+						else alert("Please Select Row to delete!");
+				   }, 
+				   position:"last"
+			});
+		}
     }
     </script>
 	<script type="text/javascript">

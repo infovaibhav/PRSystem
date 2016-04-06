@@ -174,10 +174,6 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		if( dto.getQuantityRequired() == 0 ) {
 			throw new InvalidRequestException("Required Quantity zero.");
 		}
-		/*if( dto.getTotalQuantityRequired() <= dto.getQuantityInStock() ) {
-			throw new InvalidRequestException("Required Quantity is less than or equal to quantity in stock.");
-		}*/
-		
 		if( dto.getPriId() == null ) {
 			prItem = new PurchaseRequisitionItems();
 		} else {
@@ -194,19 +190,22 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 				throw new InvalidRequestException("Requested PR Item does not exists.");
 			}
 		}
-		
+
+		prItem.setCode(dto.getCode());
 		prItem.setDescription(dto.getDescription());
-		
 		prItem.setQuantityRequired(dto.getQuantityRequired());
 		
+		if( dto.getDiamentions() != null && dto.getDiamentions().trim().length() > 0 ) {
+			prItem.setDiamentions(dto.getDiamentions());
+		}
 		if( dto.getUom() != null && dto.getUom().trim().length() > 0 ) {
 			prItem.setUom(dto.getUom());
 		}
 		if( dto.getMake() != null && dto.getMake().trim().length() > 0 ) {
 			prItem.setMake(dto.getMake());
 		}
-		if( dto.getCatNo() != null && dto.getCatNo().trim().length() > 0 ) {
-			prItem.setCatNo(dto.getCatNo());
+		if( dto.getSpecifications() != null && dto.getSpecifications().trim().length() > 0 ) {
+			prItem.setSpecifications(dto.getSpecifications());
 		}
 		if( dto.getRequiredByDate() != null ) {
 			prItem.setRequiredByDate(new Timestamp(dto.getRequiredByDate().getTime()));
@@ -276,11 +275,13 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	private PurchaseRequisitionItemsDto convertToDto(PurchaseRequisitionItems prItem) {
 		PurchaseRequisitionItemsDto dto = new PurchaseRequisitionItemsDto();
 		dto.setPriId(prItem.getId());
+		dto.setCode(prItem.getCode());
 		dto.setDescription(prItem.getDescription());
+		dto.setDiamentions(prItem.getDiamentions());
 		dto.setQuantityRequired(prItem.getQuantityRequired());
 		dto.setUom(prItem.getUom());
 		dto.setMake(prItem.getMake());
-		dto.setCatNo(prItem.getCatNo());
+		dto.setSpecifications(prItem.getSpecifications());
 		dto.setRequiredByDate(prItem.getRequiredByDate());
 		dto.setDeliveryDate(prItem.getDeliveryDate());
 		dto.setDeviation(prItem.getDeviation());

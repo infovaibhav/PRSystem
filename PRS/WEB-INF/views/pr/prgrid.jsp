@@ -157,19 +157,23 @@
 	                $("#" + priSubgridTableId).jqGrid({
 	                	datatype:'local',
 	                	mtype: 'GET',
-	                	colNames:['Description', 'Quantity required', 'UOM', 'Make', 'Cat No.', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark'],
+	                	colNames:['Code', 'Description', 'Diamentions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark'],
 	        		    colModel:[
+							{name:'code', width:40, sortable: false, align:'left', resizable: true},
 	        		        {name:'description', width:80, sortable: false, align:'left', resizable: true},
+	        		        {name:'diamentions', width:50, sortable: false, align:'left', resizable: true},
 	        		        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true},
 	        		        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
 	        		        {name:'make', width:40, sortable: false, align:'left', resizable: true},
-	        		        {name:'catNo', width:40, sortable: false, align:'left', resizable: true},
+	        		        {name:'specifications', width:50, sortable: false, align:'left', resizable: true},
 	        		        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true},
 	        		        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true},
 	        		        {name:'orderedQuantity', width:50, sortable: false, align:'right', resizable: true},
 	        		        {name:'deviation', width:50, sortable: false, align:'left', resizable: true},
 	        		        {name:'remark', width:50, sortable: false, align:'left', resizable: true}
 	        			],
+	        		    rownumbers: true,
+	        		    rownumWidth: 50,
 	    				width: $("#prHeader").width()-111,
 	                    height: '100%',
 	                    loadtext: 'building list...',
@@ -190,7 +194,7 @@
 	                    	}
 	                    }
 	                });
-	                
+	                $("#" + priSubgridTableId).jqGrid("setLabel", "rn", "S. No.");
 	                $(".ui-jqgrid .subgrid-data .ui-th-column").each(function() {
 	                	var HeaderFontColor = "#48b8e5";
 	                	this.style.color = HeaderFontColor;
