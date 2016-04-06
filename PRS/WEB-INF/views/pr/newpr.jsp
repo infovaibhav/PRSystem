@@ -95,52 +95,7 @@
 								];
 					}
 					
-					$("#addPrItemGrid").jqGrid({
-					    datatype:'local',
-					    colNames:colNames,
-					    colModel:colModel,
-					    width: $("#prheader").width()-30,
-					    cmTemplate: {editable: true}, 
-					    pager: '#addgridPager',
-					    gridview: true,
-					    rownumbers: true,
-					    pgbuttons : false,
-					    pginput : false,
-					    editurl: "clientArray",
-					    jsonReader: {
-					        repeatitems: false,
-					    },
-					    loadError: function(jqXHR, status, error) {
-					    	if( jqXHR.status == 401 ) {
-					        	jQuery("#addPrItemGrid").html('<div style="height: 205px">Session Expired</div>');            		
-					    	} else if ( jqXHR.responseText.length == 0 ) {
-					    		jQuery("#addPrItemGrid").html('<div style="height: 205px">Service Unavailable</div>');
-					    	} else {
-					        	jQuery("#addPrItemGrid").html('<div style="height: 205px">' + jqXHR.statusText + '</div>');
-					    	}
-					    }
-					});
-					$("#addPrItemGrid").jqGrid('inlineNav', '#addgridPager', { edittext: "Edit",
-					    addtext: "Add",
-					    savetext: "Save",
-					    canceltext: "Cancel",
-					    addParams: {position: "last",edit: true, del:false}
-					});
-					$.extend($.jgrid.inlineEdit, {
-			            keys: true
-			        });
-					$("#addPrItemGrid_ilsave").click(function(){
-					});
-					$("#addPrItemGrid").navButtonAdd('#addgridPager',{
-						   buttonicon:"ui-icon-close", 
-						   caption:"Delete", 
-						   onClickButton: function(){ 
-							   var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
-								if( gr != null ) jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
-								else alert("Please Select Row to delete!");
-						   }, 
-						   position:"last"
-						});
+					initGrid(colNames, colModel);
 					
     				$('#addPrItemGrid').jqGrid('setGridParam', {data: data.purchaseRequisionItems}).trigger('reloadGrid');
     				
@@ -158,9 +113,67 @@
     		});
     	} else {
     		$("#submitAllDetails").hide();
+    		var colNames = ['Description*', 'Quantity Required*', 'UOM', 'Make', 'Cat No.', 'Required Date', ''];
+			var colModel = [
+					        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
+					        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
+					        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
+					        {name:'make', width:40, sortable: false, align:'left', resizable: true},
+					        {name:'catNo', width:30, sortable: false, align:'left', resizable: true},
+					        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:false}},
+					        {name:'priId', hidden:true}
+						];
+			initGrid(colNames, colModel);
     	}
     }
-    
+    initGrid = function(colNames, colModel){
+    	$("#addPrItemGrid").jqGrid({
+		    datatype:'local',
+		    colNames:colNames,
+		    colModel:colModel,
+		    width: $("#prheader").width()-30,
+		    cmTemplate: {editable: true}, 
+		    pager: '#addgridPager',
+		    gridview: true,
+		    rownumbers: true,
+		    pgbuttons : false,
+		    pginput : false,
+		    editurl: "clientArray",
+		    jsonReader: {
+		        repeatitems: false,
+		    },
+		    loadError: function(jqXHR, status, error) {
+		    	if( jqXHR.status == 401 ) {
+		        	jQuery("#addPrItemGrid").html('<div style="height: 205px">Session Expired</div>');            		
+		    	} else if ( jqXHR.responseText.length == 0 ) {
+		    		jQuery("#addPrItemGrid").html('<div style="height: 205px">Service Unavailable</div>');
+		    	} else {
+		        	jQuery("#addPrItemGrid").html('<div style="height: 205px">' + jqXHR.statusText + '</div>');
+		    	}
+		    }
+		});
+		$("#addPrItemGrid").jqGrid('inlineNav', '#addgridPager', { edittext: "Edit",
+		    addtext: "Add",
+		    savetext: "Save",
+		    canceltext: "Cancel",
+		    addParams: {position: "last",edit: true, del:false}
+		});
+		$.extend($.jgrid.inlineEdit, {
+            keys: true
+        });
+		$("#addPrItemGrid_ilsave").click(function(){
+		});
+		$("#addPrItemGrid").navButtonAdd('#addgridPager',{
+			   buttonicon:"ui-icon-close", 
+			   caption:"Delete", 
+			   onClickButton: function(){ 
+				   var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
+					if( gr != null ) jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
+					else alert("Please Select Row to delete!");
+			   }, 
+			   position:"last"
+		});
+    }
     </script>
 	<script type="text/javascript">
 	$(function () {
@@ -232,7 +245,7 @@
 					</div>
 				</div>
 				<div class="form-group col-md-5" id="currentStatus" style="display: none">
-					<label class="control-lable col-md-3" for="status" id="status">Status:</label>
+					<label class="control-lable col-md-3" for="status">Status:</label>
 					<div class="col-md-5">
 						<input type="text" id="status" disabled="true" readonly="true" class="form-control input-sm"/>
 					</div>
