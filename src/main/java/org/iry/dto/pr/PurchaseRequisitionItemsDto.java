@@ -20,7 +20,7 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 	private Long priId;
 	private String code;
 	private String description;
-	private String diamentions;
+	private String diamensions;
 	private int quantityRequired;
 	private String uom;
 	private String make;
@@ -72,11 +72,11 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public String getDiamentions() {
-		return diamentions;
+	public String getDiamensions() {
+		return diamensions;
 	}
-	public void setDiamentions(String diamentions) {
-		this.diamentions = diamentions;
+	public void setDiamensions(String diamensions) {
+		this.diamensions = diamensions;
 	}
 	public String getSpecifications() {
 		return specifications;

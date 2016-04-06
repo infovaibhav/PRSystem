@@ -67,11 +67,11 @@
 					}
     	    		var showAddDelete = true;
 					//Which columns to show for pr items
-					var colNames = ['Code*', 'Description*', 'Diamentions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
+					var colNames = ['Item Code*', 'Description*', 'Diamensions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
 					var colModel = [
 							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
 							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
-							        {name:'diamentions', width:50, sortable: false, align:'left', resizable: true, editrules:{required:false}},
+							        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true, editrules:{required:false}},
 							        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
 							        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
 							        {name:'make', width:40, sortable: false, align:'left', resizable: true},
@@ -81,11 +81,11 @@
 								];
 					
 					if( data.editablePrItemsRemark == true ) {
-						colNames = ['Code', 'Description', 'Diamentions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark', ''];
+						colNames = ['Item Code', 'Description', 'Diamensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark', ''];
 						colModel = [
 							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editable:false},
 							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editable:false},
-							        {name:'diamentions', width:50, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true, editable:false},
 							        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editable:false},
 							        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editable:false},
 							        {name:'make', width:40, sortable: false, align:'left', resizable: true, editable:false},
@@ -118,11 +118,11 @@
     		});
     	} else {
     		$("#submitAllDetails").hide();
-    		var colNames = ['Code*', 'Description*', 'Diamentions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
+    		var colNames = ['Item Code*', 'Description*', 'Diamensions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
 			var colModel = [
 					        {name:'code', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
 					        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
-					        {name:'diamentions', width:50, sortable: false, align:'left', resizable: true, editrules:{required:false}},
+					        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true, editrules:{required:false}},
 					        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
 					        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
 					        {name:'make', width:40, sortable: false, align:'left', resizable: true},

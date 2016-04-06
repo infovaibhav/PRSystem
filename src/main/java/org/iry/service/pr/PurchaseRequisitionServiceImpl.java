@@ -195,8 +195,8 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		prItem.setDescription(dto.getDescription());
 		prItem.setQuantityRequired(dto.getQuantityRequired());
 		
-		if( dto.getDiamentions() != null && dto.getDiamentions().trim().length() > 0 ) {
-			prItem.setDiamentions(dto.getDiamentions());
+		if( dto.getDiamensions() != null && dto.getDiamensions().trim().length() > 0 ) {
+			prItem.setDiamensions(dto.getDiamensions());
 		}
 		if( dto.getUom() != null && dto.getUom().trim().length() > 0 ) {
 			prItem.setUom(dto.getUom());
@@ -277,7 +277,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setPriId(prItem.getId());
 		dto.setCode(prItem.getCode());
 		dto.setDescription(prItem.getDescription());
-		dto.setDiamentions(prItem.getDiamentions());
+		dto.setDiamensions(prItem.getDiamensions());
 		dto.setQuantityRequired(prItem.getQuantityRequired());
 		dto.setUom(prItem.getUom());
 		dto.setMake(prItem.getMake());

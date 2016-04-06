@@ -157,11 +157,11 @@
 	                $("#" + priSubgridTableId).jqGrid({
 	                	datatype:'local',
 	                	mtype: 'GET',
-	                	colNames:['Code', 'Description', 'Diamentions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark'],
+	                	colNames:['Item Code', 'Description', 'Diamensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark'],
 	        		    colModel:[
 							{name:'code', width:40, sortable: false, align:'left', resizable: true},
 	        		        {name:'description', width:80, sortable: false, align:'left', resizable: true},
-	        		        {name:'diamentions', width:50, sortable: false, align:'left', resizable: true},
+	        		        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true},
 	        		        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true},
 	        		        {name:'uom', width:40, sortable: false, align:'left', resizable: true},
 	        		        {name:'make', width:40, sortable: false, align:'left', resizable: true},

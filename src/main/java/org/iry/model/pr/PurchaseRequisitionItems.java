@@ -36,8 +36,8 @@ public class PurchaseRequisitionItems {
 	@Column(name="DESCRIPTION", nullable = false)
 	private String description;
 
-	@Column(name="DIAMENTIONS")
-	private String diamentions;
+	@Column(name="DIAMENSIONS")
+	private String diamensions;
 
 	@Column(name="QUANTITY_REQUIRED")
 	private int quantityRequired;
@@ -90,11 +90,11 @@ public class PurchaseRequisitionItems {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public String getDiamentions() {
-		return diamentions;
+	public String getDiamensions() {
+		return diamensions;
 	}
-	public void setDiamentions(String diamentions) {
-		this.diamentions = diamentions;
+	public void setDiamensions(String diamensions) {
+		this.diamensions = diamensions;
 	}
 	public String getSpecifications() {
 		return specifications;
@@ -160,7 +160,7 @@ public class PurchaseRequisitionItems {
 		} else {
 			result = prime * result + ((code == null) ? 0 : code.hashCode());
 			result = prime * result + ((description == null) ? 0 : description.hashCode());
-			result = prime * result + ((diamentions == null) ? 0 : diamentions.hashCode());
+			result = prime * result + ((diamensions == null) ? 0 : diamensions.hashCode());
 			result = prime * result + ((make == null) ? 0 : make.hashCode());
 			result = prime * result + ((specifications == null) ? 0 : specifications.hashCode());
 			result = prime * result + ((requiredByDate == null) ? 0 : requiredByDate.hashCode());
