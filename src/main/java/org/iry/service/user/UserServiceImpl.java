@@ -22,8 +22,21 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	public void save(User user){
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+	public void save(User userToSave){
+		User user = null;
+		if( userToSave.getId() == null ) {
+			user = new User();
+			user.setPassword( passwordEncoder.encode(userToSave.getSsoId()) );
+		} else {
+			user = findById( userToSave.getId() );
+		}
+		user.setSsoId( userToSave.getSsoId() );
+		user.setEmail( userToSave.getEmail() );
+		user.setFirstName( userToSave.getFirstName() );
+		user.setLastName( userToSave.getLastName() );
+		user.setAuthorizedTransactionLimit( userToSave.getAuthorizedTransactionLimit() );
+		user.setReportingTo( userToSave.getReportingTo() );
+		user.setUserProfiles( userToSave.getUserProfiles() );
 		dao.save(user);
 	}
 	
@@ -36,10 +49,10 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public List<UserDto> findAllActiveUsers() {
+	public List<User> findAllActiveUsers() {
 		return dao.findAllActiveUsers();
 	}
-
+	
 	@Override
 	public List<UserDto> findUsers(SearchCriteria searchCriteria) {
 		return convertToDto(dao.findUsers(searchCriteria));
@@ -68,8 +81,12 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void changePassword(Long id, String newPassword) {
 		User user = dao.findById(id);
-		user.setPassword(newPassword);
-		this.save(user);
+		if( newPassword != null && !newPassword.trim().isEmpty() ) {
+			user.setPassword( passwordEncoder.encode(newPassword) );
+		} else {
+			user.setPassword( passwordEncoder.encode(user.getSsoId()) );
+		}
+		dao.save(user);
 	}
 
 	@Override

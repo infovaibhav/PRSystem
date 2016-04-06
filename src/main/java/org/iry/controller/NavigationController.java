@@ -70,13 +70,19 @@ public class NavigationController {
 		return "redirect:/login?logout";
 	}
 	
-	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
-	public String newRegistration(ModelMap model) {
-		User user = new User();
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public String viewUser(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+		String userId = request.getParameter("id");
+		User user = null;
+		if( userId != null ) {
+			user = userService.findById( Long.parseLong(userId) );
+		} else {
+			user = new User();
+		}
 		model.addAttribute("user", user);
 		model.addAttribute("roles", userProfileService.findAll());
 		model.addAttribute("users", userService.findAllActiveUsers());
-		return "user/newuser";
+		return "user/user";
 	}
 	
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -88,7 +94,7 @@ public class NavigationController {
 	 * This method will be called on form submission, handling POST request It
 	 * also validates the user input
 	 */
-	@RequestMapping(value = "/newUser", method = RequestMethod.POST)
+	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public String saveRegistration(User user,
 			BindingResult result, ModelMap model) {
 
@@ -97,7 +103,6 @@ public class NavigationController {
 		log.debug("First Name : "+user.getFirstName());
 		log.debug("Last Name : "+user.getLastName());
 		log.debug("SSO ID : "+user.getSsoId());
-		log.debug("Password : "+user.getPassword());
 		log.debug("Email : "+user.getEmail());
 		log.debug("Checking UsrProfiles....");
 		if(user.getUserProfiles()!=null){
@@ -109,22 +114,13 @@ public class NavigationController {
 		return "user/registrationsuccess";
 	}
 	
-	@RequestMapping(value = "/newPR", method = RequestMethod.GET)
-	public String newPurchaseRequisition(ModelMap model){
+	@RequestMapping(value = "/pr", method = RequestMethod.GET)
+	public String viewPurchaseRequisition(ModelMap model){
 		PurchaseRequisition purchaseRequisition = new PurchaseRequisition();
 		PurchaseRequisitionItems purchaseRequisitionItems = new PurchaseRequisitionItems();
 		model.addAttribute("purchaseRequisition", purchaseRequisition);
 		model.addAttribute("purchaseRequisitionItems", purchaseRequisitionItems);
-		return "pr/newpr";
-	}
-	
-	@RequestMapping(value = "/editPR", method = RequestMethod.GET)
-	public String editPurchaseRequisition(ModelMap model){
-		PurchaseRequisition purchaseRequisition = new PurchaseRequisition();
-		PurchaseRequisitionItems purchaseRequisitionItems = new PurchaseRequisitionItems();
-		model.addAttribute("purchaseRequisition", purchaseRequisition);
-		model.addAttribute("purchaseRequisitionItems", purchaseRequisitionItems);
-		return "pr/newpr";
+		return "pr/pr";
 	}
 	
 	@RequestMapping(value = "/myPR", method = RequestMethod.GET)

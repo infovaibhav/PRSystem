@@ -3,14 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-	<title>User Registration</title>
+	<title>User</title>
 	<jsp:include page="../header.jsp"></jsp:include>
 </head>
 <body>
     <jsp:include page="../menubar.jsp"></jsp:include>
  	<div class="form-container">
-	 	<h1>New User Registration Form</h1>
+	 	<h1>User Form</h1>
 		<form:form method="POST" modelAttribute="user" class="form-horizontal">
+	
+			<form:input type="hidden" path="id" id="id" class="form-control input-sm"/>
 	
 			<div class="row">
 				<div class="form-group col-md-12">
@@ -43,18 +45,6 @@
 						<form:input type="text" path="ssoId" id="ssoId" class="form-control input-sm" required="required"/>
 						<div class="has-error">
 							<form:errors path="ssoId" class="help-inline"/>
-						</div>
-					</div>
-				</div>
-			</div>
-	
-			<div class="row">
-				<div class="form-group col-md-12">
-					<label class="col-md-2 control-lable" for="password">Password <span style="color:red;">*</span></label>
-					<div class="col-md-3">
-						<form:input type="password" path="password" id="password" class="form-control input-sm" required="required"/>
-						<div class="has-error">
-							<form:errors path="password" class="help-inline"/>
 						</div>
 					</div>
 				</div>
@@ -111,7 +101,7 @@
 			<div class="row">
 				<div class="form-actions col-md-5">
 					<div class="floatRight">
-						<input type="submit" value="Register" class="btn btn-primary btn-sm"> &nbsp; <a href="home"><input type="button" value="Cancel" class="btn btn-primary btn-sm"></a>
+						<input type="submit" value="Save" class="btn btn-primary btn-sm"> &nbsp; <a href="home"><input type="button" value="Cancel" class="btn btn-primary btn-sm"></a>
 					</div>
 				</div>
 			</div>

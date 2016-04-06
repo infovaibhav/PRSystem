@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.iry.dto.SearchCriteria;
-import org.iry.dto.user.UserDto;
 import org.iry.model.user.User;
 
 public interface UserDao {
@@ -17,7 +16,7 @@ public interface UserDao {
 	
 	User findBySSO(String sso);
 	
-	List<UserDto> findAllActiveUsers();
+	List<User> findAllActiveUsers();
 	
 	List<User> findUsers(SearchCriteria searchCriteria);
 
@@ -26,6 +25,6 @@ public interface UserDao {
 	List<String> getUserEmailsByTypes(Set<String> userProfileTypes);
 
 	List<Long> getAllSubordinateUserIds(Long userId);
-	
+
 }
 

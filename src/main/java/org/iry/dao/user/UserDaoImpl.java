@@ -41,7 +41,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<UserDto> findAllActiveUsers() {
+	public List<User> findAllActiveUsers() {
 		Criteria crit = createEntityCriteria();
 		crit.add(Restrictions.eq("isActive", Boolean.TRUE));
 		crit.add(Restrictions.eq("isRoot", Boolean.FALSE));
@@ -49,7 +49,7 @@ public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 			      .add(Projections.property("id"), "id")
 			      .add(Projections.property("ssoId"), "ssoId"));
 		crit.addOrder(Order.asc("ssoId"));
-		crit.setResultTransformer(Transformers.aliasToBean(UserDto.class));
+		crit.setResultTransformer(Transformers.aliasToBean(User.class));
 		return crit.list();
 	}
 

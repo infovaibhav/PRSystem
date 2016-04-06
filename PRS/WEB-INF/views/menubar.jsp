@@ -22,7 +22,7 @@
                 <li class="dropdown">
 	                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Purchase Requisition<span class="caret"></span></a>
 	            	<ul class="dropdown-menu">
-	                	<li><a href="newPR">Create</a></li>
+	                	<li><a href="pr">Create</a></li>
 	                	<li><a href="myPR">My PR</a></li>
 	                	<% if( privileges.contains( UserProfileType.MANAGER.getUserProfileType() )
 	                			|| privileges.contains( UserProfileType.PURCHASE_MANAGER.getUserProfileType() )
@@ -52,7 +52,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
             	<li class="dropdown">
-            		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%=SpringContextUtil.getUser().getFirstName() %> <span class="caret"></span></a>
+            		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%=SpringContextUtil.getUser().getSsoId() %> <span class="caret"></span></a>
             		<ul class="dropdown-menu">
             			<li><a  data-toggle="modal" data-target="#myModal">Change Password</a></li>
             			<li><a href="logout">Logout</a></li>

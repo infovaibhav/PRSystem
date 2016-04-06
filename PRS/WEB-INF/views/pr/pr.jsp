@@ -16,7 +16,6 @@
 	</script>
 <% } %>
 	<jsp:include page="../header.jsp"></jsp:include>
-	<link rel="stylesheet" href="static/css/jash.css"></link>
 	<link rel="stylesheet" href="static/css/bootstrap-datepicker.css"></link>
 	<script src="static/js/bootstrap/bootstrap-datepicker.js"></script>
 	<style type="text/css" media="screen">

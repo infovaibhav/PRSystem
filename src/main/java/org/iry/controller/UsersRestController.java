@@ -59,7 +59,7 @@ public class UsersRestController {
 	@RequestMapping(value = "/{id}/resetpassword", method = RequestMethod.PUT, produces = MediaType.TEXT_HTML_VALUE )
     public ResponseEntity<String> resetPassword(@PathVariable("id") Long id) {
 		try {
-			userService.changePassword(id, "temp1234");
+			userService.changePassword(id, null);
 			return new ResponseEntity<String>("Password reset successfully!!", HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in changing password...", e);

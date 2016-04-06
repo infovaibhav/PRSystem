@@ -14,7 +14,7 @@ public interface UserService {
 	
 	User findBySso(String sso);
 
-	List<UserDto> findAllActiveUsers();
+	List<User> findAllActiveUsers();
 
 	List<UserDto> findUsers(SearchCriteria searchCriteria);
 	
@@ -23,5 +23,5 @@ public interface UserService {
 	void changeStatus(Long id);
 
 	List<Long> getAllSubordinateUserIds(Long userId);
-	
+
 }
