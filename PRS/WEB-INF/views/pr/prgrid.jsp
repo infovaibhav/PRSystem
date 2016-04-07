@@ -13,7 +13,7 @@
 	            datatype:'local',
 	            colNames:['PR No', 'Project Name', 'Project Code', 'Prepared By', 'Prepared Date', 'Last Updated By', 'Last Updated Date', 'Status', 'Action','','','','','','','','',''],
 	            colModel:[
-	                {name:'prNo', index:'prNo',key:true, width:80, sortable: false, align:'left', resizable: true, search:true, formatter: 'showlink', formatoptions: { baseLinkUrl: '', showAction: "pr", idName:"prNo"} },
+	                {name:'prNo', index:'prNo',key:true, width:80, sortable: false, align:'left', resizable: true, search:true },
 	                {name:'projectName', width:80, sortable: false, align:'left', resizable: true, search:false},
 	                {name:'projectCode', width:60, sortable: false, align:'left', resizable: true, search:false},
 	                {name:'createdByName', width:80, sortable: false, align:'left', resizable: true, search:false},

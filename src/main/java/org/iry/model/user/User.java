@@ -180,7 +180,7 @@ public class User implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((ssoId == null) ? 0 : ssoId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -190,15 +190,13 @@ public class User implements Serializable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof User))
+		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (id != other.id)
-			return false;
-		if (ssoId == null) {
-			if (other.ssoId != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!ssoId.equals(other.ssoId))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}
@@ -209,6 +207,5 @@ public class User implements Serializable {
 				+ ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", email=" + email + ", isActive=" + isActive + ", userProfiles=" + userProfiles +"]";
 	}
-
 	
 }

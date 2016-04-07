@@ -68,13 +68,13 @@
 					//Which columns to show for pr items
 					var colNames = ['Item Code*', 'Description*', 'Diamensions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
 					var colModel = [
-							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
-							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
-							        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true, editrules:{required:false}},
-							        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
-							        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
-							        {name:'make', width:40, sortable: false, align:'left', resizable: true},
-							        {name:'specifications', width:50, sortable: false, align:'left', resizable: true},
+							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}, editoptions: {maxlength: 50}},
+							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}, editoptions: {maxlength: 200}},
+							        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true, editrules:{required:false}, editoptions: {maxlength: 100}},
+							        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}, editoptions: {maxlength: 30}},
+							        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}, editoptions: {maxlength: 30}},
+							        {name:'make', width:40, sortable: false, align:'left', resizable: true, editoptions: {maxlength: 40}},
+							        {name:'specifications', width:50, sortable: false, align:'left', resizable: true, editoptions: {maxlength: 100}},
 							        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:true}},
 							        {name:'priId', hidden:true}
 								];
@@ -91,9 +91,9 @@
 							        {name:'specifications', width:50, sortable: false, align:'left', resizable: true, editable:false},
 							        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editable:false},
 							        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:false}},
-							        {name:'orderedQuantity', width:30, sortable: false, align:'right', resizable: true},
-							        {name:'deviation', width:30, sortable: false, align:'right', resizable: true},
-							        {name:'remark', width:80, sortable: false, align:'left', resizable: true},
+							        {name:'orderedQuantity', width:30, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 10}},
+							        {name:'deviation', width:30, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 100}},
+							        {name:'remark', width:80, sortable: false, align:'left', resizable: true, editoptions: {maxlength: 200}},
 							        {name:'priId', hidden:true}
 								];
 						showAddDelete = false;
@@ -119,13 +119,13 @@
     		$("#submitAllDetails").hide();
     		var colNames = ['Item Code*', 'Description*', 'Diamensions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
 			var colModel = [
-					        {name:'code', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
-					        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}},
-					        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true, editrules:{required:false}},
-					        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}},
-					        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}},
-					        {name:'make', width:40, sortable: false, align:'left', resizable: true},
-					        {name:'specifications', width:50, sortable: false, align:'left', resizable: true},
+					        {name:'code', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}, editoptions: {maxlength: 50}},
+					        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}, editoptions: {maxlength: 200}},
+					        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true, editrules:{required:false}, editoptions: {maxlength: 100}},
+					        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}, editoptions: {maxlength: 30}},
+					        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}, editoptions: {maxlength: 30}},
+					        {name:'make', width:40, sortable: false, align:'left', resizable: true, editoptions: {maxlength: 40}},
+					        {name:'specifications', width:50, sortable: false, align:'left', resizable: true, editoptions: {maxlength: 100}},
 					        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:true}},
 					        {name:'priId', hidden:true}
 						];

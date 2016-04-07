@@ -78,10 +78,21 @@ public class NavigationController {
 			user = userService.findById( Long.parseLong(userId) );
 		} else {
 			user = new User();
+			User defaultReportingTo = new User();
+			defaultReportingTo.setId(0L);
+			user.setReportingTo(defaultReportingTo);
 		}
-		model.addAttribute("user", user);
+		
+		List<User> users = userService.findAllActiveUsers();
+		User noUser = new User();
+		noUser.setSsoId("No Reporting");
+		users.add(noUser);
+		if( user.getId() != null ) {
+			users.remove( user );
+		}
+		model.addAttribute("users", users);
 		model.addAttribute("roles", userProfileService.findAll());
-		model.addAttribute("users", userService.findAllActiveUsers());
+		model.addAttribute("user", user);
 		return "user/user";
 	}
 	
