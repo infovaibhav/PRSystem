@@ -116,6 +116,7 @@
                 }
     		});
     	} else {
+			$("#remarkDiv").hide();
     		$("#submitAllDetails").hide();
     		var colNames = ['Item Code*', 'Description*', 'Diamensions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
 			var colModel = [
@@ -263,7 +264,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row" id="remarkDiv">
 				<div class="form-group col-md-6">
 					<label class="col-md-3 control-lable" for="remark">Remark:</label>
 					<div class="col-md-5">
@@ -284,22 +285,46 @@
 </body>
 <script>
 $("#saveAllDetails").click(function(e){
+	saveDetails( false );
+});
+
+$("#submitAllDetails").click(function(e){
+	saveDetails( true );
+});
+
+function saveDetails( submit ) {
+	var rowID = $("#addPrItemGrid").jqGrid('getGridParam', 'selrow');
+	if( rowID != null ) {
+		jQuery("#addPrItemGrid").jqGrid('saveRow',rowID, { 
+			aftersavefunc: function( response ) {
+		    	save( submit );
+		    }
+		});
+	} else {
+		save( submit );
+	}
+} 
+
+function save( submit ) {
 	if(isValid()){
 		var allRowsInGrid = $('#addPrItemGrid').jqGrid('getGridParam','data');
 		var data;
 		if( createPr == true ) {
 			data = {
+					prNoPrefix:$("#prNo").val(),
 					projectName:$("#projectName").val(),
 					projectCode:$("#projectCode").val(),
-					prNoPrefix:$("#prNo").val(),
-					purchaseRequisionItems : allRowsInGrid
+					purchaseRequisionItems : allRowsInGrid,
+					submitted : submit
 			};
 		} else {
 			data = {
 					prNo:$("#prNo").val(),
 					projectName:$("#projectName").val(),
 					projectCode:$("#projectCode").val(),
-					purchaseRequisionItems : allRowsInGrid
+					prRemark:$("#remark").val(),
+					purchaseRequisionItems : allRowsInGrid,
+					submitted : submit
 			};
 		}
 		$.ajax({
@@ -309,12 +334,7 @@ $("#saveAllDetails").click(function(e){
 			dataType: 'json',
 			contentType :"application/json",
 			success: function(data, status, jqXHR ){
-				if(createPr){
-					alert("Purchase Requisition created Successfully.");
-				} else {
-					alert("Purchase Requisition updated Successfully.");
-				}
-				
+				alert(data.response);
 				window.location.href="myPR";
 			},
             error : function(jqXHR, status, error) {
@@ -328,58 +348,7 @@ $("#saveAllDetails").click(function(e){
 	} else {
 		alert("Please provide valid Purchase Requisition details.")
 	}
-});
-
-$("#submitAllDetails").click(function(e){
-	if(isValid()){
-		if(confirm("Do you want to Submit?")){
-			var allRowsInGrid = $('#addPrItemGrid').jqGrid('getGridParam','data');
-			var data;
-			if( createPr == true ) {
-				data = {
-						projectName:$("#projectName").val(),
-						projectCode:$("#projectCode").val(),
-						prNoPrefix:$("#prNo").val(),
-						submitted : true,
-						purchaseRequisionItems : allRowsInGrid
-				};
-			} else {
-				data = {
-						prNo:$("#prNo").val(),
-						projectName:$("#projectName").val(),
-						projectCode:$("#projectCode").val(),
-						submitted : true,
-						purchaseRequisionItems : allRowsInGrid
-				};
-			}
-			$.ajax({
-				type:'POST',
-				url: 'rest/purchaseRequest',
-				data: JSON.stringify(data),
-				dataType: 'json',
-				contentType :"application/json",
-				success: function(data, status, jqXHR ){
-					if(createPr){
-						alert("Purchase Requisition Submitted Successfully.");
-					} else {
-						alert("Purchase Requisition updated Successfully.");
-					}
-					
-					window.location.href="myPR";
-				},
-	            error : function(jqXHR, status, error) {
-	            	if( jqXHR.status == 401 ) {
-	                	alert('Session Expired');            		
-	            	} else {
-	            		alert(jqXHR.statusText);
-	            	}
-	            }
-			});
-		}
-	} else {
-		alert("Please provide valid Purchase Requisition details.")
-	}
-});
+}
 
 function isValid (){
 	var allRowsInGrid = $('#addPrItemGrid').jqGrid('getGridParam','data');

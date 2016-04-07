@@ -11,7 +11,7 @@
 			var lastsel;
 	        $("#prTable").jqGrid({
 	            datatype:'local',
-	            colNames:['PR No', 'Project Name', 'Project Code', 'Prepared By', 'Prepared Date', 'Last Updated By', 'Last Updated Date', 'Status', 'Action','','','','','','','','',''],
+	            colNames:['PR No', 'Project Name', 'Project Code', 'Prepared By', 'Prepared Date', 'Last Updated By', 'Last Updated Date', 'Status', 'Remark', 'Action','','','','','','','','',''],
 	            colModel:[
 	                {name:'prNo', index:'prNo',key:true, width:80, sortable: false, align:'left', resizable: true, search:true },
 	                {name:'projectName', width:80, sortable: false, align:'left', resizable: true, search:false},
@@ -20,7 +20,8 @@
 	                {name:'createdDateStr', width:100, sortable: false, align:'center', resizable: true, search:false},
 	                {name:'lastUpdatedByName', width:80, sortable: false, align:'left', resizable: true, search:false},
 	                {name:'lastUpdatedDateStr', width:100, sortable: false, align:'center', resizable: true, search:false},
-	                {name:'status', index:'status', width:80, sortable: false, align:'center', resizable: true, search:false,editable: false},
+	                {name:'status', width:80, sortable: false, align:'center', resizable: true, search:false},
+	                {name:'prRemark', width:80, sortable: false, align:'left', resizable: true, search:false},
 	                {name:'select', index:'select',width:80, sortable: false, align:'center', resizable: true, search:false},
 	                {name:'authorizedDateStr',  hidden:true},
 	                {name:'authorizedByName',  hidden:true},
@@ -241,7 +242,7 @@
 	    				contentType :"application/json",
 	        			success: function(data, status, jqXHR ){
 	        				$('#progress').hide();
-        					alert("Updated Successfully!!");
+	        				alert(data.response);
         					$("#prTable").jqGrid().trigger('reloadGrid');
 	        			},
 	                    error : function(jqXHR, status, error) {

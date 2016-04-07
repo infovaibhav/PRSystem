@@ -47,24 +47,34 @@ public class PRRestController {
 	
 	
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PurchaseRequisitionDto> savePurchaseRequisition(@RequestBody PurchaseRequisitionDto purchaseRequisitionDto) {
+	public ResponseEntity<String> savePurchaseRequisition(@RequestBody PurchaseRequisitionDto purchaseRequisitionDto) {
 		try {
 			User user = SpringContextUtil.getUser();
 			if( user == null ) {
 				throw new InvalidRequestException("Logged in user information not found.");
 			}
-			purchaseRequisitionDto = prService.save(purchaseRequisitionDto, user.getId(), user.getFullName());
-			updateAllowedPrActions(purchaseRequisitionDto, SpringContextUtil.getUserDetails());
+			prService.save(purchaseRequisitionDto, user.getId(), user.getFullName());
+			
+			Boolean notificationSent = null;
 			if( purchaseRequisitionDto.isSubmitted() ) {
-				prService.sendEmailNotification(purchaseRequisitionDto.getPrNo(), user);
+				notificationSent = prService.sendEmailNotification(purchaseRequisitionDto.getPrNo(), user);
 			}
-			return new ResponseEntity<PurchaseRequisitionDto>(purchaseRequisitionDto, HttpStatus.OK);
+			String response = null;
+			if( notificationSent == null ) {
+				response = "{\"response\":"+"\"PR has been saved successfully. Email not Sent.\"}";
+			} else if( notificationSent ) {
+				response = "{\"response\":"+"\"PR has been saved successfully. Email Sent.\"}";
+			} else {
+				response = "{\"response\":"+"\"PR has been saved successfully. Error while sending email.\"}";
+			}
+			return new ResponseEntity<String>(response, HttpStatus.OK);
+			
 		} catch( InvalidRequestException e ) {
 			log.error("Error in saving Purchase Requisition...", e);
-			return new ResponseEntity<PurchaseRequisitionDto>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		} catch( Exception e ) {
 			log.error("Error in saving Purchase Requisition...", e);
-			return new ResponseEntity<PurchaseRequisitionDto>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -177,7 +187,12 @@ public class PRRestController {
 			}
 			
 			boolean notificationSent = updatePrStatusAndNotify(prNo, status, user, body.get("remark") == "" ? null : body.get("remark"));
-			String response = "{\"response\":"+"\"PR has been authorized. Email" + ( notificationSent ? "" : " not ") + "Sent.\"}";
+			String response = null;
+			if( notificationSent ) {
+				response = "{\"response\":"+"\"PR has been saved successfully. Email Sent.\"}";
+			} else {
+				response = "{\"response\":"+"\"PR has been saved successfully. Error while sending email.\"}";
+			}
 			return new ResponseEntity<String>(response, HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in Updating Status of Purchase Requisition...", e);

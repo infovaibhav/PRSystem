@@ -157,7 +157,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		}
 		pr.setProjectCode(dto.getProjectCode());
 		pr.setProjectName(dto.getProjectName());
-		pr.setRev(dto.getRev());
+		pr.setPrRemark(dto.getPrRemark());
 		
 		Set<PurchaseRequisitionItems> newPrItems = new HashSet<PurchaseRequisitionItems>();
 		for (PurchaseRequisitionItemsDto prItemsDto : dto.getPurchaseRequisionItems()) {
@@ -238,7 +238,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setPrNo(pr.getPrNo());
 		dto.setProjectCode(pr.getProjectCode());
 		dto.setProjectName(pr.getProjectName());
-		dto.setRev(pr.getRev());
+		dto.setPrRemark(pr.getPrRemark());
 		dto.setStatus(pr.getStatus());
 		dto.setCreatedDate(pr.getCreatedDate());
 		dto.setCreatedBy(pr.getCreatedBy());

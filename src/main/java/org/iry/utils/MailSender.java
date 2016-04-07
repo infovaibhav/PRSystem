@@ -77,6 +77,8 @@ public class MailSender {
 		props.put(EMAIL_SMTP_USER, mailSmtpUser);
 		props.put(EMAIL_SMTP_PASSWORD, mailSmtpPassword);
 		props.put(EMAIL_SMTP_STARTTLS_ENABLE, mailSmtpStarttlsEnable);
+		props.put("mail.smtp.connectiontimeout", "1000");
+	    props.put("mail.smtp.timeout", "1000");
 	}
 
 	/**
@@ -141,7 +143,7 @@ public class MailSender {
 			while (i <= 3) {
 				i++;
 				try {
-					Thread.sleep(10000);
+					Thread.sleep(1000);
 					Transport.send(message);
 					LOGGER.debug("Email notificatin sent for #Subject- " + subject + " #To- " + to.toString() + " in #Seconds- " + watch.getTotalTimeSeconds() + " #Attempt- " + i );
 					return true;
