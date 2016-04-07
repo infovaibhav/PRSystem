@@ -13,28 +13,28 @@ INSERT INTO USER_PROFILE(type) VALUES ('STORE_USER');
  
 /* Populate one Admin User which will further create other users for the application using GUI */
 INSERT INTO APP_USER(sso_id, password, first_name, last_name, email, authorized_transaction_limit, reporting_to, is_root, is_active)
-VALUES ('root','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Root','Root','vaibhav.v.patil@gmail.com', 0, null, true, true);
+VALUES ('root','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Root','Root','abc@gmail.com', 0, null, true, true);
 
 INSERT INTO APP_USER(sso_id, password, first_name, last_name, email, authorized_transaction_limit, reporting_to, is_root, is_active)
-VALUES ('manager','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Manager','Manager','vaibhav.v.patil@gmail.com', null, null, false, true);
+VALUES ('manager','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Manager','Manager','abc@gmail.com', null, null, false, true);
 
 INSERT INTO APP_USER(sso_id, password, first_name, last_name, email, authorized_transaction_limit, reporting_to, is_root, is_active)
-VALUES ('admin','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Admin','Admin','vaibhav.v.patil@gmail.com', 0, 2, false, true);
+VALUES ('admin','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Admin','Admin','abc@gmail.com', 0, 2, false, true);
 
 INSERT INTO APP_USER(sso_id, password, first_name, last_name, email, authorized_transaction_limit, reporting_to, is_root, is_active)
-VALUES ('supervisor','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Manager','Manager','vaibhav.v.patil@gmail.com', 0, 2, false, true);
+VALUES ('supervisor','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Manager','Manager','abc@gmail.com', 0, 2, false, true);
 
 INSERT INTO APP_USER(sso_id, password, first_name, last_name, email, authorized_transaction_limit, reporting_to, is_root, is_active)
-VALUES ('user','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Manager','Manager','vaibhav.v.patil@gmail.com', 0, 4, false, true);
+VALUES ('user','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Manager','Manager','abc@gmail.com', 0, 4, false, true);
 
 INSERT INTO APP_USER(sso_id, password, first_name, last_name, email, authorized_transaction_limit, reporting_to, is_root, is_active)
-VALUES ('purchase_supervisor','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Purchase','Supervisor','vaibhav.v.patil@gmail.com', 5000, 2, false, true);
+VALUES ('purchase_supervisor','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Purchase','Supervisor','abc@gmail.com', 5000, 2, false, true);
 
 INSERT INTO APP_USER(sso_id, password, first_name, last_name, email, authorized_transaction_limit, reporting_to, is_root, is_active)
-VALUES ('purchase_user','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Purchase','User','vaibhav.v.patil@gmail.com', 0, 6, false, true);
+VALUES ('purchase_user','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Purchase','User','abc@gmail.com', 0, 6, false, true);
 
 INSERT INTO APP_USER(sso_id, password, first_name, last_name, email, authorized_transaction_limit, reporting_to, is_root, is_active)
-VALUES ('store_user','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Purchase','Supervisor','vaibhav.v.patil@gmail.com', 0, 2, false, true);
+VALUES ('store_user','$2a$10$SILNAmruyg2MVCIkXAKC4uJqwir76dNllnaM0bll3G5Ido1KIv9v2', 'Purchase','Supervisor','abc@gmail.com', 0, 2, false, true);
 
 /* Populate JOIN Table */
 INSERT INTO APP_USER_USER_PROFILE (user_id, user_profile_id)
