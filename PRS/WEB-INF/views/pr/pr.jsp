@@ -139,6 +139,10 @@
 		       useFormatter : false
 		   };
 		   jQuery("#addPrItemGrid").jqGrid('addRow',parameters);
+		   $("#addPrItemGrid_iladd").addClass("ui-state-disabled");
+		   $("#addPrItemGrid_iledit").addClass("ui-state-disabled");
+		   $("#addPrItemGrid_ilsave").removeClass("ui-state-disabled");
+		   $("#addPrItemGrid_ilcancel").removeClass("ui-state-disabled");
     	}
     }
     initGrid = function(colNames, colModel, showAddDelete){
@@ -187,9 +191,14 @@
 				   buttonicon:"ui-icon-close", 
 				   caption:"Delete", 
 				   onClickButton: function(){ 
-					   var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
-						if( gr != null ) jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
-						else alert("Please Select Row to delete!");
+					   	var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
+					   	if( gr != null ){
+					 		if(!($($("#addPrItemGrid").jqGrid("getInd",gr,true)).attr("editable") === "1")) {
+					        	jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
+					       	}
+					   	} else{
+					    	alert("Please Select Row to delete!");
+					   	}
 				   }, 
 				   position:"last"
 			});
@@ -302,12 +311,15 @@ $("#submitAllDetails").click(function(e){
 
 function saveDetails( submit ) {
 	var rowID = $("#addPrItemGrid").jqGrid('getGridParam', 'selrow');
-	if( rowID != null ) {
-		jQuery("#addPrItemGrid").jqGrid('saveRow',rowID, { 
-			aftersavefunc: function( response ) {
-		    	save( submit );
-		    }
-		});
+	if(rowID != null){
+		if($($("#addPrItemGrid").jqGrid("getInd",rowID,true)).attr("editable") === "1") {
+			jQuery("#addPrItemGrid").jqGrid('saveRow',rowID, { 
+				aftersavefunc: function( response ) {
+	    		save( submit );
+	    	} } );
+		} else {
+			save( submit );
+		}
 	} else {
 		save( submit );
 	}
@@ -349,7 +361,7 @@ function save( submit ) {
             	if( jqXHR.status == 401 ) {
                 	alert('Session Expired');            		
             	} else {
-            		alert(jqXHR.statusText);
+            		alert(jqXHR.responseText);
             	}
             }
 		});

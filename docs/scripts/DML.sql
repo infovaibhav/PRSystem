@@ -77,3 +77,6 @@ SELECT * FROM APP_USER_USER_PROFILE;
 SELECT * FROM PURCHASE_REQUISITION;
 SELECT * FROM PURCHASE_REQUISITION_ITEMS;
 --delete from APP_USER_USER_PROFILE where user_id in (SELECT id FROM app_user where sso_id='test');delete FROM app_user where sso_id='test';
+
+update purchase_requisition_items set item_code='000' where item_code is null;
+update purchase_requisition_items set required_by_date=current_date where required_by_date is null;

@@ -191,7 +191,7 @@
 	                    	} else if( jqXHR.responseText.length == 0 ) {
 	                    		alert('Service Unavailable');
 	                    	} else {
-	                        	alert(jqXHR.statusText);
+	                        	alert(jqXHR.responseText);
 	                    	}
 	                    }
 	                });
@@ -250,7 +250,7 @@
 	                    	if( jqXHR.status == 401 ) {
 	                        	alert('Session Expired');            		
 	                    	} else {
-	                    		alert(jqXHR.statusText);
+	                    		alert(jqXHR.responseText);
 	                    	}
 	                    }
        				});

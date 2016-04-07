@@ -52,7 +52,7 @@ public class UsersRestController {
 			return new ResponseEntity<String>("Password changed successfully!!", HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in changing password...", e);
-			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>("Error changing password - " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
 	
@@ -63,7 +63,7 @@ public class UsersRestController {
 			return new ResponseEntity<String>("Password reset successfully!!", HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in changing password...", e);
-			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>("Error resetting password - " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
 	
@@ -74,7 +74,7 @@ public class UsersRestController {
 			return new ResponseEntity<String>("Status Changed successfully!!", HttpStatus.OK);
 		} catch( Exception e ) {
 			log.error("Error in changing password...", e);
-			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>("Error changing status - " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
 

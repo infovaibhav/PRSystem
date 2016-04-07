@@ -71,10 +71,10 @@ public class PRRestController {
 			
 		} catch( InvalidRequestException e ) {
 			log.error("Error in saving Purchase Requisition...", e);
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		} catch( Exception e ) {
 			log.error("Error in saving Purchase Requisition...", e);
-			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	

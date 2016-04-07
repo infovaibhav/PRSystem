@@ -203,7 +203,7 @@ $("#saveChanges").click(function(){
             	if( jqXHR.status == 401 ) {
                 	alert('Session Expired');            		
             	} else {
-            		alert(jqXHR.statusText);
+            		alert(jqXHR.responseText);
             	}
             }
 		});
