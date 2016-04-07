@@ -356,7 +356,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Diamensions]]></text>
+				<text><![CDATA[Dimensions]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="131ec3cc-4fc7-4f0c-a402-97d834a5f7b7" x="54" y="0" width="66" height="32"/>
