@@ -170,7 +170,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	}
 	
 	private PurchaseRequisitionItems convertToPojo(PurchaseRequisitionItemsDto dto, PurchaseRequisition existingPr) throws Exception {
-		if( dto.getCode() == null || dto.getDescription() == null || dto.getQuantityRequired() == 0 || dto.getRequiredByDate() == null ) {
+		if( dto.getDescription() == null || dto.getQuantityRequired() == 0 || dto.getRequiredByDate() == null ) {
 			throw new InvalidRequestException("Invalid Purchase Item record.");
 		}
 		PurchaseRequisitionItems prItem = null;

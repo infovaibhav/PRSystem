@@ -158,7 +158,7 @@
 	                $("#" + priSubgridTableId).jqGrid({
 	                	datatype:'local',
 	                	mtype: 'GET',
-	                	colNames:['Item Code', 'Description', 'Diamensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark'],
+	                	colNames:['Item Code', 'Description', 'Dimensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark'],
 	        		    colModel:[
 							{name:'code', width:40, sortable: false, align:'left', resizable: true},
 	        		        {name:'description', width:80, sortable: false, align:'left', resizable: true},
