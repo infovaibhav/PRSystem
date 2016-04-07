@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IRYReport1" pageWidth="1200" pageHeight="842" columnWidth="1160" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f9872456-f47e-4319-b277-07c24845ecc6">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="423"/>
-	<property name="ireport.y" value="10"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<parameter name="prNo" class="java.lang.String"/>
 	<parameter name="projectName" class="java.lang.String"/>
 	<parameter name="projectCode" class="java.lang.String"/>
-	<parameter name="rev" class="java.lang.String"/>
 	<parameter name="createdByName" class="java.lang.String"/>
 	<parameter name="createdDateStr" class="java.lang.String"/>
 	<parameter name="authorizedByName" class="java.lang.String"/>
@@ -29,7 +28,7 @@
 	<field name="diamensions" class="java.lang.String"/>
 	<variable name="serialnumber" class="java.lang.Number" resetType="Column" incrementType="Column" calculation="Count"/>
 	<title>
-		<band height="218">
+		<band height="201">
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="aedcc5f9-bc37-4bd0-9b8c-3a273c1bdfe3" x="100" y="147" width="313" height="20"/>
 				<box>
@@ -106,19 +105,6 @@
 				</textElement>
 				<text><![CDATA[Purchase Reqiuistion]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="f6e6e6b9-6a03-4fb2-abd1-8fddff2278bf" x="513" y="127" width="312" height="20"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<paragraph leftIndent="5"/>
-				</textElement>
-			</textField>
 			<staticText>
 				<reportElement uuid="d7d2d9ef-31ee-458a-8498-1de9d876e84a" x="0" y="147" width="100" height="20"/>
 				<box>
@@ -153,20 +139,6 @@
 					<font size="24"/>
 				</textElement>
 				<text><![CDATA[IRY Engineering Pvt Ltd]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="bb7e174c-e56d-413f-86e1-4fde226342a7" x="413" y="127" width="100" height="20"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<paragraph leftIndent="5"/>
-				</textElement>
-				<text><![CDATA[Rev]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="c2769937-e26e-4834-a5bc-e4d0ef52bdcb" x="413" y="107" width="100" height="20"/>
@@ -211,7 +183,7 @@
 				<text><![CDATA[PR No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="fdc7643c-1981-4f4d-bce1-30847c65ad0d" x="0" y="167" width="100" height="20"/>
+				<reportElement uuid="fdc7643c-1981-4f4d-bce1-30847c65ad0d" x="413" y="127" width="100" height="20"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -225,7 +197,7 @@
 				<text><![CDATA[Remark]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="73c91420-dc6b-4dd7-87aa-aa10fc11dd46" x="100" y="167" width="725" height="20"/>
+				<reportElement uuid="73c91420-dc6b-4dd7-87aa-aa10fc11dd46" x="513" y="127" width="312" height="20"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
