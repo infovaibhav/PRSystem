@@ -92,7 +92,7 @@
 							        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editable:false},
 							        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:false}},
 							        {name:'orderedQuantity', width:30, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 10}},
-							        {name:'deviation', width:30, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 100}},
+							        {name:'deviation', width:40, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 100}},
 							        {name:'remark', width:80, sortable: false, align:'left', resizable: true, editoptions: {maxlength: 200}},
 							        {name:'priId', hidden:true}
 								];
@@ -343,7 +343,7 @@ function save( submit ) {
 			contentType :"application/json",
 			success: function(data, status, jqXHR ){
 				alert(data.response);
-				window.location.href="myPR";
+				window.location.href="home";
 			},
             error : function(jqXHR, status, error) {
             	if( jqXHR.status == 401 ) {
