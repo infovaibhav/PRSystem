@@ -131,6 +131,14 @@
 					        {name:'priId', hidden:true}
 						];
 			initGrid(colNames, colModel, true);
+			var parameters = {
+		       rowID : "jqg1",
+		       initdata : {},
+		       position :"first",
+		       useDefValues : false,
+		       useFormatter : false
+		   };
+		   jQuery("#addPrItemGrid").jqGrid('addRow',parameters);
     	}
     }
     initGrid = function(colNames, colModel, showAddDelete){
