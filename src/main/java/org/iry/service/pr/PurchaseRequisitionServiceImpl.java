@@ -362,7 +362,6 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 			reportParams.put("prNo", prDto.getPrNo());
 			reportParams.put("projectName", prDto.getProjectName());
 			reportParams.put("projectCode", prDto.getProjectCode());
-			reportParams.put("rev", prDto.getRev());
 			reportParams.put("createdByName", prDto.getCreatedByName());
 			reportParams.put("createdDateStr", prDto.getCreatedDateStr());
 			reportParams.put("authorizedByName", prDto.getAuthorizedByName());
