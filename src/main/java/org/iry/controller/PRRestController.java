@@ -350,7 +350,10 @@ public class PRRestController {
 			}
 			
 		} else if( status.equals(PurchaseRequisitionStatus.PO_CREATED.getStatus()) ) {
-			
+			if( userDetails.getAllowedActions().editPrItemsRemark ) {
+				dto.setEditable(true);
+				dto.setEditablePrItemsRemark(true);
+			}
 		} else if( status.equals(PurchaseRequisitionStatus.CANCELLED.getStatus()) ) {
 			
 		}

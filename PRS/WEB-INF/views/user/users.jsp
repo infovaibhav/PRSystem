@@ -41,9 +41,8 @@ $(function () {
                 {name:'status', hidden:true}
 			],
             width: $("#usersHeader").width()-30,
-            height: "400",
-            scroll : true,
-            gridview : true,
+            height: "350",
+            rowNum : -1,
             loadtext: 'building list...',
             gridComplete: function(){ 
                 var ids = jQuery("#usersTable").getDataIDs(); 
@@ -89,7 +88,6 @@ $(function () {
 	   var newUrlUsersTable = "rest/user/_search";
        $("#usersTable").jqGrid().setGridParam({
    		url : newUrlUsersTable, 
-   		page : 1, 
    		mtype:'POST',
    		datatype : "json",
 			ajaxGridOptions: { 
@@ -97,7 +95,6 @@ $(function () {
 				contentType :"application/json; charset=utf-8"
 			},
 			serializeGridData: function(postData) {
-				postData['pageSize'] =  defaultPageSize;
 			    return JSON.stringify(postData);
 			}
    		});
@@ -116,8 +113,10 @@ $(function () {
 	            error: function(jqXHR, textStatus, errorThrown) { 
 	            	if( jqXHR.status == 401 ) {
 	            		alert("Unsuccessful - Session Expired.");
+	            	} else if( jqXHR.responseText.length == 0 ) {
+	            		alert("Service Unavailable");
 	            	} else {
-	                    alert(jqXHR.responseText); 	
+	                    alert(jqXHR.statusText); 	
 	            	}
 	            }
 	        });
@@ -138,7 +137,7 @@ $(function () {
 	            	} else if( jqXHR.responseText.length == 0 ) {
 	            		alert("Service Unavailable");
 	            	} else {
-	                    alert(jqXHR.responseText); 	
+	                    alert(jqXHR.statusText); 	
 	            	}
 	            }
 	        });
