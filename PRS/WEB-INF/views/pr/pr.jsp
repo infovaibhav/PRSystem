@@ -155,6 +155,7 @@
 		    pager: '#addgridPager',
 		    gridview: true,
 		    rownumbers: true,
+			rowNum: 1000,
 		    rownumWidth: 50,
 		    pgbuttons : false,
 		    pginput : false,

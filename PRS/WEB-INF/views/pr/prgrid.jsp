@@ -175,6 +175,7 @@
 	        			],
 	        		    rownumbers: true,
 	        		    rownumWidth: 50,
+	        			rowNum: 1000,
 	    				width: $("#prHeader").width()-111,
 	                    height: '100%',
 	                    loadtext: 'building list...',
