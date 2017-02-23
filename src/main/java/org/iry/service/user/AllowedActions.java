@@ -18,6 +18,7 @@ public class AllowedActions implements Serializable{
 	public boolean createPr = false;
 	public boolean authorizePr = false;
 	public boolean approvePr = false;
+	public boolean poHold = false;
 	public boolean reopenPr = false;
 	public boolean editPrRemark = false;
 	public boolean cancelPr = false;
@@ -29,6 +30,7 @@ public class AllowedActions implements Serializable{
 	public boolean updatePoCreated = false;
 	public boolean createPo = false;
 	public boolean approvePo = false;
+	public boolean closedPo = false;
 	public boolean editPrItemsRemark = false;
 	
 	public boolean updateReceiveMaterial = false;

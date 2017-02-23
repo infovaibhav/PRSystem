@@ -230,6 +230,10 @@ public class PRRestController {
 			
 		} else if( status.equals(PurchaseRequisitionStatus.SUBMITTED.getStatus()) ) {
 			
+			if( dto.getCreatedBy().longValue() == userDetails.getUser().getId().longValue() ) {
+				dto.setEditable(true);
+			}
+			
 			if( userDetails.getAllowedActions().authorizePr ) {
 				dto.setEditable(true);
 				dto.setEditablePrRemark(true);
@@ -254,6 +258,9 @@ public class PRRestController {
 			
 		} else if( status.equals(PurchaseRequisitionStatus.APPROVED.getStatus()) ) {
 			
+			if( userDetails.getAllowedActions().poHold ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.POHOLD.getStatus(), "POHold"));
+			}
 			if( userDetails.getAllowedActions().acknowledgePr ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus(), "Acknowledge"));
 			}
@@ -262,6 +269,14 @@ public class PRRestController {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.CANCELLED.getStatus(), "Cancel"));
 			}
 			
+		} else if ( status.equals(PurchaseRequisitionStatus.POHOLD.getStatus()) ) {
+			if( userDetails.getAllowedActions().acknowledgePr ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus(), "Acknowledge"));
+			}
+			if( userDetails.getAllowedActions().cancelPr
+					&& userDetails.getAllowedActions().approvePr ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.CANCELLED.getStatus(), "Cancel"));
+			}
 		} else if( status.equals(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus()) ) {
 			
 			if( userDetails.getAllowedActions().editPrItemsRemark ) {
@@ -350,9 +365,25 @@ public class PRRestController {
 			}
 			
 		} else if( status.equals(PurchaseRequisitionStatus.PO_CREATED.getStatus()) ) {
-			
+			if( userDetails.getAllowedActions().closedPo ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.PO_CLOSED.getStatus(), "POclosed"));
+			}
 		} else if( status.equals(PurchaseRequisitionStatus.CANCELLED.getStatus()) ) {
 			
+		} else if ( status.equals(PurchaseRequisitionStatus.PO_CLOSED.getStatus()) ) {
+			if( userDetails.getAllowedActions().reopenPr ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.PO_REOPEN.getStatus(), "Reopen"));
+			}
+		} else if ( status.equals(PurchaseRequisitionStatus.PO_REOPEN.getStatus()) ) {
+			if( dto.getCreatedBy().longValue() == userDetails.getUser().getId().longValue() ) {
+				dto.setEditable(true);
+			}
+			if( dto.getCreatedBy().longValue() == userDetails.getUser().getId().longValue() ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.SUBMITTED.getStatus(), "Submit"));
+			}
+			if( userDetails.getAllowedActions().cancelPr ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.CANCELLED.getStatus(), "Cancel"));
+			}
 		}
 		dto.setAllowedStatusChangesStr(dto.getAllowedStatusChanges().toString());
 	}

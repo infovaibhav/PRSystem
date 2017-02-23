@@ -51,6 +51,7 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
 				allowedActions.authorizePr = true;
 				allowedActions.approvePr = true;
 				allowedActions.reopenPr = true;
+				allowedActions.closedPo = true;
 				allowedActions.cancelPr = true;
 				allowedActions.editPrRemark = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.PURCHASE_USER.getUserProfileType())) {
@@ -70,6 +71,7 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
 				allowedActions.updatePoCreated = true;
 				allowedActions.editPrItemsRemark = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.PURCHASE_MANAGER.getUserProfileType())) {
+				allowedActions.poHold = true;
 				allowedActions.approvePo = true;
 				allowedActions.acknowledgePr = true;
 				allowedActions.updateRequestQuote = true;
@@ -79,6 +81,7 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
 				allowedActions.editPrItemsRemark = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.STORE_USER.getUserProfileType())) {
 				allowedActions.updateReceiveMaterial = true;
+				allowedActions.closedPo = true;
 			}
 		}
 	}

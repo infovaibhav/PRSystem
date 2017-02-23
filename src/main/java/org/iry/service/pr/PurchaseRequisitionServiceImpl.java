@@ -260,7 +260,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setLastUpdatedByName(pr.getApprovedByName());
 		dto.setLastUpdatedDate(pr.getLastUpdatedDate());
 		dto.setPrRemark(pr.getPrRemark());
-		if( !pr.getStatus().equals(PurchaseRequisitionStatus.INITIAL.getStatus()) ) {
+		if( !pr.getStatus().equals(PurchaseRequisitionStatus.INITIAL.getStatus()) &&  !pr.getStatus().equals(PurchaseRequisitionStatus.PO_REOPEN.getStatus()) ) {
 			dto.setSubmitted(true);
 		}
 		dto.setTotalRecords(pr.getTotalRecords());
@@ -305,6 +305,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 			String fileName = prDto.getPrNo() + ".pdf";
 			
 			return mailSender.sendMail(to, null, subject, body, pdfStream.toByteArray(), fileName);
+			//return true;
 		} catch (Exception e) {
 			log.error("Error in sending email notifications....", e);
 		} finally {
