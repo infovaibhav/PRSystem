@@ -56,7 +56,7 @@ public class PRRestController {
 			prService.save(purchaseRequisitionDto, user.getId(), user.getFullName());
 			
 			Boolean notificationSent = null;
-			if( purchaseRequisitionDto.isSubmitted() ) {
+			if( purchaseRequisitionDto.isSubmitted() && user.isEmailNotification()) {
 				notificationSent = prService.sendEmailNotification(purchaseRequisitionDto.getPrNo(), user);
 			}
 			String response = null;
@@ -203,7 +203,7 @@ public class PRRestController {
 	private boolean updatePrStatusAndNotify(String prNo, String status, User user, String remark) {
 		log.info("Updating #PR- " + prNo + " with #Status- " + status + " #Remark - " + remark);
 		prService.updatePrStatus(prNo, status, user.getId(), user.getFullName(), remark);
-		return prService.sendEmailNotification(prNo, user);
+		return user.isEmailNotification() ? prService.sendEmailNotification(prNo, user) : false ;
 	}
 	
 	private void updateAllowedPrActions(List<PurchaseRequisitionDto> dtos, UserDetails userDetails) {
@@ -365,6 +365,16 @@ public class PRRestController {
 			}
 			
 		} else if( status.equals(PurchaseRequisitionStatus.PO_CREATED.getStatus()) ) {
+			if( userDetails.getAllowedActions().editableInvoiceAndDt ) {
+				dto.setEditable(true);
+				dto.setEditableInvoiceAndDt(true);
+			}
+			
+			if( userDetails.getAllowedActions().editPrItemsRemark ) {
+				dto.setEditable(true);
+				dto.setEditablePrItemsRemark(true);
+			}
+			
 			if( userDetails.getAllowedActions().closedPo ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.PO_CLOSED.getStatus(), "POclosed"));
 			}

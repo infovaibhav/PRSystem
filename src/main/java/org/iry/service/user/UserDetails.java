@@ -44,7 +44,6 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
 				allowedActions.cancelPr = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.SUPERVISOR.getUserProfileType())) {
 				allowedActions.authorizePr = true;
-				allowedActions.reopenPr = true;
 				allowedActions.cancelPr = true;
 				allowedActions.editPrRemark = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.MANAGER.getUserProfileType())) {
@@ -79,9 +78,11 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
 				allowedActions.updateFinalizeQuote = true;
 				allowedActions.updatePoCreated = true;
 				allowedActions.editPrItemsRemark = true;
+				allowedActions.editableInvoiceAndDt = true;
 			} else if( authorityName.equalsIgnoreCase(UserProfileType.STORE_USER.getUserProfileType())) {
 				allowedActions.updateReceiveMaterial = true;
 				allowedActions.closedPo = true;
+				allowedActions.editableInvoiceAndDt = true;
 			}
 		}
 	}

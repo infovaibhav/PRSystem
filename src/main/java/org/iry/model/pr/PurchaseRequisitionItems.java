@@ -66,6 +66,12 @@ public class PurchaseRequisitionItems {
 	@Column(name="REMARK")
 	private String remark;
 	
+	@Column(name="INVOICE_DATE")
+	private Timestamp invoiceDate;
+	
+	@Column(name="INVOICE_NO")
+	private String invoiceNo;
+	
 	public Long getId() {
 		return id;
 	}
@@ -150,7 +156,18 @@ public class PurchaseRequisitionItems {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
+	public Timestamp getInvoiceDate() {
+		return invoiceDate;
+	}
+	public void setInvoiceDate(Timestamp invoiceDate) {
+		this.invoiceDate = invoiceDate;
+	}
+	public String getInvoiceNo() {
+		return invoiceNo;
+	}
+	public void setInvoiceNo(String invoiceNo) {
+		this.invoiceNo = invoiceNo;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -222,6 +222,14 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		}
 		prItem.setPurchaseRequisition(existingPr);
 		
+		if( dto.getInvoiceDate() != null ) {
+			prItem.setInvoiceDate(new Timestamp(dto.getInvoiceDate().getTime()));
+		}
+		
+		if( dto.getInvoiceNo() != null ) {
+			prItem.setInvoiceNo(dto.getInvoiceNo());
+		}
+		
 		return prItem;
 	}
 	
@@ -287,6 +295,8 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setDeviation(prItem.getDeviation());
 		dto.setOrderedQuantity(prItem.getOrderedQuantity());
 		dto.setRemark(prItem.getRemark());
+		dto.setInvoiceNo(prItem.getInvoiceNo());
+		dto.setInvoiceDate(prItem.getInvoiceDate());
 		return dto;
 	}
 	

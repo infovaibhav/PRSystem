@@ -158,7 +158,7 @@
 	                $("#" + priSubgridTableId).jqGrid({
 	                	datatype:'local',
 	                	mtype: 'GET',
-	                	colNames:['Item Code', 'Description', 'Diamensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark'],
+	                	colNames:['Item Code', 'Description', 'Diamensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'PO Number', 'Invoice No', 'Invoice Date'],
 	        		    colModel:[
 							{name:'code', width:40, sortable: false, align:'left', resizable: true},
 	        		        {name:'description', width:80, sortable: false, align:'left', resizable: true},
@@ -171,7 +171,9 @@
 	        		        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true},
 	        		        {name:'orderedQuantity', width:50, sortable: false, align:'right', resizable: true},
 	        		        {name:'deviation', width:50, sortable: false, align:'left', resizable: true},
-	        		        {name:'remark', width:50, sortable: false, align:'left', resizable: true}
+	        		        {name:'remark', width:50, sortable: false, align:'left', resizable: true},
+	        		        {name:'invoiceNo', width:50, sortable: false, align:'right', resizable: true},
+	        		        {name:'invoiceDateStr', width:50, sortable: false, align:'right', resizable: true}
 	        			],
 	        		    rownumbers: true,
 	        		    rownumWidth: 50,

@@ -47,6 +47,7 @@ public class PurchaseRequisitionDto implements BaseDto {
 	private boolean editable;
 	private boolean editablePrRemark;
 	private boolean editablePrItemsRemark;
+	private boolean editableInvoiceAndDt;
 	private String prRemark;
 	private List<Action> allowedStatusChanges = new ArrayList<Action>();
 	private String allowedStatusChangesStr;
@@ -327,5 +328,11 @@ public class PurchaseRequisitionDto implements BaseDto {
 	}
 	public void setPrRemark(String prRemark) {
 		this.prRemark = prRemark;
+	}
+	public boolean isEditableInvoiceAndDt() {
+		return editableInvoiceAndDt;
+	}
+	public void setEditableInvoiceAndDt(boolean editableInvoiceAndDt) {
+		this.editableInvoiceAndDt = editableInvoiceAndDt;
 	}
 }

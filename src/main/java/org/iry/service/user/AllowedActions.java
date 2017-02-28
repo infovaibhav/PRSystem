@@ -32,6 +32,7 @@ public class AllowedActions implements Serializable{
 	public boolean approvePo = false;
 	public boolean closedPo = false;
 	public boolean editPrItemsRemark = false;
+	public boolean editableInvoiceAndDt = false;
 	
 	public boolean updateReceiveMaterial = false;
 	

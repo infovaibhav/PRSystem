@@ -80,7 +80,7 @@
 								];
 					
 					if( data.editablePrItemsRemark == true ) {
-						colNames = ['Item Code', 'Description', 'Diamensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark', ''];
+						colNames = ['Item Code', 'Description', 'Diamensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'PO Number', 'Invoice No', 'Invoice Date', ''];
 						colModel = [
 							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editable:false},
 							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editable:false},
@@ -94,6 +94,28 @@
 							        {name:'orderedQuantity', width:30, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 10}},
 							        {name:'deviation', width:40, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 100}},
 							        {name:'remark', width:80, sortable: false, align:'left', resizable: true, editoptions: {maxlength: 200}},
+							        {name:'invoiceNo', width:80, sortable: false, align:'left', resizable: true, editable: false},
+							        {name:'invoiceDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy', editable: false},
+							        {name:'priId', hidden:true}
+								];
+						showAddDelete = false;
+					} else if( data.editableInvoiceAndDt == true ) {
+						colNames = ['Item Code', 'Description', 'Diamensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'PO Number', 'Invoice No', 'Invoice Date', ''];
+						colModel = [
+							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editable:false},
+							        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'make', width:40, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'specifications', width:50, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editable:false},
+							        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:false}},
+							        {name:'orderedQuantity', width:30, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 10}},
+							        {name:'deviation', width:40, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 100}},
+							        {name:'remark', width:80, sortable: false, align:'left', resizable: true, editoptions: {maxlength: 200}},
+							        {name:'invoiceNo', width:80, sortable: false, align:'left', resizable: true,  editoptions: {maxlength: 200}},
+							        {name:'invoiceDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:false}},
 							        {name:'priId', hidden:true}
 								];
 						showAddDelete = false;

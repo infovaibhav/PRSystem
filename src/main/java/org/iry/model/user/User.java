@@ -56,6 +56,9 @@ public class User implements Serializable {
 
 	@Column(name="IS_ROOT")
 	private boolean isRoot=false;
+	
+	@Column(name = "EMAIL_NOTIFICATION")
+	private boolean emailNotification = true;
 
 	@Column(name="IS_ACTIVE")
 	private boolean isActive=true;
@@ -206,6 +209,14 @@ public class User implements Serializable {
 		return "User [id=" + id + ", ssoId=" + ssoId + ", password=" + password
 				+ ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", email=" + email + ", isActive=" + isActive + ", userProfiles=" + userProfiles +"]";
+	}
+
+	public boolean isEmailNotification() {
+		return emailNotification;
+	}
+
+	public void setEmailNotification(boolean emailNotification) {
+		this.emailNotification = emailNotification;
 	}
 	
 }

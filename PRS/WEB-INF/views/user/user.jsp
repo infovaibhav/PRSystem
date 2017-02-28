@@ -61,7 +61,14 @@
 					</div>
 				</div>
 			</div>
-	
+			<div class="row">
+				<div class="form-group required col-md-12">
+					<label class="col-md-2 control-lable" for="emailNotification">Subscribe for Email Notification </label>
+					<div class="col-md-3">
+						<form:checkbox  path="emailNotification" id="emailNotification"/>
+					</div>
+				</div>
+			</div>
 			<div class="row">
 				<div class="form-group col-md-12">
 					<label class="col-md-2 control-lable" for="authorizedTransactionLimit">Authorized Transaction Limit</label>

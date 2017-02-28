@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IRYReport1" pageWidth="1200" pageHeight="842" columnWidth="1160" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f9872456-f47e-4319-b277-07c24845ecc6">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IRYReport1" pageWidth="1374" pageHeight="842" columnWidth="1334" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f9872456-f47e-4319-b277-07c24845ecc6">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.x" value="629"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="prNo" class="java.lang.String"/>
 	<parameter name="projectName" class="java.lang.String"/>
 	<parameter name="projectCode" class="java.lang.String"/>
@@ -26,6 +26,8 @@
 	<field name="remark" class="java.lang.String"/>
 	<field name="code" class="java.lang.String"/>
 	<field name="diamensions" class="java.lang.String"/>
+	<field name="invoiceNo" class="java.lang.String"/>
+	<field name="invoiceDateStr" class="java.lang.String"/>
 	<variable name="serialnumber" class="java.lang.Number" resetType="Column" incrementType="Column" calculation="Count"/>
 	<title>
 		<band height="201">
@@ -332,7 +334,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Remark]]></text>
+				<text><![CDATA[PO Number]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="0e735dec-0f8d-4105-8c62-8fca7ee2936d" x="976" y="0" width="53" height="32"/>
@@ -369,6 +371,30 @@
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f27be8e2-acff-403e-b62b-2f65aade80ca" x="1160" y="0" width="77" height="32"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Invoice No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4830acff-5152-4648-9427-6b099a3c5a7e" x="1237" y="0" width="97" height="32"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Invoice Date]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -549,6 +575,32 @@
 					<paragraph leftIndent="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="c2606b30-dfc2-4b37-8727-684be3066d00" x="1160" y="0" width="77" height="30"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{invoiceNo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e3f57439-4217-4064-8d86-0d6d8d01b746" x="1237" y="0" width="97" height="30"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{invoiceDateStr}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
