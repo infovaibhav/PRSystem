@@ -56,6 +56,7 @@ public class PRRestController {
 			prService.save(purchaseRequisitionDto, user.getId(), user.getFullName());
 			
 			Boolean notificationSent = null;
+
 			if( purchaseRequisitionDto.isSubmitted() && user.isEmailNotification()) {
 				notificationSent = prService.sendEmailNotification(purchaseRequisitionDto.getPrNo(), user);
 			}
@@ -229,11 +230,10 @@ public class PRRestController {
 			}
 			
 		} else if( status.equals(PurchaseRequisitionStatus.SUBMITTED.getStatus()) ) {
-			
 			if( dto.getCreatedBy().longValue() == userDetails.getUser().getId().longValue() ) {
 				dto.setEditable(true);
 			}
-			
+
 			if( userDetails.getAllowedActions().authorizePr ) {
 				dto.setEditable(true);
 				dto.setEditablePrRemark(true);
@@ -257,10 +257,10 @@ public class PRRestController {
 			}
 			
 		} else if( status.equals(PurchaseRequisitionStatus.APPROVED.getStatus()) ) {
-			
 			if( userDetails.getAllowedActions().poHold ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.POHOLD.getStatus(), "POHold"));
 			}
+
 			if( userDetails.getAllowedActions().acknowledgePr ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus(), "Acknowledge"));
 			}
@@ -268,7 +268,6 @@ public class PRRestController {
 					&& userDetails.getAllowedActions().approvePr ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.CANCELLED.getStatus(), "Cancel"));
 			}
-			
 		} else if ( status.equals(PurchaseRequisitionStatus.POHOLD.getStatus()) ) {
 			if( userDetails.getAllowedActions().acknowledgePr ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus(), "Acknowledge"));
@@ -369,12 +368,10 @@ public class PRRestController {
 				dto.setEditable(true);
 				dto.setEditableInvoiceAndDt(true);
 			}
-			
 			if( userDetails.getAllowedActions().editPrItemsRemark ) {
 				dto.setEditable(true);
 				dto.setEditablePrItemsRemark(true);
 			}
-			
 			if( userDetails.getAllowedActions().closedPo ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.PO_CLOSED.getStatus(), "POclosed"));
 			}
@@ -394,6 +391,7 @@ public class PRRestController {
 			if( userDetails.getAllowedActions().cancelPr ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.CANCELLED.getStatus(), "Cancel"));
 			}
+
 		}
 		dto.setAllowedStatusChangesStr(dto.getAllowedStatusChanges().toString());
 	}

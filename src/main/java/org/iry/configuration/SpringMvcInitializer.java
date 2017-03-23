@@ -1,8 +1,8 @@
 package org.iry.configuration;
 
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {

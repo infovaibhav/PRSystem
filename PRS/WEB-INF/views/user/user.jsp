@@ -69,6 +69,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="row">
 				<div class="form-group col-md-12">
 					<label class="col-md-2 control-lable" for="authorizedTransactionLimit">Authorized Transaction Limit</label>

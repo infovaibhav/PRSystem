@@ -32,7 +32,6 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 	private String invoiceNo;
 	private String remark;
 	private String invoiceDateStr;
-	
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
 	public PurchaseRequisitionItemsDto() {
@@ -138,7 +137,6 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 		}
 		return sdf.parse(deliveryDateStr);
 	}
-
 	public String getInvoiceNo() {
 		return invoiceNo;
 	}

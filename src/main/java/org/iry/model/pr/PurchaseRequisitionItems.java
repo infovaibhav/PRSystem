@@ -71,7 +71,7 @@ public class PurchaseRequisitionItems {
 	
 	@Column(name="INVOICE_NO")
 	private String invoiceNo;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -168,6 +168,7 @@ public class PurchaseRequisitionItems {
 	public void setInvoiceNo(String invoiceNo) {
 		this.invoiceNo = invoiceNo;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
