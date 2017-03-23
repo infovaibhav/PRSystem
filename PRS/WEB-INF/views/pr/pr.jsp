@@ -66,9 +66,9 @@
 					}
     	    		var showAddDelete = true;
 					//Which columns to show for pr items
-					var colNames = ['Item Code', 'Description*', 'Dimensions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
+					var colNames = ['Item Code*', 'Description*', 'Diamensions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
 					var colModel = [
-							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editrules:{required:false}, editoptions: {maxlength: 50}},
+							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editrules:{required:true}, editoptions: {maxlength: 50}},
 							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}, editoptions: {maxlength: 200}},
 							        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true, editrules:{required:false}, editoptions: {maxlength: 100}},
 							        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editrules:{number:true, required:true}, editoptions: {maxlength: 30}},
@@ -80,7 +80,7 @@
 								];
 					
 					if( data.editablePrItemsRemark == true ) {
-						colNames = ['Item Code', 'Description', 'Dimensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark', ''];
+            colNames = ['Item Code', 'Description', 'Diamensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'PO Number', 'Invoice No', 'Invoice Date', ''];
 						colModel = [
 							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editable:false},
 							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editable:false},
@@ -94,6 +94,29 @@
 							        {name:'orderedQuantity', width:30, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 10}},
 							        {name:'deviation', width:40, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 100}},
 							        {name:'remark', width:80, sortable: false, align:'left', resizable: true, editoptions: {maxlength: 200}},
+							        {name:'invoiceNo', width:80, sortable: false, align:'left', resizable: true, editable: false},
+							        {name:'invoiceDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy', editable: false},
+							        {name:'priId', hidden:true}
+								];
+						showAddDelete = false;
+					} else if( data.editableInvoiceAndDt == true ) {
+						colNames = ['Item Code', 'Description', 'Diamensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'PO Number', 'Invoice No', 'Invoice Date', ''];
+						colModel = [
+							        {name:'code', width:40, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'description', width:80, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true, editable:false},
+							        {name:'uom', width:40, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'make', width:40, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'specifications', width:50, sortable: false, align:'left', resizable: true, editable:false},
+							        {name:'requiredByDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editable:false},
+							        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:false}},
+							        {name:'orderedQuantity', width:30, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 10}},
+							        {name:'deviation', width:40, sortable: false, align:'right', resizable: true, editoptions: {maxlength: 100}},
+							        {name:'remark', width:80, sortable: false, align:'left', resizable: true, editoptions: {maxlength: 200}},
+							        {name:'invoiceNo', width:80, sortable: false, align:'left', resizable: true,  editoptions: {maxlength: 200}},
+							        {name:'invoiceDateStr', width:50, sortable: false, align:'center', resizable: true, formatoptions: {newformat: 'dd-mm-yyyy'}, datefmt: 'dd-mm-yyyy',editoptions: { dataInit: initDate }, editrules:{date:true, required:false}},
+
 							        {name:'priId', hidden:true}
 								];
 						showAddDelete = false;
@@ -118,7 +141,8 @@
     	} else {
 			$("#remarkDiv").hide();
     		$("#submitAllDetails").hide();
-    		var colNames = ['Item Code', 'Description*', 'Dimensions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
+        var colNames = ['Item Code*', 'Description*', 'Diamensions', 'Quantity Required*', 'UOM*', 'Make', 'Specifications', 'Required Date*', ''];
+
 			var colModel = [
 					        {name:'code', width:40, sortable: false, align:'left', resizable: true, editrules:{required:false}, editoptions: {maxlength: 50}},
 					        {name:'description', width:80, sortable: false, align:'left', resizable: true, editrules:{required:true}, editoptions: {maxlength: 200}},
@@ -139,10 +163,12 @@
 		       useFormatter : false
 		   };
 		   jQuery("#addPrItemGrid").jqGrid('addRow',parameters);
-		   $("#addPrItemGrid_iladd").addClass("ui-state-disabled");
-		   $("#addPrItemGrid_iledit").addClass("ui-state-disabled");
-		   $("#addPrItemGrid_ilsave").removeClass("ui-state-disabled");
-		   $("#addPrItemGrid_ilcancel").removeClass("ui-state-disabled");
+
+		   //$("#addPrItemGrid_iladd").addClass("ui-state-disabled");
+		   //$("#addPrItemGrid_iledit").addClass("ui-state-disabled");
+		   //$("#addPrItemGrid_ilsave").removeClass("ui-state-disabled");
+		   //$("#addPrItemGrid_ilcancel").removeClass("ui-state-disabled");
+
     	}
     }
     initGrid = function(colNames, colModel, showAddDelete){
@@ -155,7 +181,6 @@
 		    pager: '#addgridPager',
 		    gridview: true,
 		    rownumbers: true,
-			rowNum: 1000,
 		    rownumWidth: 50,
 		    pgbuttons : false,
 		    pginput : false,
@@ -192,14 +217,10 @@
 				   buttonicon:"ui-icon-close", 
 				   caption:"Delete", 
 				   onClickButton: function(){ 
-					   	var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
-					   	if( gr != null ){
-					 		if(!($($("#addPrItemGrid").jqGrid("getInd",gr,true)).attr("editable") === "1")) {
-					        	jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
-					       	}
-					   	} else{
-					    	alert("Please Select Row to delete!");
-					   	}
+					    var gr = jQuery("#addPrItemGrid").jqGrid('getGridParam','selrow');
+						  if( gr != null ) jQuery("#addPrItemGrid").jqGrid('delGridRow',gr,{reloadAfterSubmit:false});
+						  else alert("Please Select Row to delete!");
+
 				   }, 
 				   position:"last"
 			});
@@ -312,15 +333,12 @@ $("#submitAllDetails").click(function(e){
 
 function saveDetails( submit ) {
 	var rowID = $("#addPrItemGrid").jqGrid('getGridParam', 'selrow');
-	if(rowID != null){
-		if($($("#addPrItemGrid").jqGrid("getInd",rowID,true)).attr("editable") === "1") {
-			jQuery("#addPrItemGrid").jqGrid('saveRow',rowID, { 
-				aftersavefunc: function( response ) {
-	    		save( submit );
-	    	} } );
-		} else {
-			save( submit );
-		}
+	if( rowID != null ) {
+		jQuery("#addPrItemGrid").jqGrid('saveRow',rowID, { 
+			aftersavefunc: function( response ) {
+		    	save( submit );
+		    }
+		});
 	} else {
 		save( submit );
 	}
@@ -362,7 +380,7 @@ function save( submit ) {
             	if( jqXHR.status == 401 ) {
                 	alert('Session Expired');            		
             	} else {
-            		alert(jqXHR.responseText);
+            		alert(jqXHR.statusText);
             	}
             }
 		});

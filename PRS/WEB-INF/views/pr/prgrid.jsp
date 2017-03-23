@@ -158,9 +158,9 @@
 	                $("#" + priSubgridTableId).jqGrid({
 	                	datatype:'local',
 	                	mtype: 'GET',
-	                	colNames:['Item Code', 'Description', 'Dimensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'Remark'],
-	        		    colModel:[
-							{name:'code', width:40, sortable: false, align:'left', resizable: true},
+	                	colNames:['Item Code', 'Description', 'Diamensions', 'Quantity Required', 'UOM', 'Make', 'Specifications', 'Required Date', 'Delivery Date', 'Quantity Ordered', 'Deviation', 'PO Number', 'Invoice No', 'Invoice Date'],
+  	        		    colModel:[
+							        {name:'code', width:40, sortable: false, align:'left', resizable: true},
 	        		        {name:'description', width:80, sortable: false, align:'left', resizable: true},
 	        		        {name:'diamensions', width:50, sortable: false, align:'left', resizable: true},
 	        		        {name:'quantityRequired', width:40, sortable: false, align:'right', resizable: true},
@@ -171,11 +171,13 @@
 	        		        {name:'deliveryDateStr', width:50, sortable: false, align:'center', resizable: true},
 	        		        {name:'orderedQuantity', width:50, sortable: false, align:'right', resizable: true},
 	        		        {name:'deviation', width:50, sortable: false, align:'left', resizable: true},
-	        		        {name:'remark', width:50, sortable: false, align:'left', resizable: true}
+	        		        {name:'remark', width:50, sortable: false, align:'left', resizable: true},
+	        		        {name:'invoiceNo', width:50, sortable: false, align:'right', resizable: true},
+	        		        {name:'invoiceDateStr', width:50, sortable: false, align:'right', resizable: true}
 	        			],
 	        		    rownumbers: true,
 	        		    rownumWidth: 50,
-	        			rowNum: 1000,
+
 	    				width: $("#prHeader").width()-111,
 	                    height: '100%',
 	                    loadtext: 'building list...',
@@ -192,7 +194,7 @@
 	                    	} else if( jqXHR.responseText.length == 0 ) {
 	                    		alert('Service Unavailable');
 	                    	} else {
-	                        	alert(jqXHR.responseText);
+	                        	alert(jqXHR.statusText);
 	                    	}
 	                    }
 	                });
@@ -251,7 +253,7 @@
 	                    	if( jqXHR.status == 401 ) {
 	                        	alert('Session Expired');            		
 	                    	} else {
-	                    		alert(jqXHR.responseText);
+	                    		alert(jqXHR.statusText);
 	                    	}
 	                    }
        				});

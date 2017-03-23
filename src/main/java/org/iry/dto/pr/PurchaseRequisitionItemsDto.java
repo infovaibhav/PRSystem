@@ -29,8 +29,9 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 	private String deliveryDateStr;
 	private Integer orderedQuantity;
 	private String deviation;
+	private String invoiceNo;
 	private String remark;
-	
+	private String invoiceDateStr;
 	private transient SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
 	public PurchaseRequisitionItemsDto() {
@@ -135,5 +136,33 @@ public class PurchaseRequisitionItemsDto implements BaseDto {
 			return null;
 		}
 		return sdf.parse(deliveryDateStr);
+	}
+	public String getInvoiceNo() {
+		return invoiceNo;
+	}
+
+	public void setInvoiceNo(String invoiceNo) {
+		this.invoiceNo = invoiceNo;
+	}
+
+	public String getInvoiceDateStr() {
+		return invoiceDateStr;
+	}
+	
+	public Date getInvoiceDate() throws ParseException {
+		if( invoiceDateStr == null || invoiceDateStr.isEmpty() ) {
+			return null;
+		}
+		return sdf.parse(invoiceDateStr);
+	}
+	
+	public void setInvoiceDate(Date invoiceDateStr) {
+		if( invoiceDateStr != null ) {
+			this.invoiceDateStr = sdf.format(invoiceDateStr);
+		}
+	}
+	
+	public void setInvoiceDateStr(String deliveryDateStr) {
+		this.invoiceDateStr = deliveryDateStr;
 	}
 }

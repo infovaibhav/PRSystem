@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService{
 		}
 		user.setSsoId( userToSave.getSsoId() );
 		user.setEmail( userToSave.getEmail() );
+		user.setEmailNotification( userToSave.isEmailNotification() );
 		user.setFirstName( userToSave.getFirstName() );
 		user.setLastName( userToSave.getLastName() );
 		user.setAuthorizedTransactionLimit( userToSave.getAuthorizedTransactionLimit() );

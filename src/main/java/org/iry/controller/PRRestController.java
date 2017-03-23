@@ -56,7 +56,8 @@ public class PRRestController {
 			prService.save(purchaseRequisitionDto, user.getId(), user.getFullName());
 			
 			Boolean notificationSent = null;
-			if( purchaseRequisitionDto.isSubmitted() ) {
+
+			if( purchaseRequisitionDto.isSubmitted() && user.isEmailNotification()) {
 				notificationSent = prService.sendEmailNotification(purchaseRequisitionDto.getPrNo(), user);
 			}
 			String response = null;
@@ -71,10 +72,10 @@ public class PRRestController {
 			
 		} catch( InvalidRequestException e ) {
 			log.error("Error in saving Purchase Requisition...", e);
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		} catch( Exception e ) {
 			log.error("Error in saving Purchase Requisition...", e);
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -203,7 +204,7 @@ public class PRRestController {
 	private boolean updatePrStatusAndNotify(String prNo, String status, User user, String remark) {
 		log.info("Updating #PR- " + prNo + " with #Status- " + status + " #Remark - " + remark);
 		prService.updatePrStatus(prNo, status, user.getId(), user.getFullName(), remark);
-		return prService.sendEmailNotification(prNo, user);
+		return user.isEmailNotification() ? prService.sendEmailNotification(prNo, user) : false ;
 	}
 	
 	private void updateAllowedPrActions(List<PurchaseRequisitionDto> dtos, UserDetails userDetails) {
@@ -229,7 +230,10 @@ public class PRRestController {
 			}
 			
 		} else if( status.equals(PurchaseRequisitionStatus.SUBMITTED.getStatus()) ) {
-			
+			if( dto.getCreatedBy().longValue() == userDetails.getUser().getId().longValue() ) {
+				dto.setEditable(true);
+			}
+
 			if( userDetails.getAllowedActions().authorizePr ) {
 				dto.setEditable(true);
 				dto.setEditablePrRemark(true);
@@ -253,7 +257,10 @@ public class PRRestController {
 			}
 			
 		} else if( status.equals(PurchaseRequisitionStatus.APPROVED.getStatus()) ) {
-			
+			if( userDetails.getAllowedActions().poHold ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.POHOLD.getStatus(), "POHold"));
+			}
+
 			if( userDetails.getAllowedActions().acknowledgePr ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus(), "Acknowledge"));
 			}
@@ -261,7 +268,14 @@ public class PRRestController {
 					&& userDetails.getAllowedActions().approvePr ) {
 				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.CANCELLED.getStatus(), "Cancel"));
 			}
-			
+		} else if ( status.equals(PurchaseRequisitionStatus.POHOLD.getStatus()) ) {
+			if( userDetails.getAllowedActions().acknowledgePr ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus(), "Acknowledge"));
+			}
+			if( userDetails.getAllowedActions().cancelPr
+					&& userDetails.getAllowedActions().approvePr ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.CANCELLED.getStatus(), "Cancel"));
+			}
 		} else if( status.equals(PurchaseRequisitionStatus.ACKNOWLEDGED.getStatus()) ) {
 			
 			if( userDetails.getAllowedActions().editPrItemsRemark ) {
@@ -350,12 +364,34 @@ public class PRRestController {
 			}
 			
 		} else if( status.equals(PurchaseRequisitionStatus.PO_CREATED.getStatus()) ) {
+			if( userDetails.getAllowedActions().editableInvoiceAndDt ) {
+				dto.setEditable(true);
+				dto.setEditableInvoiceAndDt(true);
+			}
 			if( userDetails.getAllowedActions().editPrItemsRemark ) {
 				dto.setEditable(true);
 				dto.setEditablePrItemsRemark(true);
 			}
+			if( userDetails.getAllowedActions().closedPo ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.PO_CLOSED.getStatus(), "POclosed"));
+			}
 		} else if( status.equals(PurchaseRequisitionStatus.CANCELLED.getStatus()) ) {
 			
+		} else if ( status.equals(PurchaseRequisitionStatus.PO_CLOSED.getStatus()) ) {
+			if( userDetails.getAllowedActions().reopenPr ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.PO_REOPEN.getStatus(), "Reopen"));
+			}
+		} else if ( status.equals(PurchaseRequisitionStatus.PO_REOPEN.getStatus()) ) {
+			if( dto.getCreatedBy().longValue() == userDetails.getUser().getId().longValue() ) {
+				dto.setEditable(true);
+			}
+			if( dto.getCreatedBy().longValue() == userDetails.getUser().getId().longValue() ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.SUBMITTED.getStatus(), "Submit"));
+			}
+			if( userDetails.getAllowedActions().cancelPr ) {
+				dto.addAllowedStatusChanges(new Action(PurchaseRequisitionStatus.CANCELLED.getStatus(), "Cancel"));
+			}
+
 		}
 		dto.setAllowedStatusChangesStr(dto.getAllowedStatusChanges().toString());
 	}

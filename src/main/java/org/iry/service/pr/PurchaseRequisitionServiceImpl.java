@@ -170,7 +170,8 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 	}
 	
 	private PurchaseRequisitionItems convertToPojo(PurchaseRequisitionItemsDto dto, PurchaseRequisition existingPr) throws Exception {
-		if( dto.getDescription() == null || dto.getQuantityRequired() == 0 || dto.getRequiredByDate() == null ) {
+		if( dto.getCode() == null || dto.getDescription() == null || dto.getQuantityRequired() == 0 || dto.getRequiredByDate() == null ) {
+
 			throw new InvalidRequestException("Invalid Purchase Item record.");
 		}
 		PurchaseRequisitionItems prItem = null;
@@ -222,6 +223,13 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		}
 		prItem.setPurchaseRequisition(existingPr);
 		
+		if( dto.getInvoiceDate() != null ) {
+			prItem.setInvoiceDate(new Timestamp(dto.getInvoiceDate().getTime()));
+		}
+		
+		if( dto.getInvoiceNo() != null ) {
+			prItem.setInvoiceNo(dto.getInvoiceNo());
+		}
 		return prItem;
 	}
 	
@@ -260,7 +268,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setLastUpdatedByName(pr.getApprovedByName());
 		dto.setLastUpdatedDate(pr.getLastUpdatedDate());
 		dto.setPrRemark(pr.getPrRemark());
-		if( !pr.getStatus().equals(PurchaseRequisitionStatus.INITIAL.getStatus()) ) {
+		if( !pr.getStatus().equals(PurchaseRequisitionStatus.INITIAL.getStatus()) &&  !pr.getStatus().equals(PurchaseRequisitionStatus.PO_REOPEN.getStatus()) ) {
 			dto.setSubmitted(true);
 		}
 		dto.setTotalRecords(pr.getTotalRecords());
@@ -287,6 +295,8 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 		dto.setDeviation(prItem.getDeviation());
 		dto.setOrderedQuantity(prItem.getOrderedQuantity());
 		dto.setRemark(prItem.getRemark());
+		dto.setInvoiceNo(prItem.getInvoiceNo());
+		dto.setInvoiceDate(prItem.getInvoiceDate());
 		return dto;
 	}
 	
@@ -305,6 +315,7 @@ public class PurchaseRequisitionServiceImpl implements PurchaseRequisitionServic
 			String fileName = prDto.getPrNo() + ".pdf";
 			
 			return mailSender.sendMail(to, null, subject, body, pdfStream.toByteArray(), fileName);
+			//return true;
 		} catch (Exception e) {
 			log.error("Error in sending email notifications....", e);
 		} finally {
